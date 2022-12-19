@@ -1,5 +1,5 @@
 public with sharing class HabilidadController {
-   public static Habilidad__c GetHabilidad(Integer n){
+   public static Habilidad__c getHabilidad(Integer n){
         if(n<1 || n>267){
             try {
                 throw new CalloutException('Fuera de rango');
@@ -26,14 +26,18 @@ public with sharing class HabilidadController {
         }
         
         HabilidadJson2Apex habilidad=HabilidadJson2Apex.parse(response.getBody());
-
-        NuevaHabilidad.Name=habilidad.name;
-        NuevaHabilidad.ExtId__c=habilidad.id;
-        for(Integer i=0; i<habilidad.effect_entries.size();i++){
-            if(habilidad.effect_entries[i].language.name=='en'){
-                NuevaHabilidad.Efecto__c=habilidad.effect_entries[i].short_effect;
+        try {
+            NuevaHabilidad.Name=habilidad.name.capitalize();
+            NuevaHabilidad.ExtId__c=habilidad.id;
+            for(Integer i=0; i<habilidad.effect_entries.size();i++){
+                if(habilidad.effect_entries[i].language.name=='en'){
+                    NuevaHabilidad.Efecto__c=habilidad.effect_entries[i].short_effect;
+                }
             }
+        } catch (Exception e) {
+            System.debug(e.getMessage());
         }
+       
         System.debug(NuevaHabilidad);
     return NuevaHabilidad;
    }

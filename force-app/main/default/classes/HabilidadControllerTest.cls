@@ -11,7 +11,7 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Habilidad__c habilidad=HabilidadController.GetHabilidad(56);
+            Habilidad__c habilidad=HabilidadController.getHabilidad(56);
         Test.stopTest();
         System.debug(habilidad);
         System.assertEquals('cute-charm', habilidad.Name,
@@ -37,7 +37,7 @@ public with sharing class HabilidadControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
             try {
-                habilidad=HabilidadController.GetHabilidad(56);
+                habilidad=HabilidadController.getHabilidad(56);
             } catch (Exception e) {
                 excepcionRecibida=e.getMessage();
             }
@@ -61,7 +61,7 @@ public with sharing class HabilidadControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
             try {
-                habilidad=HabilidadController.GetHabilidad(56);
+                habilidad=HabilidadController.getHabilidad(56);
             } catch (CalloutException e) {
                 excepcionRecibida=e.getMessage();
             }
