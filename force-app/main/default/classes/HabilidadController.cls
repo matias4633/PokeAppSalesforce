@@ -1,6 +1,8 @@
 public with sharing class HabilidadController {
-   public static Habilidad__c getHabilidad(Integer n){
-        if(n<1 || n>267){
+   public static Habilidad__c getHabilidad(String url){
+    List<String> cortado=url.split('/');
+    Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+    if(n<1 || n>267){
             try {
                 throw new CalloutException('Fuera de rango');
             } catch (CalloutException e) {
@@ -11,7 +13,7 @@ public with sharing class HabilidadController {
         Habilidad__c NuevaHabilidad=new Habilidad__c();
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://pokeapi.co/api/v2/ability/'+n);
+        request.setEndpoint(url);
         request.setMethod('GET');
         request.setHeader('Accept', 'application/json');
         HttpResponse response = http.send(request);

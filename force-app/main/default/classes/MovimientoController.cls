@@ -1,5 +1,7 @@
 public with sharing class MovimientoController {
-    public static Movimiento__c getMovimiento(Integer n){
+    public static Movimiento__c getMovimiento(String url){
+        List<String> cortado=url.split('/');
+        Integer n=Integer.valueOf(cortado[cortado.size()-1]);
         if(n<1 || n>826){
             try {
                 throw new CalloutException('Fuera de rango');
@@ -11,7 +13,7 @@ public with sharing class MovimientoController {
         Movimiento__c nuevoMovimiento = new  Movimiento__c();
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://pokeapi.co/api/v2/move/'+n);
+        request.setEndpoint(url);
         request.setMethod('GET');
         request.setHeader('Accept', 'application/json');
         HttpResponse response = http.send(request);
@@ -20,7 +22,7 @@ public with sharing class MovimientoController {
             try {
                 throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
             } catch (CalloutException e) {
-                //return null;
+                return null;
             }
         }
         
@@ -40,7 +42,7 @@ public with sharing class MovimientoController {
             }
             nuevoMovimiento.Poder__c=movimiento.power;
             nuevoMovimiento.Pp__c=movimiento.pp;
-        // nuevoMovimiento.Tipo__c.=movimiento.type.name;//formato seria 'A;B;C' en string
+            nuevoMovimiento.Tipo__c=movimiento.type.name;//formato seria 'A;B;C' en string
         } catch (Exception e) {
             System.debug(e.getMessage());
         }

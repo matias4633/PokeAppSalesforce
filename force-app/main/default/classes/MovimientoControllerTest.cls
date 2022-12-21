@@ -11,7 +11,7 @@ public with sharing class MovimientoControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Movimiento__c movimiento=MovimientoController.getMovimiento(1);
+            Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/1/');
         Test.stopTest();
         System.debug(movimiento);
         System.assertEquals(true,movimiento!=null,'El objeto es nulo');
