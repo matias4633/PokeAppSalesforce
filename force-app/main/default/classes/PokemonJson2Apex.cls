@@ -10,13 +10,13 @@ public class PokemonJson2Apex {
 	public class Black_white {
 		public Diamond_pearl animated {get;set;} 
 		public String back_default {get;set;} 
-		public Object back_female {get;set;} 
+		public String back_female {get;set;} 
 		public String back_shiny {get;set;} 
-		public Object back_shiny_female {get;set;} 
+		public String back_shiny_female {get;set;} 
 		public String front_default {get;set;} 
-		public Object front_female {get;set;} 
+		public String front_female {get;set;} 
 		public String front_shiny {get;set;} 
-		public Object front_shiny_female {get;set;} 
+		public String front_shiny_female {get;set;} 
 
 		public Black_white(JSONParser parser) {
 			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -28,19 +28,19 @@ public class PokemonJson2Apex {
 						} else if (text == 'back_default') {
 							back_default = parser.getText();
 						} else if (text == 'back_female') {
-							back_female = parser.readValueAs(Object.class);
+							back_female = parser.getText();
 						} else if (text == 'back_shiny') {
 							back_shiny = parser.getText();
 						} else if (text == 'back_shiny_female') {
-							back_shiny_female = parser.readValueAs(Object.class);
+							back_shiny_female = parser.getText();
 						} else if (text == 'front_default') {
 							front_default = parser.getText();
 						} else if (text == 'front_female') {
-							front_female = parser.readValueAs(Object.class);
+							front_female = parser.getText();
 						} else if (text == 'front_shiny') {
 							front_shiny = parser.getText();
 						} else if (text == 'front_shiny_female') {
-							front_shiny_female = parser.readValueAs(Object.class);
+							front_shiny_female = parser.getText();
 						} else {
 							System.debug(LoggingLevel.WARN, 'Black_white consuming unrecognized property: '+text);
 							consumeObject(parser);
@@ -222,13 +222,13 @@ public class PokemonJson2Apex {
 	
 	public class Diamond_pearl {
 		public String back_default {get;set;} 
-		public Object back_female {get;set;} 
+		public String back_female {get;set;} 
 		public String back_shiny {get;set;} 
-		public Object back_shiny_female {get;set;} 
+		public String back_shiny_female {get;set;} 
 		public String front_default {get;set;} 
-		public Object front_female {get;set;} 
+		public String front_female {get;set;} 
 		public String front_shiny {get;set;} 
-		public Object front_shiny_female {get;set;} 
+		public String front_shiny_female {get;set;} 
 
 		public Diamond_pearl(JSONParser parser) {
 			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -238,19 +238,19 @@ public class PokemonJson2Apex {
 						if (text == 'back_default') {
 							back_default = parser.getText();
 						} else if (text == 'back_female') {
-							back_female = parser.readValueAs(Object.class);
+							back_female = parser.getText();
 						} else if (text == 'back_shiny') {
 							back_shiny = parser.getText();
 						} else if (text == 'back_shiny_female') {
-							back_shiny_female = parser.readValueAs(Object.class);
+							back_shiny_female = parser.getText();
 						} else if (text == 'front_default') {
 							front_default = parser.getText();
 						} else if (text == 'front_female') {
-							front_female = parser.readValueAs(Object.class);
+							front_female = parser.getText();
 						} else if (text == 'front_shiny') {
 							front_shiny = parser.getText();
 						} else if (text == 'front_shiny_female') {
-							front_shiny_female = parser.readValueAs(Object.class);
+							front_shiny_female = parser.getText();
 						} else {
 							System.debug(LoggingLevel.WARN, 'Diamond_pearl consuming unrecognized property: '+text);
 							consumeObject(parser);
@@ -332,13 +332,13 @@ public class PokemonJson2Apex {
 	
 	public class Sprites {
 		public String back_default {get;set;} 
-		public Object back_female {get;set;} 
+		public String back_female {get;set;} 
 		public String back_shiny {get;set;} 
-		public Object back_shiny_female {get;set;} 
+		public String back_shiny_female {get;set;} 
 		public String front_default {get;set;} 
-		public Object front_female {get;set;} 
+		public String front_female {get;set;} 
 		public String front_shiny {get;set;} 
-		public Object front_shiny_female {get;set;} 
+		public String front_shiny_female {get;set;} 
 		public Other other {get;set;} 
 		public Versions versions {get;set;} 
 
@@ -350,19 +350,19 @@ public class PokemonJson2Apex {
 						if (text == 'back_default') {
 							back_default = parser.getText();
 						} else if (text == 'back_female') {
-							back_female = parser.readValueAs(Object.class);
+							back_female = parser.getText();
 						} else if (text == 'back_shiny') {
 							back_shiny = parser.getText();
 						} else if (text == 'back_shiny_female') {
-							back_shiny_female = parser.readValueAs(Object.class);
+							back_shiny_female = parser.getText();
 						} else if (text == 'front_default') {
 							front_default = parser.getText();
 						} else if (text == 'front_female') {
-							front_female = parser.readValueAs(Object.class);
+							front_female = parser.getText();
 						} else if (text == 'front_shiny') {
 							front_shiny = parser.getText();
 						} else if (text == 'front_shiny_female') {
-							front_shiny_female = parser.readValueAs(Object.class);
+							front_shiny_female = parser.getText();
 						} else if (text == 'other') {
 							other = new Other(parser);
 						} else if (text == 'versions') {
@@ -471,9 +471,9 @@ public class PokemonJson2Apex {
 	
 	public class Home {
 		public String front_default {get;set;} 
-		public Object front_female {get;set;} 
+		public String front_female {get;set;} 
 		public String front_shiny {get;set;} 
-		public Object front_shiny_female {get;set;} 
+		public String front_shiny_female {get;set;} 
 
 		public Home(JSONParser parser) {
 			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -483,11 +483,11 @@ public class PokemonJson2Apex {
 						if (text == 'front_default') {
 							front_default = parser.getText();
 						} else if (text == 'front_female') {
-							front_female = parser.readValueAs(Object.class);
+							front_female = parser.getText();
 						} else if (text == 'front_shiny') {
 							front_shiny = parser.getText();
 						} else if (text == 'front_shiny_female') {
-							front_shiny_female = parser.readValueAs(Object.class);
+							front_shiny_female = parser.getText();
 						} else {
 							System.debug(LoggingLevel.WARN, 'Home consuming unrecognized property: '+text);
 							consumeObject(parser);
@@ -837,8 +837,6 @@ public class PokemonJson2Apex {
 
 
 
-
-
     private static List<Moves> arrayOfMoves(System.JSONParser p) {
         List<Moves> res = new List<Moves>();
         if (p.getCurrentToken() == null) p.nextToken();
@@ -847,7 +845,6 @@ public class PokemonJson2Apex {
         }
         return res;
     }
-
 
 
 
@@ -876,6 +873,7 @@ public class PokemonJson2Apex {
 
 
 
+
     private static List<Stats> arrayOfStats(System.JSONParser p) {
         List<Stats> res = new List<Stats>();
         if (p.getCurrentToken() == null) p.nextToken();
@@ -884,6 +882,8 @@ public class PokemonJson2Apex {
         }
         return res;
     }
+
+
 
 
 

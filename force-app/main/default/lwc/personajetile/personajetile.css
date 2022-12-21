@@ -1,0 +1,21 @@
+/* :host {
+	--sds-c-card-color-background: linear-gradient(180deg, rgba(255,255,255,1) 80%, #7d8cee 100%);
+} */
+.tile {
+	display: block;
+	border: 1px solid #2929ad;
+	border-radius: .25rem;
+	/* background-color: #8c93ea; */
+	height: 13rem;
+	
+}
+.tile:hover{
+	/* background-color: rgba(65, 148, 249, 1); */
+	transform: translateY(-3%);
+}
+
+.silhouette {
+	height: 150px;
+	width: 100px;
+	object-fit: cover;
+}

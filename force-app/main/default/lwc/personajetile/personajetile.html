@@ -1,0 +1,41 @@
+<!-- sldsValidatorIgnore -->
+<template>
+	<lightning-card title={pers.Name} class="tile" >
+		<div slot="actions">
+            <lightning-button-icon
+                icon-name="utility:search"
+                icon-class="tile-button"
+                variant="bare"
+                alternative-text="Open record"
+                onclick={handleOpenRecordClick}>
+            </lightning-button-icon>
+			<lightning-button-icon style="margin-left: 15px;"
+                icon-name="utility:delete"
+                icon-class="tile-button"
+                variant="bare"
+                alternative-text="Delete record"
+                onclick={handleDeleteRecordClick}>
+            </lightning-button-icon>
+        </div>
+        <div class="slds-var-p-horizontal_small">
+			<div class="slds-media" >
+                
+				<div class="slds-media__figure">
+					<img src={pers.Imagen__c} alt="Imagen" class="silhouette" width="100px" height="150px" />
+				</div>
+				<div class="slds-media__body">
+					<p class="slds-var-m-bottom_xx-small">Ataque: {pers.Ataque__c}</p>
+					<p class="slds-var-m-bottom_xx-small">Defensa: {pers.Defensa__c}</p>
+					<p class="slds-var-m-bottom_xx-small">Vida: {pers.Vida__c}</p>
+					<p class="slds-var-m-bottom_xx-small">Velocidad: {pers.Velocidad__c}</p>
+					<p class="slds-var-m-bottom_xx-small">Id Externo: {pers.ExtId__c}</p>
+					<!-- <p class="slds-var-m-bottom_xx-small">Altura: {pers.Altura__c} cm</p>
+					<p class="slds-var-m-bottom_xx-small">Color de Skin: {pers.Color_de_skin__c}</p>
+                    <p class="slds-var-m-bottom_xx-small">Color de Pelo: {pers.Color_de_pelo__c}</p>
+					<p class="slds-var-m-bottom_xx-small">Genero: {pers.Genero__c}</p> -->
+                    
+				</div>
+			</div>
+		</div>
+	</lightning-card>
+</template>

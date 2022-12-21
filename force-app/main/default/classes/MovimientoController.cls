@@ -32,7 +32,7 @@ public with sharing class MovimientoController {
             nuevoMovimiento.ExtId__c=movimiento.id;
             nuevoMovimiento.Name=movimiento.name.capitalize();
             nuevoMovimiento.Punteria__c=movimiento.accuracy;
-            nuevoMovimiento.Chance_de_Efecto__c=movimiento.effect_chance.toString();
+            nuevoMovimiento.Chance_de_Efecto__c=movimiento.effect_chance;
             nuevoMovimiento.Objetivo__c=movimiento.target.name;
             nuevoMovimiento.Prioridad__c=movimiento.priority;
             for(Integer i=0; i<movimiento.effect_entries.size();i++){

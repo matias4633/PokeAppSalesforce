@@ -1,0 +1,39 @@
+<template>
+	<lightning-card title="PokeDex" icon-name="action:approval">
+		<div class="slds-card__body slds-card__body_inner">
+			<!-- Start list -->
+			<template if:true={personajes.data}>
+                <lightning-input type="search"
+                    onchange={handleSearchTermChange}
+                    variant="label-hidden"
+                    class="slds-var-m-bottom_small"
+                    label="Search"
+                    placeholder="Buscador de Personajes"
+                    value={searchTerm}>
+                </lightning-input>
+				<lightning-layout multiple-rows="true" pull-to-boundary="small" class="contenedor">
+					<template for:each={personajes.data} for:item="personaje">
+						<lightning-layout-item key={personaje.Id}>
+							<!-- Start tile -->
+							<c-personajetile pers={personaje} onview={handleView} ondelete={handleDelete}></c-personajetile>
+							<!-- End  tile -->
+						</lightning-layout-item>
+					</template>
+				</lightning-layout>
+                <!-- No found -->
+                <template if:false={hasResults}>
+                    <div class="slds-align_absolute-center slds-var-m-vertical_small">
+                        No se encontraron resultados...
+                    </div>
+                </template>
+			</template>
+			<!-- End list -->
+			<!-- Data failed to load -->
+			<template if:true={personajes.error}>
+				<div class="slds-text-color_error">
+					Ocurrio un error al obtener los datos.
+				</div>
+			</template>
+		</div>
+	</lightning-card>
+</template>

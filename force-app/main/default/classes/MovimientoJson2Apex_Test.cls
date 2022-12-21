@@ -7,33 +7,7 @@ public class MovimientoJson2Apex_Test {
 	
 	// This test method should give 100% coverage
 	static testMethod void testParse() {
-		String json = '{'+
-		'  \"accuracy\": 100,'+
-		'  \"effect_chance\": null,'+
-		'  \"effect_entries\": ['+
-		'    {'+
-		'      \"effect\": \"Inflicts regular damage.\",'+
-		'      \"language\": {'+
-		'        \"name\": \"en\",'+
-		'        \"url\": \"https://pokeapi.co/api/v2/language/9/\"'+
-		'      },'+
-		'      \"short_effect\": \"Inflicts regular damage with no additional effect.\"'+
-		'    }'+
-		'  ],'+
-		'  \"id\": 1,'+
-		'  \"name\": \"pound\",'+
-		'  \"power\": 40,'+
-		'  \"pp\": 35,'+
-		'  \"priority\": 0,'+
-		'  \"target\": {'+
-		'    \"name\": \"selected-pokemon\",'+
-		'    \"url\": \"https://pokeapi.co/api/v2/move-target/10/\"'+
-		'  },'+
-		'  \"type\": {'+
-		'    \"name\": \"normal\",'+
-		'    \"url\": \"https://pokeapi.co/api/v2/type/1/\"'+
-		'  }'+
-		'}';
+		String json = '{\"accuracy\":100,\"effect_chance\":100,\"effect_entries\":[{\"effect\":\"Inflicts regular damage.\",\"language\":{\"name\":\"en\",\"url\":\"https://pokeapi.co/api/v2/language/9/\"},\"short_effect\":\"Inflicts regular damage with no additional effect.\"}],\"id\":1,\"name\":\"pound\",\"power\":40,\"pp\":35,\"priority\":0,\"target\":{\"name\":\"selected-pokemon\",\"url\":\"https://pokeapi.co/api/v2/move-target/10/\"},\"type\":{\"name\":\"normal\",\"url\":\"https://pokeapi.co/api/v2/type/1/\"}}';
 		MovimientoJson2Apex r = MovimientoJson2Apex.parse(json);
 		System.assert(r != null);
 

@@ -54,7 +54,7 @@ public class MovimientoJson2Apex {
 	}
 	
 	public Integer accuracy {get;set;} 
-	public Object effect_chance {get;set;} 
+	public Integer effect_chance {get;set;} 
 	public List<Effect_entries> effect_entries {get;set;} 
 	public Integer id {get;set;} 
 	public String name {get;set;} 
@@ -72,7 +72,7 @@ public class MovimientoJson2Apex {
 					if (text == 'accuracy') {
 						accuracy = parser.getIntegerValue();
 					} else if (text == 'effect_chance') {
-						effect_chance = parser.readValueAs(Object.class);
+						effect_chance = parser.getIntegerValue();
 					} else if (text == 'effect_entries') {
 						effect_entries = arrayOfEffect_entries(parser);
 					} else if (text == 'id') {
@@ -118,7 +118,6 @@ public class MovimientoJson2Apex {
 		} while (depth > 0 && parser.nextToken() != null);
 	}
 	
-
 
 
     private static List<Effect_entries> arrayOfEffect_entries(System.JSONParser p) {
