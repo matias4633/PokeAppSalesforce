@@ -137,7 +137,8 @@ public with sharing class PokemonController {
                 ExtId__c,
                 Imagen__c,
                 Vida__c,
-                Velocidad__c
+                Velocidad__c,
+                Tipos__c
             FROM Pokemon__c
             ORDER BY ExtId__c
             LIMIT 50
@@ -163,7 +164,8 @@ public with sharing class PokemonController {
                 ExtId__c,
                 Imagen__c,
                 Vida__c	,
-                Velocidad__c
+                Velocidad__c,
+                Tipos__c
             FROM Pokemon__c
             WHERE Name LIKE :searchTerm
             ORDER BY ExtId__c

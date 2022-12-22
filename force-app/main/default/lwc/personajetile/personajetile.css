@@ -4,10 +4,21 @@
 .tile {
 	display: block;
 	border: 1px solid #2929ad;
-	border-radius: .25rem;
+	border-radius: 1rem;
 	/* background-color: #8c93ea; */
-	height: 13rem;
+	height: 20rem;
 	
+	
+}
+.titulo{
+	font-weight: bold;
+	font-size: large;
+	padding: 0.45rem 0 0 4rem;
+}
+.cont-image{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 .tile:hover{
 	/* background-color: rgba(65, 148, 249, 1); */
@@ -15,7 +26,7 @@
 }
 
 .silhouette {
-	height: 150px;
-	width: 100px;
+	height: 140px;
+	width: 100%;
 	object-fit: cover;
 }

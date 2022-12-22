@@ -13,9 +13,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	@wire(searchPersonajes, { searchTerm: '$searchTerm' })
 	loadPersonajes(result) {
 		this.personajes = result;
-		console.log(this.personajes);
-		console.log(result);
-		debugger;
+		
 	}
 
 
