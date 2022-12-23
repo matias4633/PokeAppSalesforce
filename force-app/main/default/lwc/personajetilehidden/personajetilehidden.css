@@ -27,23 +27,22 @@
 }
 .front{
 	transform: perspective(600px) rotateY(0deg);
-	position: absolute;
+	
 }
 .back{
 	transform: perspective(600px) rotateY(180deg);
-	
+	position: absolute;
 }
-/* .card:hover {
-	
-	
-} */
-.tile:hover {
-	transform: translateY(-3%);
+.card:hover .front {
+	transform: perspective(600px) rotateY(180deg);
+}
+
+.card:hover .back {
+	transform: perspective(600px) rotateY(360deg);
+}
+.tile:hover{
 	box-shadow: 1px 10px 17px 1px rgba(255,59,59,0.67);
 }
-/* .card:hover .back {
-	transform: translateY(-3%);
-} */
 .silhouette {
 	height: 140px;
 	width: 100%;

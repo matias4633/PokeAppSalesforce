@@ -1,21 +1,58 @@
 <template>
 	<lightning-card title="Pokédex" icon-name="action:approval">
+		
 		<div class="slds-card__body slds-card__body_inner">
 			<!-- Start list -->
+			<template if:false={personajes.data}>
+				<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+			</template>
 			<template if:true={personajes.data}>
-                <lightning-input type="search"
-                    onchange={handleSearchTermChange}
-                    variant="label-hidden"
-                    class="slds-var-m-bottom_small"
-                    label="Search"
-                    placeholder="Buscador de Personajes"
-                    value={searchTerm}>
-                </lightning-input>
+                <div class="slds-grid slds-gutters filtros">
+					
+					<div class="slds-col">
+						<lightning-input 
+							type="search"
+							onchange={handleSearchTermChange}
+							variant="label-hidden"
+							class="slds-var-m-bottom_small"
+							label="Search"
+							placeholder="Buscador de Personajes"
+							value={searchTerm}>
+                		</lightning-input>
+
+						<lightning-combobox
+							name="progress"
+							label="Tipo"
+							value={valueTipo}
+							placeholder="Seleccione un tipo"
+							options={optionsTipo}
+							onchange={handleChangeTipo}>
+						</lightning-combobox>
+
+						<lightning-combobox
+							name="progress"
+							label="Generacion"
+							value={valueGene}
+							placeholder="Seleccione una Generacion"
+							options={optionsGene}
+							onchange={handleChangeGene}>
+						</lightning-combobox>
+					</div>
+					
+					<div class="slds-col cont-check">
+						<lightning-input type="checkbox" label="Mostrar todas las cartas" value={mostrar} onchange={handleCheckBox} checked> </lightning-input>
+						<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
+					</div>
+					
+				</div>
+				
+				
 				<lightning-layout multiple-rows="true" pull-to-boundary="small" class="contenedor">
 					<template for:each={personajes.data} for:item="personaje">
 						<lightning-layout-item key={personaje.Id}>
 							<!-- Start tile -->
-							<c-personajetile pers={personaje} onview={handleView} ondelete={handleDelete}></c-personajetile>
+							<c-personajetile if:true={mostrar} pers={personaje} onview={handleView}></c-personajetile>
+							<c-personajetilehidden if:false={mostrar} pers={personaje} onview={handleView}></c-personajetilehidden>
 							<!-- End  tile -->
 						</lightning-layout-item>
 					</template>

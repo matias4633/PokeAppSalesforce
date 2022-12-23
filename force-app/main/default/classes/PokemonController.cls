@@ -15,7 +15,7 @@ public with sharing class PokemonController {
         
         
         List<Habilidad__c> habilidades=getHabilidades(getRandomUrls(1, this.hablidadesUrls));
-        List<Movimiento__c> movimientos=getMovimientos(getRandomUrls(3, this.movimientosUrls));
+        List<Movimiento__c> movimientos=getMovimientos(getRandomUrls(4, this.movimientosUrls));
         insert nuevoPokemon;
         for (Habilidad__c habilidad : habilidades) {
             habilidad.Pokemon__c=nuevoPokemon.Id;
@@ -91,7 +91,7 @@ public with sharing class PokemonController {
         return nuevoPokemon;
     }
     public static List<String> getRandomUrls(Integer cantidad, List<String> originales){
-        if(cantidad==originales.size()){
+        if(originales.size()<=cantidad){
             return originales;
         }
         Integer index;
@@ -146,31 +146,26 @@ public with sharing class PokemonController {
     }
 
     @AuraEnabled(cacheable=true scope='global')
-    public static Pokemon__c[] search(String searchTerm) {
+    public static Pokemon__c[] search(String searchTerm , String valueTipo, Integer valueGene) {
         searchTerm = searchTerm.trim();
-        if (searchTerm == '') {
+        if (searchTerm == '' && valueTipo == ''  && valueGene == 0 ) {
             return getAll();
         }
         // Prepare query paramters
         searchTerm = '%' + searchTerm + '%';
         // Execute search query
-        return [
-            SELECT
-                Id,
-                Name,
-                Altura__c,
-                Ataque__c,
-                Defensa__c,
-                ExtId__c,
-                Imagen__c,
-                Vida__c	,
-                Velocidad__c,
-                Tipos__c
-            FROM Pokemon__c
-            WHERE Name LIKE :searchTerm
-            ORDER BY ExtId__c
-            LIMIT 50
-        ];
+
+        String query='SELECT Id,Name,Altura__c,Ataque__c,Defensa__c,ExtId__c,Imagen__c,Vida__c,Velocidad__c,Tipos__c FROM Pokemon__c WHERE Name LIKE :searchTerm ';
+        if(valueTipo != ''){
+            query=query+'AND Tipos__c includes (:valueTipo) ';
+        }
+        if(valueGene != 0){
+            query=query+'AND Generacion__c=:valueGene ';
+        }
+        query=query+'ORDER BY ExtId__c LIMIT 50';
+        return Database.query(query);
+
+        
     }
 
 }

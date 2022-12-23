@@ -6,7 +6,8 @@ import blanca from '@salesforce/resourceUrl/blanca';
 import amarilla from '@salesforce/resourceUrl/amarilla';
 
 const fondos=[roja,verde,blanca,amarilla];
-export default class PersonajeTile extends LightningElement {
+
+export default class PersonajeTilehidden extends LightningElement {
 	@api pers;
 
     get background(){
