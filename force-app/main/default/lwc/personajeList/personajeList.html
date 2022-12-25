@@ -1,5 +1,5 @@
 <template>
-	<lightning-card title="Pokédex" icon-name="action:approval">
+	<lightning-card title="Encuentra tu Pokemon">
 		
 		<div class="slds-card__body slds-card__body_inner">
 			<!-- Start list -->
@@ -16,12 +16,12 @@
 							variant="label-hidden"
 							class="slds-var-m-bottom_small"
 							label="Search"
-							placeholder="Buscador de Personajes"
+							placeholder="Ingresa el nombre"
 							value={searchTerm}>
                 		</lightning-input>
 
 						<lightning-combobox
-							name="progress"
+							name="Tipo"
 							label="Tipo"
 							value={valueTipo}
 							placeholder="Seleccione un tipo"
@@ -30,18 +30,20 @@
 						</lightning-combobox>
 
 						<lightning-combobox
-							name="progress"
+							name="Generacion"
 							label="Generacion"
 							value={valueGene}
-							placeholder="Seleccione una Generacion"
+							placeholder="Seleccione una Generación"
 							options={optionsGene}
 							onchange={handleChangeGene}>
 						</lightning-combobox>
 					</div>
 					
 					<div class="slds-col cont-check">
-						<lightning-input type="checkbox" label="Mostrar todas las cartas" value={mostrar} onchange={handleCheckBox} checked> </lightning-input>
 						<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
+						<div class="pikachu"><img src={pikachu} alt="Pikachu"></div>
+						<lightning-input type="checkbox" label="Voltear todas las cartas" value={mostrar} onchange={handleCheckBox} checked> </lightning-input>
+						
 					</div>
 					
 				</div>

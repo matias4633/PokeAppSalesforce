@@ -46,8 +46,6 @@ public with sharing class MovimientoController {
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
-        
-        System.debug(nuevoMovimiento);
     return NuevoMovimiento;
    }
 }

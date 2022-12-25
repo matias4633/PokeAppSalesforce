@@ -15,12 +15,46 @@ public with sharing class MovimientoControllerTest {
         Test.stopTest();
         System.debug(movimiento);
         System.assertEquals(true,movimiento!=null,'El objeto es nulo');
-        /* System.assertEquals('cute-charm', habilidad.Name,
-         'El valor no es el esperado es:' +habilidad.Name);
-         System.assertEquals(56, habilidad.ExtId__c,
-         'El valor no es el esperado es:' +habilidad.ExtId__c);
-         System.assertEquals('Has a 30% chance of infatuating attacking Pokémon on contact.',
-          habilidad.Efecto__c,'El valor no es el esperado es:' +habilidad.Efecto__c);
- */
+        System.assertEquals('Pound', movimiento.Name, 'El nombre no es el esperado');
+        System.assertEquals('Inflicts regular damage with no additional effect.',
+         movimiento.Efecto__c,'El efecto no es el esperado');
+        System.assertEquals(40, movimiento.Poder__c, 'El poder no es el perado');
+        System.assertEquals(1, movimiento.ExtId__c,'El id externo no es el esperado');
+        
+    }
+
+    @isTest
+    public static void deberiaObtenerUnError(){
+        String respuestaEsperada ='Not found';
+                SingleRequestMock mock = new SingleRequestMock(
+                                                        404,
+                                                        'Error',
+                                                        respuestaEsperada,
+                                                        null
+                                                    );
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+            Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/1/');
+        Test.stopTest();
+        System.debug(movimiento);
+        System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
+        
+    }
+    @isTest
+    public static void deberiaObtenerUnErrorPorFueraDeRango(){
+        String respuestaEsperada ='Not found';
+                SingleRequestMock mock = new SingleRequestMock(
+                                                        404,
+                                                        'Error',
+                                                        respuestaEsperada,
+                                                        null
+                                                    );
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+            Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/900/');
+        Test.stopTest();
+        System.debug(movimiento);
+        System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
+        
     }
 }

@@ -155,11 +155,43 @@ public class PokemonJson2Apex {
 		}
 	}
 	
+	public class Icons {
+		public String front_default {get;set;} 
+		public String front_female {get;set;} 
+
+		public Icons(JSONParser parser) {
+			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+				if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+					String text = parser.getText();
+					if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+						if (text == 'front_default') {
+							front_default = parser.getText();
+						} else if (text == 'front_female') {
+							front_female = parser.getText();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Icons consuming unrecognized property: '+text);
+							consumeObject(parser);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public List<Abilities> abilities {get;set;} 
+	public Integer base_experience {get;set;} 
+	public List<Ability> forms {get;set;} 
+	public List<Game_indices> game_indices {get;set;} 
 	public Integer height {get;set;} 
+	public List<Held_items> held_items {get;set;} 
 	public Integer id {get;set;} 
+	public Boolean is_default {get;set;} 
+	public String location_area_encounters {get;set;} 
 	public List<Moves> moves {get;set;} 
 	public String name {get;set;} 
+	public Integer order {get;set;} 
+	public List<Past_types> past_types {get;set;} 
+	public Ability species {get;set;} 
 	public Sprites sprites {get;set;} 
 	public List<Stats> stats {get;set;} 
 	public List<Types> types {get;set;} 
@@ -172,14 +204,32 @@ public class PokemonJson2Apex {
 				if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
 					if (text == 'abilities') {
 						abilities = arrayOfAbilities(parser);
+					} else if (text == 'base_experience') {
+						base_experience = parser.getIntegerValue();
+					} else if (text == 'forms') {
+						forms = arrayOfAbility(parser);
+					} else if (text == 'game_indices') {
+						game_indices = arrayOfGame_indices(parser);
 					} else if (text == 'height') {
 						height = parser.getIntegerValue();
+					} else if (text == 'held_items') {
+						held_items = arrayOfHeld_items(parser);
 					} else if (text == 'id') {
 						id = parser.getIntegerValue();
+					} else if (text == 'is_default') {
+						is_default = parser.getBooleanValue();
+					} else if (text == 'location_area_encounters') {
+						location_area_encounters = parser.getText();
 					} else if (text == 'moves') {
 						moves = arrayOfMoves(parser);
 					} else if (text == 'name') {
 						name = parser.getText();
+					} else if (text == 'order') {
+						order = parser.getIntegerValue();
+					} else if (text == 'past_types') {
+						past_types = arrayOfPast_types(parser);
+					} else if (text == 'species') {
+						species = new Ability(parser);
 					} else if (text == 'sprites') {
 						sprites = new Sprites(parser);
 					} else if (text == 'stats') {
@@ -579,6 +629,29 @@ public class PokemonJson2Apex {
 		}
 	}
 	
+	public class Version_details {
+		public Integer rarity {get;set;} 
+		public Ability version {get;set;} 
+
+		public Version_details(JSONParser parser) {
+			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+				if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+					String text = parser.getText();
+					if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+						if (text == 'rarity') {
+							rarity = parser.getIntegerValue();
+						} else if (text == 'version') {
+							version = new Ability(parser);
+						} else {
+							System.debug(LoggingLevel.WARN, 'Version_details consuming unrecognized property: '+text);
+							consumeObject(parser);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public class Red_blue {
 		public String back_default {get;set;} 
 		public String back_gray {get;set;} 
@@ -606,6 +679,29 @@ public class PokemonJson2Apex {
 							front_transparent = parser.getText();
 						} else {
 							System.debug(LoggingLevel.WARN, 'Red_blue consuming unrecognized property: '+text);
+							consumeObject(parser);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public class Game_indices {
+		public Integer game_index {get;set;} 
+		public Ability version {get;set;} 
+
+		public Game_indices(JSONParser parser) {
+			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+				if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+					String text = parser.getText();
+					if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+						if (text == 'game_index') {
+							game_index = parser.getIntegerValue();
+						} else if (text == 'version') {
+							version = new Ability(parser);
+						} else {
+							System.debug(LoggingLevel.WARN, 'Game_indices consuming unrecognized property: '+text);
 							consumeObject(parser);
 						}
 					}
@@ -727,8 +823,31 @@ public class PokemonJson2Apex {
 		}
 	}
 	
+	public class Held_items {
+		public Ability item {get;set;} 
+		public List<Version_details> version_details {get;set;} 
+
+		public Held_items(JSONParser parser) {
+			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+				if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+					String text = parser.getText();
+					if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+						if (text == 'item') {
+							item = new Ability(parser);
+						} else if (text == 'version_details') {
+							version_details = arrayOfVersion_details(parser);
+						} else {
+							System.debug(LoggingLevel.WARN, 'Held_items consuming unrecognized property: '+text);
+							consumeObject(parser);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public class Generation_viii {
-		public Dream_world icons {get;set;} 
+		public Icons icons {get;set;} 
 
 		public Generation_viii(JSONParser parser) {
 			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -736,9 +855,26 @@ public class PokemonJson2Apex {
 					String text = parser.getText();
 					if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
 						if (text == 'icons') {
-							icons = new Dream_world(parser);
+							icons = new Icons(parser);
 						} else {
 							System.debug(LoggingLevel.WARN, 'Generation_viii consuming unrecognized property: '+text);
+							consumeObject(parser);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public class Past_types {
+
+		public Past_types(JSONParser parser) {
+			while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+				if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+					String text = parser.getText();
+					if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+						{
+							System.debug(LoggingLevel.WARN, 'Past_types consuming unrecognized property: '+text);
 							consumeObject(parser);
 						}
 					}
@@ -835,6 +971,28 @@ public class PokemonJson2Apex {
 	}
 	
 
+    private static List<Game_indices> arrayOfGame_indices(System.JSONParser p) {
+        List<Game_indices> res = new List<Game_indices>();
+        if (p.getCurrentToken() == null) p.nextToken();
+        while (p.nextToken() != System.JSONToken.END_ARRAY) {
+            res.add(new Game_indices(p));
+        }
+        return res;
+    }
+
+
+
+
+    private static List<Ability> arrayOfAbility(System.JSONParser p) {
+        List<Ability> res = new List<Ability>();
+        if (p.getCurrentToken() == null) p.nextToken();
+        while (p.nextToken() != System.JSONToken.END_ARRAY) {
+            res.add(new Ability(p));
+        }
+        return res;
+    }
+
+
 
 
     private static List<Moves> arrayOfMoves(System.JSONParser p) {
@@ -848,6 +1006,15 @@ public class PokemonJson2Apex {
 
 
 
+
+    private static List<Version_details> arrayOfVersion_details(System.JSONParser p) {
+        List<Version_details> res = new List<Version_details>();
+        if (p.getCurrentToken() == null) p.nextToken();
+        while (p.nextToken() != System.JSONToken.END_ARRAY) {
+            res.add(new Version_details(p));
+        }
+        return res;
+    }
 
 
 
@@ -874,6 +1041,7 @@ public class PokemonJson2Apex {
 
 
 
+
     private static List<Stats> arrayOfStats(System.JSONParser p) {
         List<Stats> res = new List<Stats>();
         if (p.getCurrentToken() == null) p.nextToken();
@@ -884,6 +1052,21 @@ public class PokemonJson2Apex {
     }
 
 
+
+
+
+
+
+
+
+    private static List<Held_items> arrayOfHeld_items(System.JSONParser p) {
+        List<Held_items> res = new List<Held_items>();
+        if (p.getCurrentToken() == null) p.nextToken();
+        while (p.nextToken() != System.JSONToken.END_ARRAY) {
+            res.add(new Held_items(p));
+        }
+        return res;
+    }
 
 
 
@@ -903,6 +1086,14 @@ public class PokemonJson2Apex {
     }
 
 
+    private static List<Past_types> arrayOfPast_types(System.JSONParser p) {
+        List<Past_types> res = new List<Past_types>();
+        if (p.getCurrentToken() == null) p.nextToken();
+        while (p.nextToken() != System.JSONToken.END_ARRAY) {
+            res.add(new Past_types(p));
+        }
+        return res;
+    }
 
 
 

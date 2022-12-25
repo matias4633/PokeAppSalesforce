@@ -11,24 +11,23 @@ public with sharing class PokemonController {
             }
         }
         Pokemon__c nuevoPokemon=getPokemon(n);
-        
-        
-        
         List<Habilidad__c> habilidades=getHabilidades(getRandomUrls(1, this.hablidadesUrls));
         List<Movimiento__c> movimientos=getMovimientos(getRandomUrls(4, this.movimientosUrls));
-        insert nuevoPokemon;
-        for (Habilidad__c habilidad : habilidades) {
-            habilidad.Pokemon__c=nuevoPokemon.Id;
-        }
-        for (Movimiento__c movimiento : movimientos) {
-            movimiento.Pokemon__c=nuevoPokemon.Id;
-        }
-
-        insert habilidades;
-        insert movimientos;
+        upsert habilidades Name;
+        upsert movimientos Name;
         
-
-       
+        for (Habilidad__c habilidad : habilidades) {
+            nuevoPokemon.Habilidad__c=habilidad.Id;
+        }
+        try {
+            nuevoPokemon.Slot1__c=movimientos[0].Id;
+            nuevoPokemon.Slot2__c=movimientos[1].Id;
+            nuevoPokemon.Slot3__c=movimientos[2].Id;
+            nuevoPokemon.Slot4__c=movimientos[3].Id;
+        } catch (Exception e) {
+            System.debug('Hubo menos que 4 movimientos desde la api.');
+        }
+        insert nuevoPokemon;
     }
     public Pokemon__c getPokemon(Integer n){
         Pokemon__c nuevoPokemon = new  Pokemon__c();
@@ -125,6 +124,8 @@ public with sharing class PokemonController {
         
     }
 
+    //CLASES QUE SE USAN DESDE LWC
+
     @AuraEnabled(cacheable=true scope='global')
     public static Pokemon__c[] getAll() {
         return [
@@ -141,14 +142,13 @@ public with sharing class PokemonController {
                 Tipos__c
             FROM Pokemon__c
             ORDER BY ExtId__c
-            LIMIT 50
         ];
     }
 
     @AuraEnabled(cacheable=true scope='global')
-    public static Pokemon__c[] search(String searchTerm , String valueTipo, Integer valueGene) {
+    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene) {
         searchTerm = searchTerm.trim();
-        if (searchTerm == '' && valueTipo == ''  && valueGene == 0 ) {
+        if (searchTerm == '' && valueTipo == ''  && valueGene == '' ) {
             return getAll();
         }
         // Prepare query paramters
@@ -159,10 +159,11 @@ public with sharing class PokemonController {
         if(valueTipo != ''){
             query=query+'AND Tipos__c includes (:valueTipo) ';
         }
-        if(valueGene != 0){
-            query=query+'AND Generacion__c=:valueGene ';
+        if(valueGene != ''){
+            Integer gene=Integer.valueOf(valueGene);
+            query=query+'AND Generacion__c=:gene ';
         }
-        query=query+'ORDER BY ExtId__c LIMIT 50';
+        query=query+'ORDER BY ExtId__c';
         return Database.query(query);
 
         

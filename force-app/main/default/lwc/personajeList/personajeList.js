@@ -1,13 +1,18 @@
 import { NavigationMixin } from 'lightning/navigation';
-import { LightningElement, track, wire} from 'lwc';
+import { LightningElement, wire} from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
+import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
+import pikachu from '@salesforce/resourceUrl/pikachu';
 export default class PersonajeList extends NavigationMixin(LightningElement) {
+	//VARIABLES
 	searchTerm = '';
 	valueTipo = '';
-	valueGene = 0;
+	valueGene='';
 	mostrar=true;
-	@track contador=0;
+	contador=0;
+	opcionesTipo=[{ label: 'Todos', value: '' }];
 	personajes;
+
 
 	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene'})
 	loadPersonajes(result) {
@@ -17,17 +22,16 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	/*$ para indicar que es dinámico y reactivo.
 	 Si su valor cambia, la plantilla se vuelve a representar. (proveniente de la documentacion)*/
 
+	//Manejadores 
 	handleSearchTermChange(event) {
-		window.clearTimeout(this.delayTimeout);
+		window.clearTimeout(this.delayTimeout);// Lo que hace es cancelar el timeout y su accion,antes
+		//que se ejecute. Entonces si hay otro cambio antes de los 300 mls, se evita el cambio de la 
+		//variable reactiva searchTerm.
 		const searchTerm = event.target.value;
 
 		this.delayTimeout = setTimeout(() => {
 			this.searchTerm = searchTerm;
 		}, 300);
-	}
-	get hasResults() {
-		
-		return (this.personajes.data.length > 0);
 	}
 	handleView(event) {
 
@@ -42,58 +46,60 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 			},
 		});
 	}
-
-	
-	
-    get optionsTipo() {
-        return [
-            { label: 'Todos', value: '' },
-            { label: 'Normal', value: 'Normal' },
-            { label: 'Fighting', value: 'Fighting' },
-            { label: 'Flying', value: 'Flying' },
-            { label: 'Poison', value: 'Poison' },
-            { label: 'Ground', value: 'Ground' },
-            { label: 'Rock', value: 'Rock' },
-            { label: 'Bug', value: 'Bug' },
-            { label: 'Ghost', value: 'Ghost' },
-            { label: 'Steel', value: 'Steel' },
-            { label: 'Fire', value: 'Fire' },
-            { label: 'Water', value: 'Water' },
-            { label: 'Grass', value: 'Grass' },
-            { label: 'Electric', value: 'Electric' },
-            { label: 'Psychic', value: 'Psychic' },
-            { label: 'Ice', value: 'Ice' },
-            { label: 'Dragon', value: 'Dragon' },
-            { label: 'Dark', value: 'Dark' },
-            { label: 'Fairy', value: 'Fairy' },
-        ];
-    }
-    handleChangeTipo(event) {
+	handleChangeTipo(event) {
         this.valueTipo = event.detail.value;
     }
-
-	get optionsGene() {
-        return [
-            { label: 'Todas', value: 0 },
-            { label: 'Primera', value: 1 },
-            { label: 'Segunda', value: 2 },
-            { label: 'Tercera', value: 3 },
-        ];
-    }
-
-    handleChangeGene(event) {
+	handleChangeGene(event) {
         this.valueGene = event.detail.value;
     }
-
 	handleCheckBox(event){
 		this.mostrar=!this.mostrar;
-		console.log(this.mostrar);
 	}
 
+	//Getters and Setters
+
+	get hasResults() {
+		
+		return (this.personajes.data.length > 0);
+	}
+    get  optionsTipo() {
+		//alert('pidio el dato');
+		return this.opcionesTipo;
+    }
+	get optionsGene() {
+        return [
+            { label: 'Todas', value: '' },
+            { label: 'Primera', value: '1' },
+            { label: 'Segunda', value: '2' },
+            { label: 'Tercera', value: '3' },
+            { label: 'Cuarta', value: '4' },
+            { label: 'Quinta', value: '5' },
+            { label: 'Sexta', value: '6' },
+            { label: 'Septima', value: '7' },
+            { label: 'Octava', value: '8' },
+        ];
+    }
+	get pikachu(){
+		return `${pikachu}`;
+	}
+	// Funciones gatillo.
 	renderedCallback(){
 		if(this.personajes.data){
 			this.contador=Object.keys(this.personajes.data).length;
 		}
 		
+	}
+	connectedCallback() {
+		getValoresDisponibles({nombreObj: 'Pokemon__c',NombreCampoPickList: 'Tipos__c'})
+					.then(result => {
+					result.forEach(element => {
+						this.opcionesTipo= [...this.opcionesTipo,{ label: element, value: element}];
+					});
+					
+				})
+					.catch(error => {
+					console.log(error);
+				});
+		//alert('Proceso el dato');
 	}
 }

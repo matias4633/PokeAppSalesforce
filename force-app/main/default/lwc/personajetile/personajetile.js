@@ -1,11 +1,12 @@
 import { LightningElement, api } from 'lwc';
+
 import roja from '@salesforce/resourceUrl/roja';
 import atras from '@salesforce/resourceUrl/trasera';
 import verde from '@salesforce/resourceUrl/verde';
 import blanca from '@salesforce/resourceUrl/blanca';
 import amarilla from '@salesforce/resourceUrl/amarilla';
 
-const fondos=[roja,verde,blanca,amarilla];
+const fondos=[roja,verde,blanca,amarilla]; //Fondos
 export default class PersonajeTile extends LightningElement {
 	@api pers;
 

@@ -5,7 +5,7 @@ global class CustomIterable implements Iterator<Integer>{
  
     public CustomIterable(){ 
         List<Integer> cantidad=new List<Integer>();
-        for (Integer i = 0; i < 10; i++) {
+        for (Integer i = 1; i <= 10; i++) { //Aca defino la cantidad de pokemon que quiero meter.
             cantidad.add(i);
         }
         lista=cantidad;

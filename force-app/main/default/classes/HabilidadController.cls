@@ -6,6 +6,7 @@ public with sharing class HabilidadController {
             try {
                 throw new CalloutException('Fuera de rango');
             } catch (CalloutException e) {
+                System.debug(e.getMessage());
                 return null;
             }
         }
@@ -22,6 +23,7 @@ public with sharing class HabilidadController {
             try {
                 throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
             } catch (CalloutException e) {
+                System.debug(e.getMessage());
                 return null;
             }
             
@@ -38,9 +40,9 @@ public with sharing class HabilidadController {
             }
         } catch (Exception e) {
             System.debug(e.getMessage());
+            return null;
         }
        
-        System.debug(NuevaHabilidad);
     return NuevaHabilidad;
    }
 }
