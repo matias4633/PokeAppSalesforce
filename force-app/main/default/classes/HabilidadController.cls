@@ -29,8 +29,9 @@ public with sharing class HabilidadController {
             
         }
         
-        HabilidadJson2Apex habilidad=HabilidadJson2Apex.parse(response.getBody());
+       
         try {
+            HabilidadJson2Apex habilidad=HabilidadJson2Apex.parse(response.getBody());
             NuevaHabilidad.Name=habilidad.name.capitalize();
             NuevaHabilidad.ExtId__c=habilidad.id;
             for(Integer i=0; i<habilidad.effect_entries.size();i++){
@@ -39,10 +40,12 @@ public with sharing class HabilidadController {
                 }
             }
         } catch (Exception e) {
+            
+            System.debug('Paso por aca');
             System.debug(e.getMessage());
             return null;
         }
-       
+       System.debug('No tendria que pasar por aca');
     return NuevaHabilidad;
    }
 }
