@@ -40,12 +40,9 @@ public with sharing class HabilidadController {
                 }
             }
         } catch (Exception e) {
-            
-            System.debug('Paso por aca');
             System.debug(e.getMessage());
             return null;
         }
-       System.debug('No tendria que pasar por aca');
     return NuevaHabilidad;
    }
 }

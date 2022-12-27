@@ -27,7 +27,7 @@ public with sharing class PokemonController {
         } catch (Exception e) {
             System.debug('Hubo menos que 4 movimientos desde la api.');
         }
-        insert nuevoPokemon;
+        upsert nuevoPokemon Name;
     }
     public Pokemon__c getPokemon(Integer n){
         Pokemon__c nuevoPokemon = new  Pokemon__c();
@@ -142,13 +142,15 @@ public with sharing class PokemonController {
                 Tipos__c
             FROM Pokemon__c
             ORDER BY ExtId__c
+            LIMIT 50
         ];
     }
 
     @AuraEnabled(cacheable=true scope='global')
-    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene) {
+    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene , String identificador) {
         searchTerm = searchTerm.trim();
-        if (searchTerm == '' && valueTipo == ''  && valueGene == '' ) {
+        System.debug(identificador);
+        if (searchTerm == '' && valueTipo == ''  && valueGene == '' && identificador=='' ) {
             return getAll();
         }
         // Prepare query paramters
@@ -163,7 +165,13 @@ public with sharing class PokemonController {
             Integer gene=Integer.valueOf(valueGene);
             query=query+'AND Generacion__c=:gene ';
         }
-        query=query+'ORDER BY ExtId__c';
+        if(identificador!=''){
+            query=query+'AND Id=:identificador ';
+        }
+        System.debug(identificador);
+        System.debug(query);
+        System.debug(Database.query(query));
+        query=query+'ORDER BY ExtId__c LIMIT 50';
         return Database.query(query);
 
         

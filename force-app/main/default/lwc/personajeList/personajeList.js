@@ -5,6 +5,7 @@ import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.get
 import pikachu from '@salesforce/resourceUrl/pikachu';
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
+	recordId='';
 	searchTerm = '';
 	valueTipo = '';
 	valueGene='';
@@ -14,7 +15,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	personajes;
 
 
-	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene'})
+	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
 	loadPersonajes(result) {
 		this.personajes = result;
 		

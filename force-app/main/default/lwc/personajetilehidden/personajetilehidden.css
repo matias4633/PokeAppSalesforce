@@ -40,6 +40,7 @@
 .card:hover .back {
 	transform: perspective(600px) rotateY(360deg);
 }
+
 .tile:hover{
 	box-shadow: 1px 10px 17px 1px rgba(255,59,59,0.67);
 }
