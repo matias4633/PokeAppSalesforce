@@ -25,10 +25,8 @@ public with sharing class MovimientoController {
                 return null;
             }
         }
-        
-        MovimientoJson2Apex movimiento=MovimientoJson2Apex.parse(response.getBody());
-
         try {
+            MovimientoJson2Apex movimiento=MovimientoJson2Apex.parse(response.getBody());
             nuevoMovimiento.ExtId__c=movimiento.id;
             nuevoMovimiento.Name=movimiento.name.capitalize();
             nuevoMovimiento.Punteria__c=movimiento.accuracy;

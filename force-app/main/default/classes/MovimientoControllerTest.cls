@@ -18,7 +18,7 @@ public with sharing class MovimientoControllerTest {
         System.assertEquals('Pound', movimiento.Name, 'El nombre no es el esperado');
         System.assertEquals('Inflicts regular damage with no additional effect.',
          movimiento.Efecto__c,'El efecto no es el esperado');
-        System.assertEquals(40, movimiento.Poder__c, 'El poder no es el perado');
+        System.assertEquals(40, movimiento.Poder__c, 'El poder no es el esperado');
         System.assertEquals(1, movimiento.ExtId__c,'El id externo no es el esperado');
         
     }
@@ -54,6 +54,23 @@ public with sharing class MovimientoControllerTest {
             Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/900/');
         Test.stopTest();
         System.debug(movimiento);
+        System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
+        
+    }
+    @isTest
+    public static void deberiaObtenerUnErrorPorDatosIncorrectos(){
+        Movimiento__c movimiento=new movimiento__c();
+        String respuestaEsperada ='{"accuracy":"prueba","effect_chance":100,"effect_entries":[{"effect":"Inflicts regular damage.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Inflicts regular damage with no additional effect."}],"id":1,"name":"pound","power":40,"pp":35,"priority":0,"target":{"name":"selected-pokemon","url":"https://pokeapi.co/api/v2/move-target/10/"},"type":{"name":"normal","url":"https://pokeapi.co/api/v2/type/1/"}}';
+        SingleRequestMock mock = new SingleRequestMock(
+                                                        200,
+                                                        'OK',
+                                                        respuestaEsperada,
+                                                        null
+                                                    );
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.startTest();
+            movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/900/');
+        Test.stopTest();
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }

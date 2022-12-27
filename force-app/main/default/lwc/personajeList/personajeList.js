@@ -3,9 +3,9 @@ import { LightningElement, wire} from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
 import pikachu from '@salesforce/resourceUrl/pikachu';
-import UserPreferencesReceiveNotificationsAsDelegatedApprover from '@salesforce/schema/User.UserPreferencesReceiveNotificationsAsDelegatedApprover';
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
+	recordId='';
 	searchTerm = '';
 	valueTipo = '';
 	valueGene='';
@@ -15,9 +15,10 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	personajes;
 
 
-	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene'})
+	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
 	loadPersonajes(result) {
 		this.personajes = result;
+		
 	}
 	/*$ para indicar que es dinámico y reactivo.
 	 Si su valor cambia, la plantilla se vuelve a representar. (proveniente de la documentacion)*/

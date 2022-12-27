@@ -24,7 +24,7 @@ public with sharing class HabilidadControllerTest {
 
     @isTest
     public static void deberiaObtenerUnErrorYunObjetoNulo(){
-        Habilidad__c habilidad;
+        Habilidad__c habilidad=new habilidad__c();
         String excepcionRecibida;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
@@ -49,6 +49,7 @@ public with sharing class HabilidadControllerTest {
 
     @isTest  
     public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
+        Habilidad__c habilidad=new habilidad__c();
         String excepcionRecibida;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
@@ -59,15 +60,15 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-        Habilidad__c habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+        habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
         Test.stopTest();
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
     }
 
     @isTest
     public static void deberiaObtenerUnErrorPorTiposDeDatosIncorrectos(){
-        Habilidad__c habilidad;
-        String respuestaEsperada ='{"effect_entries":[{"effect":"","language":{"name":"de","url":"https://pokeapi.co/api/v2/language/6/"},"short_effect":""},{"effect":"","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Has a 30% chance of infatuating attacking Pokémon on contact."}],"id":papas,"name":"cute-charm"}';
+        Habilidad__c habilidad=new habilidad__c();
+        String respuestaEsperada ='{"effect_entries":[{"effect":"","language":{"name":"de","url":"https://pokeapi.co/api/v2/language/6/"},"short_effect":""},{"effect":"","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Has a 30% chance of infatuating attacking Pokémon on contact."}],"id":"papas","name":"cute-charm"}';
         Exception excepcion;
         SingleRequestMock mock = new SingleRequestMock(
                                                         200,

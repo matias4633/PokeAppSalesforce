@@ -151,9 +151,9 @@ public with sharing class PokemonController {
     }
 
     @AuraEnabled(cacheable=true scope='global')
-    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene) {
+    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene ,String identificador) {
         searchTerm = searchTerm.trim();
-        if (searchTerm == '' && valueTipo == ''  && valueGene == '' ) {
+        if (searchTerm == '' && valueTipo == ''  && valueGene == '' && identificador=='') {
             return getAll();
         }
         // Prepare query paramters
@@ -167,6 +167,9 @@ public with sharing class PokemonController {
         if(valueGene != ''){
             Integer gene=Integer.valueOf(valueGene);
             query=query+'AND Generacion__c=:gene ';
+        }
+        if(identificador!=''){
+            query=query+'AND Id=:identificador ';
         }
         query=query+'ORDER BY ExtId__c LIMIT 50';
         System.debug(query);
