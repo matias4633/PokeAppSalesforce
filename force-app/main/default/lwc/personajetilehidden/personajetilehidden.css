@@ -40,7 +40,6 @@
 .card:hover .back {
 	transform: perspective(600px) rotateY(360deg);
 }
-
 .tile:hover{
 	box-shadow: 1px 10px 17px 1px rgba(255,59,59,0.67);
 }
@@ -53,8 +52,18 @@
     width: 80%;
 	font-weight: bold;
 	font-size: small;
+	margin-bottom: 8px;
 }
 .contenedor-info p{
+    display: flex;
+    justify-content: space-between;
+}
+.contenedor-mov{
+    width: 95%;
+	font-weight: bold;
+	font-size: small;
+}
+.contenedor-mov p{
     display: flex;
     justify-content: space-between;
 }

@@ -9,10 +9,10 @@ import amarilla from '@salesforce/resourceUrl/amarilla';
 const fondos=[roja,verde,blanca,amarilla]; //Fondos
 export default class PersonajeTile extends LightningElement {
 	@api pers;
-
+   
     get background(){
         let index=Math.floor(Math.random()*fondos.length);
-        return  `background-image:url(${fondos[index]});background-color:#FFFFFF;background-size: cover;background-size: 100% 100%;
+        return  `background-image:url(${fondos[index]});background-size: cover;background-size: 100% 100%;
         background-repeat: no-repeat;`;
     }
     get fondoback(){

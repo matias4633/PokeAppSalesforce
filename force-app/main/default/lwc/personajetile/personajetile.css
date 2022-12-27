@@ -53,8 +53,19 @@
     width: 80%;
 	font-weight: bold;
 	font-size: small;
+	margin-bottom: 8px;
 }
 .contenedor-info p{
+    display: flex;
+    justify-content: space-between;
+}
+
+.contenedor-mov{
+    width: 95%;
+	font-weight: bold;
+	font-size: small;
+}
+.contenedor-mov p{
     display: flex;
     justify-content: space-between;
 }

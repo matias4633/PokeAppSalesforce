@@ -27,7 +27,7 @@ public with sharing class PokemonController {
         } catch (Exception e) {
             System.debug('Hubo menos que 4 movimientos desde la api.');
         }
-        upsert nuevoPokemon Name;
+        insert nuevoPokemon;
     }
     public Pokemon__c getPokemon(Integer n){
         Pokemon__c nuevoPokemon = new  Pokemon__c();
@@ -139,7 +139,11 @@ public with sharing class PokemonController {
                 Imagen__c,
                 Vida__c,
                 Velocidad__c,
-                Tipos__c
+                Tipos__c,
+                Slot1__r.Name,
+                Slot1__r.ExtId__c,
+                Slot2__r.Name,
+                Slot2__r.ExtId__c
             FROM Pokemon__c
             ORDER BY ExtId__c
             LIMIT 50
@@ -147,17 +151,16 @@ public with sharing class PokemonController {
     }
 
     @AuraEnabled(cacheable=true scope='global')
-    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene , String identificador) {
+    public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene) {
         searchTerm = searchTerm.trim();
-        System.debug(identificador);
-        if (searchTerm == '' && valueTipo == ''  && valueGene == '' && identificador=='' ) {
+        if (searchTerm == '' && valueTipo == ''  && valueGene == '' ) {
             return getAll();
         }
         // Prepare query paramters
         searchTerm = '%' + searchTerm + '%';
         // Execute search query
 
-        String query='SELECT Id,Name,Altura__c,Ataque__c,Defensa__c,ExtId__c,Imagen__c,Vida__c,Velocidad__c,Tipos__c FROM Pokemon__c WHERE Name LIKE :searchTerm ';
+        String query='SELECT Id,Name,Altura__c,Ataque__c,Defensa__c,ExtId__c,Imagen__c,Vida__c,Velocidad__c,Tipos__c,Slot1__r.Name,Slot1__r.ExtId__c,Slot2__r.Name,Slot2__r.ExtId__c FROM Pokemon__c WHERE Name LIKE :searchTerm ';
         if(valueTipo != ''){
             query=query+'AND Tipos__c includes (:valueTipo) ';
         }
@@ -165,13 +168,8 @@ public with sharing class PokemonController {
             Integer gene=Integer.valueOf(valueGene);
             query=query+'AND Generacion__c=:gene ';
         }
-        if(identificador!=''){
-            query=query+'AND Id=:identificador ';
-        }
-        System.debug(identificador);
-        System.debug(query);
-        System.debug(Database.query(query));
         query=query+'ORDER BY ExtId__c LIMIT 50';
+        System.debug(query);
         return Database.query(query);
 
         
