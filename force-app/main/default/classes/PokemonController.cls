@@ -170,7 +170,7 @@ public with sharing class PokemonController {
             query=query+'AND Id=:identificador ';
         }
         query=query+'ORDER BY ExtId__c LIMIT 50';
-        System.debug(query);
+        //System.debug(query);
         return Database.query(query);
 
         

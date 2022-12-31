@@ -1,0 +1,11 @@
+<template>
+    <lightning-layout multiple-rows="true" pull-to-boundary="small" class="contenedor">
+            <template if:true={personaje}   for:each={personaje} for:item="pers" >
+                <lightning-layout-item key={pers.Id} >
+                    <!-- Start tile -->
+                    <c-personajetilehidden if:true={mostrar} pers={pers}></c-personajetilehidden>
+                    <!-- End  tile -->
+                </lightning-layout-item>
+            </template>
+    </lightning-layout>
+</template>
