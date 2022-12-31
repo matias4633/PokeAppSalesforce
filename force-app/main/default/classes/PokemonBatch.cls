@@ -2,7 +2,7 @@ global class PokemonBatch implements Database.Batchable<Integer>, Database.State
    
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();
-        for (Integer i = 0; i <=898; i++) {
+        for (Integer i = 1; i <=1; i++) {
             iteraciones.add(i);
         }
         return iteraciones;

@@ -45,10 +45,8 @@ public with sharing class PokemonController {
                 System.debug(e.getMessage());
             }
         }
-        
-        PokemonJson2Apex pokemon=PokemonJson2Apex.parse(response.getBody());
-
         try {
+            PokemonJson2Apex pokemon=PokemonJson2Apex.parse(response.getBody());
             nuevoPokemon.ExtId__c=pokemon.id;
             nuevoPokemon.Name=pokemon.name.capitalize();
             nuevoPokemon.Altura__c=pokemon.height/10.0;
