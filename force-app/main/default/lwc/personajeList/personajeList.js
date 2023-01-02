@@ -14,7 +14,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	opcionesTipo=[{ label: 'Todos', value: '' }];
 	personajes;
 
-
+	//Metodo reactivo de consulta de BD
 	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
 	loadPersonajes(result) {
 		this.personajes = result;
@@ -91,6 +91,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 		
 	}
 	connectedCallback() {
+		//Consulto los valores disponibles en la multipicklist
 		getValoresDisponibles({nombreObj: 'Pokemon__c',NombreCampoPickList: 'Tipos__c'})
 					.then(result => {
 					result.forEach(element => {

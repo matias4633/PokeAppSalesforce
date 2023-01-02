@@ -43,6 +43,7 @@ public with sharing class PokemonController {
                 throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
             } catch (CalloutException e) {
                 System.debug(e.getMessage());
+                return null;
             }
         }
         try {

@@ -3,4 +3,5 @@
     gap: 1rem;
     grid-auto-rows: auto;
     grid-template-columns: repeat(auto-fill,minmax(15rem,1fr));
+    justify-items: center;
 }

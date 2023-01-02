@@ -20,11 +20,17 @@ public with sharing class MovimientoControllerTest {
          movimiento.Efecto__c,'El efecto no es el esperado');
         System.assertEquals(40, movimiento.Poder__c, 'El poder no es el esperado');
         System.assertEquals(1, movimiento.ExtId__c,'El id externo no es el esperado');
+        System.assertEquals(100, movimiento.Punteria__c, 'La punteria no es la esperada');
+        System.assertEquals(100, movimiento.Chance_de_Efecto__c,'La chance no es la esperada');
+        System.assertEquals('selected-pokemon', movimiento.Objetivo__c,'El objetivo no es el esperado');
+        System.assertEquals(0,movimiento.Prioridad__c,'La prioridad no es la esperada');
+        System.assertEquals(35,movimiento.Pp__c, 'Los PP no son los esperados');
+        System.assertEquals('normal', movimiento.Tipo__c, 'El tipo no es el esperado');
         
     }
 
     @isTest
-    public static void deberiaObtenerUnError(){
+    public static void deberiaObtenerUnErrorPorRespuestaIncorrecta(){
         String respuestaEsperada ='Not found';
                 SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -73,5 +79,23 @@ public with sharing class MovimientoControllerTest {
         Test.stopTest();
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
+    }
+    @isTest
+    public static void deberiaObtenerTodosLosPokemonsRelacionadosAlMovimiento(){
+        Movimiento__c movimiento=new Movimiento__c(Name='SuperDuper Move');
+        insert movimiento;
+        List<Pokemon__c> lista= new List<Pokemon__c>();
+        for (Integer i = 0; i < 3; i++) {
+            lista.add(new Pokemon__c(Name='prueba '+i,Slot1__c=movimiento.id));
+        }
+        insert lista;
+
+        Test.startTest();
+        List<Pokemon__c> busqueda=MovimientoController.GetPokemonsRelacionados(movimiento.id);
+        Test.stopTest();
+
+        System.assertEquals(3, busqueda.size(), 'La cantidad no es la esperada');
+
+
     }
 }
