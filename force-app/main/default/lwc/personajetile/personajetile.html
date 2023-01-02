@@ -1,12 +1,12 @@
 <!-- sldsValidatorIgnore -->
 <template>
-	<div class="card">
-        <div  class="tile face front" style={background}>
+	<div class="card" >
+        <div  class="tile face front efectoHover" style={background}>
             <div class="titulo">    <div>{pers.Name}</div>    <div class="ident-ext">{pers.ExtId__c}</div></div>
             <div class="slds-var-p-horizontal_small" >
                 <div class="slds-media cont-image" >
                     
-                    <div class="slds-media__figure">
+                    <div class="slds-media__figure imagen">
                         <img src={pers.Imagen__c} alt="Imagen" class="silhouette" width="100px" height="150px" onclick={handleOpenRecordClick} />
                     </div>
                     <div class="slds-media__body contenedor-info">
@@ -22,7 +22,8 @@
             </div>
             
         </div>
-        <div class="tile face back" style={fondoback}></div>
+        <div class="tile face back efectoHover" style={fondoback}></div>
+        <div lwc:dom="manual"></div>
     </div>
     
 </template>

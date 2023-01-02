@@ -67,3 +67,23 @@
     display: flex;
     justify-content: space-between;
 }
+
+.vibrador{
+	animation: vibrar 0.5s infinite linear;
+	
+}
+
+@keyframes vibrar {
+	25%{
+		transform:rotateY(30deg);
+	}
+	50%{
+		transform:rotateY(0deg);
+	}
+	75%{
+		transform:rotateY(-30deg);
+	}
+	100%{
+		transform:rotateY(0deg);
+	}
+}

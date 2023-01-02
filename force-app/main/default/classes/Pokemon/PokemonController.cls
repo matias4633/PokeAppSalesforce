@@ -27,7 +27,9 @@ public with sharing class PokemonController {
         } catch (Exception e) {
             System.debug('Hubo menos que 4 movimientos desde la api.');
         }
-        insert nuevoPokemon;
+        if(nuevoPokemon!=null){
+            insert nuevoPokemon;
+        }
     }
     public Pokemon__c getPokemon(Integer n){
         Pokemon__c nuevoPokemon = new  Pokemon__c();

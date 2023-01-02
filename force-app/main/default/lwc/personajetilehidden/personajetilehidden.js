@@ -26,4 +26,17 @@ export default class PersonajeTilehidden extends LightningElement {
         });
         this.dispatchEvent(selectEvent);
     }
+    renderedCallback(){
+        let frente=this.template.querySelector('div.back');
+        function animacion(){
+            frente.classList.remove('efectoHover');
+            frente.classList.add('vibrador');
+            
+            setTimeout(()=>{
+                frente.classList.add('efectoHover');
+                frente.classList.remove('vibrador');
+            },2000);
+        }
+        this.template.querySelector('div.imagen').addEventListener('click',animacion);
+    }
 }

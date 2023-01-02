@@ -15,16 +15,18 @@ export default class PersonajetileRelated extends NavigationMixin(LightningEleme
         this.personaje = result.data;
     }
     handleView(event) {
+		setTimeout(()=>{
+			const personajeId = event.detail;
 
-		const personajeId = event.detail;
-
-		this[NavigationMixin.Navigate]({
-			type: 'standard__recordPage',
-			attributes: {
-				recordId: personajeId,
-				objectApiName: 'Pokemon__c',
-				actionName: 'view',
-			},
-		});
+			this[NavigationMixin.Navigate]({
+				type: 'standard__recordPage',
+				attributes: {
+					recordId: personajeId,
+					objectApiName: 'Pokemon__c',
+					actionName: 'view',
+				},
+			});
+		},1500);
+		
 	}
 }
