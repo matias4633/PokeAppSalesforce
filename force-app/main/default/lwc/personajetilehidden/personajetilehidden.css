@@ -19,7 +19,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	cursor: pointer;
 }
 .face{
 	backface-visibility: hidden;
@@ -47,6 +46,7 @@
 	height: 140px;
 	width: 100%;
 	object-fit: cover;
+	cursor: pointer
 }
 .contenedor-info{
     width: 80%;
