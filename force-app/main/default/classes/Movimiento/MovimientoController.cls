@@ -1,5 +1,7 @@
 public with sharing class MovimientoController {
     public static Movimiento__c getMovimiento(String url){
+        //Extraigo el Extid de la url para verificarlo.
+        
         List<String> cortado=url.split('/');
         Integer n=Integer.valueOf(cortado[cortado.size()-1]);
         if(n<1 || n>826){
@@ -9,7 +11,7 @@ public with sharing class MovimientoController {
                 return null;
             }
         }
-
+        //Llamado a la api
         Movimiento__c nuevoMovimiento = new  Movimiento__c();
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
@@ -25,6 +27,7 @@ public with sharing class MovimientoController {
                 return null;
             }
         }
+        //Tratamiento de los datos
         try {
             MovimientoJson2Apex movimiento=MovimientoJson2Apex.parse(response.getBody());
             nuevoMovimiento.ExtId__c=movimiento.id;
@@ -33,6 +36,7 @@ public with sharing class MovimientoController {
             nuevoMovimiento.Chance_de_Efecto__c=movimiento.effect_chance;
             nuevoMovimiento.Objetivo__c=movimiento.target.name;
             nuevoMovimiento.Prioridad__c=movimiento.priority;
+            //Primero verifico que el idioma sea el pedidio, luego tomo el short effect
             for(Integer i=0; i<movimiento.effect_entries.size();i++){
                 if(movimiento.effect_entries[i].language.name=='en'){
                     nuevoMovimiento.Efecto__c=movimiento.effect_entries[i].short_effect;
@@ -40,13 +44,13 @@ public with sharing class MovimientoController {
             }
             nuevoMovimiento.Poder__c=movimiento.power;
             nuevoMovimiento.Pp__c=movimiento.pp;
-            nuevoMovimiento.Tipo__c=movimiento.type.name;//formato seria 'A;B;C' en string
+            nuevoMovimiento.Tipo__c=movimiento.type.name;
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
     return NuevoMovimiento;
    }
-
+   //Metodo usado en LWC de Record Page Movimiento.
    @AuraEnabled(cacheable=true)
    public static List<Pokemon__c> GetPokemonsRelacionados(String identificador){
     return [SELECT

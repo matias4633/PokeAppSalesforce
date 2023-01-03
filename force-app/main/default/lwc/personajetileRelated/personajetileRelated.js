@@ -29,4 +29,16 @@ export default class PersonajetileRelated extends NavigationMixin(LightningEleme
 		},1500);
 		
 	}
+	handleViewMov(event){
+		const movimientoId = event.detail;
+
+			this[NavigationMixin.Navigate]({
+				type: 'standard__recordPage',
+				attributes: {
+					recordId: movimientoId,
+					objectApiName: 'Movimiento__c',
+					actionName: 'view',
+				},
+			});
+	}
 }

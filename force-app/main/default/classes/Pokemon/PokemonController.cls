@@ -3,6 +3,7 @@ public with sharing class PokemonController {
     public List<String> movimientosUrls=new List<String>();
     
     public void insertPokemon(Integer n){
+        //Verifico que el parametro este entre lo pedido.
         if(n<1 || n>898){
             try {
                 throw new CalloutException('Fuera de rango');
@@ -10,12 +11,15 @@ public with sharing class PokemonController {
                 System.debug(e.getMessage());
             }
         }
+
         Pokemon__c nuevoPokemon=getPokemon(n);
         List<Habilidad__c> habilidades=getHabilidades(getRandomUrls(1, this.hablidadesUrls));
         List<Movimiento__c> movimientos=getMovimientos(getRandomUrls(4, this.movimientosUrls));
+        //Evito el duplicado de habilidades y movimientos
         upsert habilidades Name;
         upsert movimientos Name;
         
+        //Asigno la relacion entre pokemon y movimientos/habilidad
         for (Habilidad__c habilidad : habilidades) {
             nuevoPokemon.Habilidad__c=habilidad.Id;
         }
@@ -32,6 +36,7 @@ public with sharing class PokemonController {
         }
     }
     public Pokemon__c getPokemon(Integer n){
+        //LLamado a la Api
         Pokemon__c nuevoPokemon = new  Pokemon__c();
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
@@ -48,6 +53,7 @@ public with sharing class PokemonController {
                 return null;
             }
         }
+        //Tratamiento de los Datos
         try {
             PokemonJson2Apex pokemon=PokemonJson2Apex.parse(response.getBody());
             nuevoPokemon.ExtId__c=pokemon.id;
@@ -55,6 +61,7 @@ public with sharing class PokemonController {
             nuevoPokemon.Altura__c=pokemon.height/10.0;
             nuevoPokemon.Peso__c=pokemon.weight/10.0;
             nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            //Armo el formato valor;valor;valor para la multipicklist
             for(Integer i=0; i<pokemon.types.size();i++){
                 if(i==0){
                     nuevoPokemon.Tipos__c=pokemon.types[i].type.name;
@@ -79,6 +86,8 @@ public with sharing class PokemonController {
                     }
                 }
             }
+
+            /* Extraigo todas las urls de habilidad y movimiento */
             for (Integer i = 0; i < pokemon.abilities.size(); i++) {
                 this.hablidadesUrls.add(pokemon.abilities[i].ability.url);
             }
@@ -90,6 +99,7 @@ public with sharing class PokemonController {
         }
         return nuevoPokemon;
     }
+    /* Metodo para elegir aleaoriamente urls */
     public static List<String> getRandomUrls(Integer cantidad, List<String> originales){
         if(originales.size()<=cantidad){
             return originales;
@@ -110,9 +120,8 @@ public with sharing class PokemonController {
             Habilidad__c habilidad=HabilidadController.getHabilidad(url);
             listaA_Insertar.add(habilidad);
         }
-        System.debug('Ejecute el return de habilidad');
+        //System.debug('Ejecute el return de habilidad');
         return listaA_Insertar;
-        
     }
     public static List<Movimiento__c> getMovimientos(List<String> lista){
         List<Movimiento__c> listaA_Insertar=new List<Movimiento__c>();
@@ -120,13 +129,12 @@ public with sharing class PokemonController {
             Movimiento__c movimiento=MovimientoController.getMovimiento(url);
             listaA_Insertar.add(movimiento);
         }
-        System.debug('Ejecute el return de Movimiento');
+        //System.debug('Ejecute el return de Movimiento');
         return listaA_Insertar;
-        
     }
 
     //CLASES QUE SE USAN DESDE LWC
-
+    /* Este metodo retorna los datos cuando los parametros son vacios */
     @AuraEnabled(cacheable=true scope='global')
     public static Pokemon__c[] getAll() {
         return [
@@ -150,17 +158,16 @@ public with sharing class PokemonController {
             LIMIT 50
         ];
     }
-
+    /* Metodo de filtrados de busqueda */
     @AuraEnabled(cacheable=true scope='global')
     public static Pokemon__c[] search(String searchTerm , String valueTipo, String valueGene ,String identificador) {
         searchTerm = searchTerm.trim();
         if (searchTerm == '' && valueTipo == ''  && valueGene == '' && identificador=='') {
             return getAll();
         }
-        // Prepare query paramters
+        // Preparo el parametro de busqueda para query
         searchTerm = '%' + searchTerm + '%';
-        // Execute search query
-
+        //Query base
         String query='SELECT Id,Name,Altura__c,Ataque__c,Defensa__c,ExtId__c,Imagen__c,Vida__c,Velocidad__c,Tipos__c,Slot1__r.Name,Slot1__r.ExtId__c,Slot2__r.Name,Slot2__r.ExtId__c FROM Pokemon__c WHERE Name LIKE :searchTerm ';
         if(valueTipo != ''){
             query=query+'AND Tipos__c includes (:valueTipo) ';

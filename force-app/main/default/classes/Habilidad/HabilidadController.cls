@@ -1,8 +1,9 @@
 public with sharing class HabilidadController {
    public static Habilidad__c getHabilidad(String url){
-    List<String> cortado=url.split('/');
-    Integer n=Integer.valueOf(cortado[cortado.size()-1]);
-    if(n<1 || n>267){
+        //Extraigo el Extid de la url para verificarlo.
+        List<String> cortado=url.split('/');
+        Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+        if(n<1 || n>267){
             try {
                 throw new CalloutException('Fuera de rango');
             } catch (CalloutException e) {
@@ -10,7 +11,7 @@ public with sharing class HabilidadController {
                 return null;
             }
         }
-
+        //Llamado a la api
         Habilidad__c NuevaHabilidad=new Habilidad__c();
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
@@ -29,7 +30,7 @@ public with sharing class HabilidadController {
             
         }
         
-       
+        //Tratamiento de los datos
         try {
             HabilidadJson2Apex habilidad=HabilidadJson2Apex.parse(response.getBody());
             NuevaHabilidad.Name=habilidad.name.capitalize();

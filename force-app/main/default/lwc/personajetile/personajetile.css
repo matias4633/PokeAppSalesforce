@@ -65,6 +65,10 @@
 .contenedor-mov p{
     display: flex;
     justify-content: space-between;
+	margin-bottom: 2px;
+}
+.contenedor-mov p span{
+	cursor: pointer;
 }
 .vibrador{
 	animation: vibrar 0.5s infinite linear;
