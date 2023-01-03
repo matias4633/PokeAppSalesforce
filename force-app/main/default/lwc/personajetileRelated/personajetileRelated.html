@@ -3,7 +3,7 @@
             <template if:true={personaje}   for:each={personaje} for:item="pers" >
                 <lightning-layout-item key={pers.Id} >
                     <!-- Start tile -->
-                    <c-personajetile if:true={mostrar} pers={pers} onview={handleView}></c-personajetile>
+                    <c-personajetile if:true={mostrar} pers={pers} onview={handleView} onviewmov={handleViewMov}></c-personajetile>
                     <!-- End  tile -->
                 </lightning-layout-item>
             </template>

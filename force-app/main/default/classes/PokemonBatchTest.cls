@@ -40,17 +40,7 @@ public with sharing class PokemonBatchTest {
         MultiStaticResourceCalloutMock multimock = new MultiStaticResourceCalloutMock();
         multimock.setStaticResource(
             'https://pokeapi.co/api/v2/pokemon/1', 'error');
-        /* multimock.setStaticResource(
-            'https://pokeapi.co/api/v2/ability/65/', 'respuestaHabilidad');
-        multimock.setStaticResource(
-            'https://pokeapi.co/api/v2/move/13/', 'respuestaMovimiento1');
-        multimock.setStaticResource(
-            'https://pokeapi.co/api/v2/move/14/', 'respuestaMovimiento2');
-        multimock.setStaticResource(
-            'https://pokeapi.co/api/v2/move/15/', 'respuestaMovimiento3');
-        multimock.setStaticResource(
-            'https://pokeapi.co/api/v2/move/20/', 'respuestaMovimiento4');
-         */
+       
         multimock.setStatusCode(404);
         multimock.setHeader('Content-Type', 'application/json');
         

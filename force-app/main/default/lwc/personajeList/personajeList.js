@@ -1,5 +1,5 @@
 import { NavigationMixin } from 'lightning/navigation';
-import { LightningElement, wire} from 'lwc';
+import { LightningElement, track, wire} from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
 import pikachu from '@salesforce/resourceUrl/pikachu';
@@ -48,6 +48,18 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 			});
 		},1500);
 		
+	}
+	handleViewMov(event){
+		const movimientoId = event.detail;
+
+			this[NavigationMixin.Navigate]({
+				type: 'standard__recordPage',
+				attributes: {
+					recordId: movimientoId,
+					objectApiName: 'Movimiento__c',
+					actionName: 'view',
+				},
+			});
 	}
 	handleChangeTipo(event) {
         this.valueTipo = event.detail.value;
