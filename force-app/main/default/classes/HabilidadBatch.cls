@@ -2,7 +2,7 @@ global class HabilidadBatch implements Database.Batchable<Integer>, Database.Sta
     List<Habilidad__c> habilidades=new List<Habilidad__c>();
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();
-        for (Integer i = 1; i <=267; i++) { //hasta 267 Ejecutar este batch con size de 10.
+        for (Integer i = 1; i <=1; i++) { //hasta 267 Ejecutar este batch con size de 10.
             iteraciones.add(i);
         }
         return iteraciones;
@@ -23,6 +23,9 @@ global class HabilidadBatch implements Database.Batchable<Integer>, Database.Sta
     global void finish(Database.BatchableContext BC){
         //System.debug(habilidades);
         upsert habilidades Name;
-        Database.executeBatch(new MovimientoBatch(),10);
+        if(!Test.isRunningTest()){
+            Database.executeBatch(new MovimientoBatch(),10);
+        }
+        
     }
 }

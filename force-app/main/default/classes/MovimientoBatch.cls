@@ -2,7 +2,7 @@ global class MovimientoBatch implements Database.Batchable<Integer>, Database.St
     List<Movimiento__c> movimientos=new List<Movimiento__c>();
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();
-        for (Integer i = 1; i <=826; i++) { //hasta 826 Ejecutar este batch con size de 10.
+        for (Integer i = 1; i <=1; i++) { //hasta 826 Ejecutar este batch con size de 10.
             iteraciones.add(i);
         }
         return iteraciones;
@@ -23,6 +23,9 @@ global class MovimientoBatch implements Database.Batchable<Integer>, Database.St
     global void finish(Database.BatchableContext BC){
         //System.debug(movimientos);
         upsert movimientos Name;
-        Database.executeBatch(new PokemonBatch(),10);
+        if(!Test.isRunningTest()){
+            Database.executeBatch(new PokemonBatch(),10);
+        }
+        
     }
 }

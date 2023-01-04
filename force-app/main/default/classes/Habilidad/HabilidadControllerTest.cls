@@ -11,7 +11,7 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Habilidad__c habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+            Habilidad__c habilidad=HabilidadController.getHabilidad(56);
         Test.stopTest();
         System.assertEquals('Cute-charm', habilidad.Name,
          'El valor no es el esperado es:' +habilidad.Name);
@@ -25,7 +25,6 @@ public with sharing class HabilidadControllerTest {
     @isTest
     public static void deberiaObtenerUnErrorYunObjetoNulo(){
         Habilidad__c habilidad=new habilidad__c();
-        String excepcionRecibida;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -36,9 +35,9 @@ public with sharing class HabilidadControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
             try {
-                habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/900');
+                habilidad=HabilidadController.getHabilidad(56);
             } catch (Exception e) {
-                excepcionRecibida=e.getMessage();
+                System.debug(e.getMessage());
             }
             
         Test.stopTest();
@@ -60,7 +59,7 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-        habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+        habilidad=HabilidadController.getHabilidad(900);
         Test.stopTest();
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
     }
@@ -79,7 +78,7 @@ public with sharing class HabilidadControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         try {
-            habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+            habilidad=HabilidadController.getHabilidad(56);
         } catch (Exception e) {
             System.debug(e.getMessage());
         }

@@ -13,6 +13,7 @@ public with sharing class MovimientoController {
         }
         //Llamado a la api
         Movimiento__c nuevoMovimiento = new  Movimiento__c();
+        MovimientoJson2Apex movimiento;
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://pokeapi.co/api/v2/move/'+n);
@@ -29,7 +30,13 @@ public with sharing class MovimientoController {
         }
         //Tratamiento de los datos
         try {
-            MovimientoJson2Apex movimiento=MovimientoJson2Apex.parse(response.getBody());
+            movimiento=MovimientoJson2Apex.parse(response.getBody());
+        } catch (Exception e) {
+            System.debug('Datos Incorrectos');
+            return null;
+        }
+        try {
+            
             nuevoMovimiento.ExtId__c=movimiento.id;
             nuevoMovimiento.Name=movimiento.name.capitalize();
             nuevoMovimiento.Punteria__c=movimiento.accuracy;
