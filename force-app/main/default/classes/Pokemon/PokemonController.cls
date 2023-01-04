@@ -1,8 +1,9 @@
 public with sharing class PokemonController {
     public List<String> hablidadesUrls=new List<String>();
     public List<String> movimientosUrls=new List<String>();
-    
-    public void insertPokemon(Integer n){
+    Map<Decimal,Id> mapaHabilidades=new Map<Decimal,Id>();
+    Map<Decimal,Id> mapaMovimientos=new Map<Decimal,Id>();
+    /* public void insertPokemon(Integer n){
         //Verifico que el parametro este entre lo pedido.
         if(n<1 || n>898){
             try {
@@ -13,8 +14,8 @@ public with sharing class PokemonController {
         }
 
         Pokemon__c nuevoPokemon=getPokemon(n);
-        List<Habilidad__c> habilidades=getHabilidades(getRandomUrls(1, this.hablidadesUrls));
-        List<Movimiento__c> movimientos=getMovimientos(getRandomUrls(4, this.movimientosUrls));
+        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, this.hablidadesUrls));
+        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, this.movimientosUrls));
         //Evito el duplicado de habilidades y movimientos
         upsert habilidades Name;
         upsert movimientos Name;
@@ -34,8 +35,18 @@ public with sharing class PokemonController {
         if(nuevoPokemon!=null){
             insert nuevoPokemon;
         }
-    }
+    } */
     public Pokemon__c getPokemon(Integer n){
+        //Verifico que el parametro este entre lo pedido.
+        if(n<1 || n>898){
+            try {
+                throw new CalloutException('Fuera de rango');
+            } catch (CalloutException e) {
+                System.debug(e.getMessage());
+                return null;
+            }
+        }
+        
         //LLamado a la Api
         Pokemon__c nuevoPokemon = new  Pokemon__c();
         Http http = new Http(); 
@@ -97,6 +108,34 @@ public with sharing class PokemonController {
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
+
+        for(Habilidad__c habilidad: [SELECT ExtId__c,Id FROM Habilidad__c]){
+            this.mapaHabilidades.put(habilidad.ExtId__c,habilidad.Id);
+        }
+        System.debug(mapaHabilidades);
+
+        for(Movimiento__c movimiento: [SELECT ExtId__c,Id FROM Movimiento__c]){
+            this.mapaMovimientos.put(movimiento.ExtId__c,movimiento.Id);
+        }
+        System.debug(mapaMovimientos);
+
+        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, this.hablidadesUrls));
+        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, this.movimientosUrls));
+
+        //Asigno la relacion entre pokemon y movimientos/habilidad
+        for (Integer habilidad : habilidades) {
+            nuevoPokemon.Habilidad__c=mapaHabilidades.get(habilidad);
+        }
+        try {
+            nuevoPokemon.Slot1__c=mapaMovimientos.get(movimientos[0]);
+            nuevoPokemon.Slot2__c=mapaMovimientos.get(movimientos[1]);
+            nuevoPokemon.Slot3__c=mapaMovimientos.get(movimientos[2]);
+            nuevoPokemon.Slot4__c=mapaMovimientos.get(movimientos[3]);
+        } catch (Exception e) {
+            System.debug('Hubo menos que 4 movimientos desde la api.');
+        }
+
+        System.debug(nuevoPokemon);
         return nuevoPokemon;
     }
     /* Metodo para elegir aleaoriamente urls */
@@ -114,20 +153,23 @@ public with sharing class PokemonController {
         return new List<String>(lista);
     }
 
-    public static List<Habilidad__c> getHabilidades(List<String> lista){
-        List<Habilidad__c> listaA_Insertar=new List<Habilidad__c>();
+    public static List<Integer> getHabilidadesExtId(List<String> lista){
+        
+        List<Integer> listaA_Insertar=new List<Integer>();
         for (String url : lista) {
-            Habilidad__c habilidad=HabilidadController.getHabilidad(url);
-            listaA_Insertar.add(habilidad);
+            List<String> cortado=url.split('/');
+            Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+            listaA_Insertar.add(n);
         }
         //System.debug('Ejecute el return de habilidad');
         return listaA_Insertar;
     }
-    public static List<Movimiento__c> getMovimientos(List<String> lista){
-        List<Movimiento__c> listaA_Insertar=new List<Movimiento__c>();
+    public static List<Integer> getMovimientosExtId(List<String> lista){
+        List<Integer> listaA_Insertar=new List<Integer>();
         for (String url : lista) {
-            Movimiento__c movimiento=MovimientoController.getMovimiento(url);
-            listaA_Insertar.add(movimiento);
+            List<String> cortado=url.split('/');
+            Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+            listaA_Insertar.add(n);
         }
         //System.debug('Ejecute el return de Movimiento');
         return listaA_Insertar;

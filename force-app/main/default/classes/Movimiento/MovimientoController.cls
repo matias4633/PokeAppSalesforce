@@ -1,9 +1,9 @@
 public with sharing class MovimientoController {
-    public static Movimiento__c getMovimiento(String url){
+    public static Movimiento__c getMovimiento(Integer n){
         //Extraigo el Extid de la url para verificarlo.
         
-        List<String> cortado=url.split('/');
-        Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+        /* List<String> cortado=url.split('/');
+        Integer n=Integer.valueOf(cortado[cortado.size()-1]); */
         if(n<1 || n>826){
             try {
                 throw new CalloutException('Fuera de rango');
@@ -15,7 +15,7 @@ public with sharing class MovimientoController {
         Movimiento__c nuevoMovimiento = new  Movimiento__c();
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint(url);
+        request.setEndpoint('https://pokeapi.co/api/v2/move/'+n);
         request.setMethod('GET');
         request.setHeader('Accept', 'application/json');
         HttpResponse response = http.send(request);
