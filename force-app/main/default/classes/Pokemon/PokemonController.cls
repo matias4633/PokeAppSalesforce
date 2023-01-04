@@ -1,42 +1,9 @@
 public with sharing class PokemonController {
-    public List<String> hablidadesUrls=new List<String>();
-    public List<String> movimientosUrls=new List<String>();
-    Map<Decimal,Id> mapaHabilidades=new Map<Decimal,Id>();
-    Map<Decimal,Id> mapaMovimientos=new Map<Decimal,Id>();
-    /* public void insertPokemon(Integer n){
-        //Verifico que el parametro este entre lo pedido.
-        if(n<1 || n>898){
-            try {
-                throw new CalloutException('Fuera de rango');
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-            }
-        }
+   
+    public static Pokemon__c getPokemon(Integer n){
+        List<String> hablidadesUrls=new List<String>();
+        List<String> movimientosUrls=new List<String>();
 
-        Pokemon__c nuevoPokemon=getPokemon(n);
-        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, this.hablidadesUrls));
-        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, this.movimientosUrls));
-        //Evito el duplicado de habilidades y movimientos
-        upsert habilidades Name;
-        upsert movimientos Name;
-        
-        //Asigno la relacion entre pokemon y movimientos/habilidad
-        for (Habilidad__c habilidad : habilidades) {
-            nuevoPokemon.Habilidad__c=habilidad.Id;
-        }
-        try {
-            nuevoPokemon.Slot1__c=movimientos[0].Id;
-            nuevoPokemon.Slot2__c=movimientos[1].Id;
-            nuevoPokemon.Slot3__c=movimientos[2].Id;
-            nuevoPokemon.Slot4__c=movimientos[3].Id;
-        } catch (Exception e) {
-            System.debug('Hubo menos que 4 movimientos desde la api.');
-        }
-        if(nuevoPokemon!=null){
-            insert nuevoPokemon;
-        }
-    } */
-    public Pokemon__c getPokemon(Integer n){
         //Verifico que el parametro este entre lo pedido.
         if(n<1 || n>898){
             try {
@@ -99,43 +66,24 @@ public with sharing class PokemonController {
             }
 
             /* Extraigo todas las urls de habilidad y movimiento */
+            
             for (Integer i = 0; i < pokemon.abilities.size(); i++) {
-                this.hablidadesUrls.add(pokemon.abilities[i].ability.url);
+                hablidadesUrls.add(pokemon.abilities[i].ability.url);
             }
             for (Integer i = 0; i < pokemon.moves.size(); i++) {
-                this.movimientosUrls.add(pokemon.moves[i].move.url);
+                movimientosUrls.add(pokemon.moves[i].move.url);
             }
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
-
-        for(Habilidad__c habilidad: [SELECT ExtId__c,Id FROM Habilidad__c]){
-            this.mapaHabilidades.put(habilidad.ExtId__c,habilidad.Id);
-        }
-        System.debug(mapaHabilidades);
-
-        for(Movimiento__c movimiento: [SELECT ExtId__c,Id FROM Movimiento__c]){
-            this.mapaMovimientos.put(movimiento.ExtId__c,movimiento.Id);
-        }
-        System.debug(mapaMovimientos);
-
-        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, this.hablidadesUrls));
-        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, this.movimientosUrls));
-
-        //Asigno la relacion entre pokemon y movimientos/habilidad
-        for (Integer habilidad : habilidades) {
-            nuevoPokemon.Habilidad__c=mapaHabilidades.get(habilidad);
-        }
-        try {
-            nuevoPokemon.Slot1__c=mapaMovimientos.get(movimientos[0]);
-            nuevoPokemon.Slot2__c=mapaMovimientos.get(movimientos[1]);
-            nuevoPokemon.Slot3__c=mapaMovimientos.get(movimientos[2]);
-            nuevoPokemon.Slot4__c=mapaMovimientos.get(movimientos[3]);
-        } catch (Exception e) {
-            System.debug('Hubo menos que 4 movimientos desde la api.');
-        }
-
-        System.debug(nuevoPokemon);
+        
+        Map<String,List<Integer>> relacionesId=new Map<String,List<Integer>>();
+        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, hablidadesUrls));
+        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, movimientosUrls));
+        relacionesId.put('habilidades', habilidades);
+        relacionesId.put('movimientos', movimientos);
+        nuevoPokemon.RelacionesId__c=JSON.serialize(relacionesId);
+        
         return nuevoPokemon;
     }
     /* Metodo para elegir aleaoriamente urls */
