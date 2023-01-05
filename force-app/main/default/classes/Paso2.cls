@@ -1,4 +1,4 @@
-global class MovimientoBatch implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
+global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
     List<Movimiento__c> movimientos=new List<Movimiento__c>();
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();
@@ -24,7 +24,7 @@ global class MovimientoBatch implements Database.Batchable<Integer>, Database.St
         //System.debug(movimientos);
         upsert movimientos Name;
         if(!Test.isRunningTest()){
-            Database.executeBatch(new PokemonBatch(),10);
+            Database.executeBatch(new Paso3(),10);
         }
         
     }

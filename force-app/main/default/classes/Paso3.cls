@@ -1,4 +1,4 @@
-global class PokemonBatch implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
+global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
     List<Pokemon__c> pokemons=new List<Pokemon__c>();
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();

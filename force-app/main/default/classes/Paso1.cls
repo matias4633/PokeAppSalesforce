@@ -1,4 +1,4 @@
-global class HabilidadBatch implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
+global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
     List<Habilidad__c> habilidades=new List<Habilidad__c>();
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();
@@ -24,7 +24,7 @@ global class HabilidadBatch implements Database.Batchable<Integer>, Database.Sta
         //System.debug(habilidades);
         upsert habilidades Name;
         if(!Test.isRunningTest()){
-            Database.executeBatch(new MovimientoBatch(),10);
+            Database.executeBatch(new Paso2(),10);
         }
         
     }

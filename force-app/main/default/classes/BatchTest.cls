@@ -10,7 +10,7 @@ public with sharing class BatchTest {
         // Set the mock callout mode
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Database.executeBatch(new PokemonBatch(),1);
+            Database.executeBatch(new Paso3(),1);
         Test.stopTest();
         
         Integer cantPokemon=[SELECT Id FROM Pokemon__c].size();
@@ -27,7 +27,7 @@ public with sharing class BatchTest {
         // Set the mock callout mode
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Database.executeBatch(new HabilidadBatch(),10);
+            Database.executeBatch(new Paso1(),10);
         Test.stopTest();
         Integer cantHabilidad=[SELECT Id FROM Habilidad__c].size();
         System.assertEquals(1, cantHabilidad, 'La cantidad de habilidades no es la esperada');
@@ -43,7 +43,7 @@ public with sharing class BatchTest {
         // Set the mock callout mode
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Database.executeBatch(new MovimientoBatch(),10);
+            Database.executeBatch(new Paso2(),10);
         Test.stopTest();
         Integer cantMovimientos=[SELECT Id FROM Movimiento__c].size();
         System.assertEquals(1, cantMovimientos, 'La cantidad de Movimientos no es la esperada');
@@ -58,7 +58,7 @@ public with sharing class BatchTest {
         
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-             Database.executeBatch(new PokemonBatch(),1);
+             Database.executeBatch(new Paso3(),1);
         Test.stopTest();
         Integer cantPokemon=[SELECT Id FROM Pokemon__c].size();
 
@@ -73,11 +73,11 @@ public with sharing class BatchTest {
         
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-             Database.executeBatch(new HabilidadBatch(),10);
+             Database.executeBatch(new Paso1(),10);
         Test.stopTest();
         Integer cant=[SELECT Id FROM Habilidad__c].size();
 
-        System.assertEquals(0, cant, 'La cantidad de pokemon no es la esperada');
+        System.assertEquals(0, cant, 'La cantidad de habilidades no es la esperada');
     }
     @isTest
     public static void deberiaObtenerUnErrorPorRespuestaIncorrectaMovimiento(){
@@ -88,10 +88,10 @@ public with sharing class BatchTest {
         
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-             Database.executeBatch(new MovimientoBatch(),10);
+             Database.executeBatch(new Paso2(),10);
         Test.stopTest();
         Integer cant=[SELECT Id FROM Movimiento__c].size();
 
-        System.assertEquals(0, cant, 'La cantidad de pokemon no es la esperada');
+        System.assertEquals(0, cant, 'La cantidad de movimientos no es la esperada');
     }
 }
