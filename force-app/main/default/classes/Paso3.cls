@@ -40,3 +40,10 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
        
     }
 }
+
+/* Pokemon__c poke= PokemonController.getPokemon(521);
+System.debug(poke!=null);
+System.debug(poke); 
+if(poke!=null){
+    insert poke;
+} */
