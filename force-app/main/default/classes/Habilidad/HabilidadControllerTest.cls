@@ -49,7 +49,6 @@ public with sharing class HabilidadControllerTest {
     @isTest  
     public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
         Habilidad__c habilidad=new habilidad__c();
-        String excepcionRecibida;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,

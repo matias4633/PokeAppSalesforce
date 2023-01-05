@@ -1,8 +1,16 @@
 global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
+    Integer cantidad;
     List<Movimiento__c> movimientos=new List<Movimiento__c>();
+    public Paso2(){
+        if(!Test.isRunningTest()){
+            this.cantidad=826;
+        }else{
+            this.cantidad=1;
+        }
+    }
     global Iterable<Integer> start(Database.BatchableContext bc) {
         List<Integer> iteraciones=new List<Integer>();
-        for (Integer i = 1; i <=1; i++) { //hasta 826 Ejecutar este batch con size de 10.
+        for (Integer i = 1; i <=this.cantidad; i++) { //hasta 826 Ejecutar este batch con size de 10.
             iteraciones.add(i);
         }
         return iteraciones;
@@ -22,7 +30,12 @@ global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Da
     }
     global void finish(Database.BatchableContext BC){
         //System.debug(movimientos);
-        upsert movimientos Name;
+        try {
+            upsert movimientos Name;
+        } catch (Exception e) {
+            System.debug('Ocurrio un error en Dml: '+e.getMessage());
+        }
+        
         if(!Test.isRunningTest()){
             Database.executeBatch(new Paso3(),10);
         }

@@ -144,6 +144,7 @@ public with sharing class PokemonController {
                 Slot2__r.Name,
                 Slot2__r.ExtId__c
             FROM Pokemon__c
+            WHERE ExtId__c!=null
             ORDER BY ExtId__c
             LIMIT 50
         ];
@@ -169,7 +170,7 @@ public with sharing class PokemonController {
         if(identificador!=''){
             query=query+'AND Id=:identificador ';
         }
-        query=query+'ORDER BY ExtId__c LIMIT 50';
+        query=query+'AND ExtId__c!=null ORDER BY ExtId__c LIMIT 50';
         //System.debug(query);
         return Database.query(query);
 
