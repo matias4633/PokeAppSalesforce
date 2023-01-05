@@ -6,16 +6,12 @@ public with sharing class PokemonController {
 
         //Verifico que el parametro este entre lo pedido.
         if(n<1 || n>898){
-            try {
-                throw new CalloutException('Fuera de rango');
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-                return null;
-            }
+            throw new CalloutException('Fuera de rango');
         }
         
         //LLamado a la Api
         Pokemon__c nuevoPokemon = new  Pokemon__c();
+        PokemonJson2Apex pokemon;
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://pokeapi.co/api/v2/pokemon/'+n);
@@ -24,16 +20,17 @@ public with sharing class PokemonController {
         HttpResponse response = http.send(request);
         if(response.getStatusCode() != 200){
             System.debug('Respuesta incorrecta '+ response.getStatusCode() );
-            try {
-                throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-                return null;
-            }
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
         }
         //Tratamiento de los Datos
         try {
-            PokemonJson2Apex pokemon=PokemonJson2Apex.parse(response.getBody());
+            pokemon=PokemonJson2Apex.parse(response.getBody());
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+            return null;
+        }
+        try {
+            
             nuevoPokemon.ExtId__c=pokemon.id;
             nuevoPokemon.Name=pokemon.name.capitalize();
             nuevoPokemon.Altura__c=pokemon.height/10.0;
@@ -76,7 +73,7 @@ public with sharing class PokemonController {
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
-        
+        /* Guardo un Mapa con los ExtId de las habilidades y movimientos elegidos */
         Map<String,List<Integer>> relacionesId=new Map<String,List<Integer>>();
         List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, hablidadesUrls));
         List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, movimientosUrls));

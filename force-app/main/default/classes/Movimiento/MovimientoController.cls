@@ -1,15 +1,7 @@
 public with sharing class MovimientoController {
     public static Movimiento__c getMovimiento(Integer n){
-        //Extraigo el Extid de la url para verificarlo.
-        
-        /* List<String> cortado=url.split('/');
-        Integer n=Integer.valueOf(cortado[cortado.size()-1]); */
         if(n<1 || n>826){
-            try {
-                throw new CalloutException('Fuera de rango');
-            } catch (CalloutException e) {
-                return null;
-            }
+            throw new CalloutException('Fuera de rango');
         }
         //Llamado a la api
         Movimiento__c nuevoMovimiento = new  Movimiento__c();
@@ -22,11 +14,7 @@ public with sharing class MovimientoController {
         HttpResponse response = http.send(request);
         if(response.getStatusCode() != 200){
             System.debug('Respuesta incorrecta '+ response.getStatusCode() );
-            try {
-                throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
-            } catch (CalloutException e) {
-                return null;
-            }
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
         }
         //Tratamiento de los datos
         try {

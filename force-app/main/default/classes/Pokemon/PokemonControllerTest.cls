@@ -28,7 +28,8 @@ public with sharing class PokemonControllerTest {
 
     @isTest  
     public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
-        Pokemon__c pokemon=new Pokemon__c();
+        Pokemon__c pokemon;
+        String errorRecibido;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -38,8 +39,14 @@ public with sharing class PokemonControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-        pokemon=PokemonController.getPokemon(900);
+        try {
+            pokemon=PokemonController.getPokemon(900);
+        } catch (Exception e) {
+            errorRecibido=e.getMessage();
+        }
         Test.stopTest();
+        System.assertEquals('Fuera de rango', errorRecibido,
+                            'El error no es el esperado');
         System.assertEquals(null, pokemon,'El objeto deberia ser nulo');
     }
     @isTest

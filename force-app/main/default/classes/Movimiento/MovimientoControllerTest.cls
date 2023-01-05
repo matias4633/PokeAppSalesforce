@@ -32,6 +32,8 @@ public with sharing class MovimientoControllerTest {
     @isTest
     public static void deberiaObtenerUnErrorPorRespuestaIncorrecta(){
         String respuestaEsperada ='Not found';
+        String errorRecibido;
+        Movimiento__c movimiento;
                 SingleRequestMock mock = new SingleRequestMock(
                                                         404,
                                                         'Error',
@@ -40,26 +42,40 @@ public with sharing class MovimientoControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Movimiento__c movimiento=MovimientoController.getMovimiento(1);
+            try {
+                movimiento=MovimientoController.getMovimiento(1);
+            } catch (Exception e) {
+                errorRecibido=e.getMessage();
+            }
+            
         Test.stopTest();
-        System.debug(movimiento);
+        System.assertEquals('Codigo incorrecto, codigo: 404', errorRecibido,
+        'El error recibido no es el esperado');
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }
     @isTest
     public static void deberiaObtenerUnErrorPorFueraDeRango(){
         String respuestaEsperada ='Not found';
-                SingleRequestMock mock = new SingleRequestMock(
-                                                        404,
-                                                        'Error',
-                                                        respuestaEsperada,
-                                                        null
-                                                    );
+        Movimiento__c movimiento;
+        String errorRecibido;
+        SingleRequestMock mock = new SingleRequestMock(
+                                                404,
+                                                'Error',
+                                                respuestaEsperada,
+                                                null
+                                            );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Movimiento__c movimiento=MovimientoController.getMovimiento(900);
+            try {
+                movimiento=MovimientoController.getMovimiento(900);
+            } catch (Exception e) {
+                errorRecibido=e.getMessage();
+            }    
+        
         Test.stopTest();
-        System.debug(movimiento);
+        System.assertEquals('Fuera de rango', errorRecibido,
+                             'El error no es el esperado');
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }
