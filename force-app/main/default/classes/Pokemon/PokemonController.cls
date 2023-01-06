@@ -1,6 +1,9 @@
 public with sharing class PokemonController {
-    /* insert(PokemonController.getPokemon(1)); */
-
+    /* insert(PokemonController.getPokemon(1)); 
+        List<Pokemon__c> poke=[SELECT Id FROM Pokemon__c];
+        delete poke;   
+         Database.executeBatch(new Paso3(),10); */
+    
     public static Pokemon__c getPokemon(Integer n){
         List<String> hablidadesUrls=new List<String>();
         List<String> movimientosUrls=new List<String>();
@@ -9,7 +12,7 @@ public with sharing class PokemonController {
         if(n<1 || n>898){
             throw new CalloutException('Fuera de rango');
         }
-        
+       
         //LLamado a la Api
         Pokemon__c nuevoPokemon = new  Pokemon__c();
         PokemonJson2Apex pokemon;
