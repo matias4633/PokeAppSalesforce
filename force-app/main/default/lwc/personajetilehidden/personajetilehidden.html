@@ -7,7 +7,7 @@
                 <div class="slds-media cont-image" >
                     
                     <div class="slds-media__figure imagen">
-                        <img src={pers.Imagen__c} alt="Imagen" class="silhouette" width="100px" height="150px" onclick={handleOpenRecordClick} />
+                        <img src={pers.Imagen__c} alt="Imagen" class="silhouette" onclick={handleOpenRecordClick} />
                     </div>
                     <div class="slds-media__body contenedor-info">
                         <p><span>Ataque: {pers.Ataque__c}</span> <span> Defensa: {pers.Defensa__c}</span> </p>
@@ -22,7 +22,9 @@
             
         </div>
         <div class="tile face front" style={fondoback}>
-            
+            <div class="slds-media__figure cont-trivia">
+                <img src={pers.Imagen__c} alt="Imagen" class="trivia" />
+            </div>
         </div>
     </div>
     

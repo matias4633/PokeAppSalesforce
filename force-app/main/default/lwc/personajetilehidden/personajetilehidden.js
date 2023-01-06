@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import roja from '@salesforce/resourceUrl/roja';
 import atras from '@salesforce/resourceUrl/trasera';
+import trivia from '@salesforce/resourceUrl/trivia';
 import verde from '@salesforce/resourceUrl/verde';
 import blanca from '@salesforce/resourceUrl/blanca';
 import amarilla from '@salesforce/resourceUrl/amarilla';
@@ -16,7 +17,7 @@ export default class PersonajeTilehidden extends LightningElement {
         background-repeat: no-repeat;`;
     }
     get fondoback(){
-        return `background-image:url(${atras});background-size: cover;background-size: 100% 100%;
+        return `background-image:url(${trivia});background-size: cover;background-size: 100% 100%;
         background-repeat: no-repeat;`;
     }
     

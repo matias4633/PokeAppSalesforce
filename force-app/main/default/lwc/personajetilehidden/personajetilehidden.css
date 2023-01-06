@@ -81,7 +81,19 @@
 .contenedor-mov p span:hover{
 	text-decoration: underline;
 }
-
+.cont-trivia{
+	margin-top: 40px;
+    margin-right: 27px
+}
+.trivia{
+	-webkit-filter: grayscale(100%) brightness(0);
+ 	filter: grayscale(100%) brightness(0);
+  	opacity: 0.6;
+	width: 76%;
+	object-fit: cover;
+	cursor: pointer;
+	
+}
 .vibrador{
 	animation: vibrar 0.5s infinite linear;
 	

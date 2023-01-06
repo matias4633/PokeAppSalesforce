@@ -1,4 +1,8 @@
 trigger PokemonTrigger on Pokemon__c (before insert) {
+    /* Creo mapas de habilidades y movimientos para poder usarlo para todos
+    los pokemons que ingresen en un dml de manera masiva, esto me evita tener que crear los mismos mapas
+    o consultas SOQL por cada pokemon si hiciera el proceso en mi clase PokemonController. */
+
     Map<Decimal,String> mapaHabilidades=new Map<Decimal,String>();
     Map<Decimal,String> mapaMovimientos=new Map<Decimal,String>();
 
@@ -17,7 +21,6 @@ trigger PokemonTrigger on Pokemon__c (before insert) {
             for (Pokemon__c pokemon : Trigger.new) {
                 if(!String.isEmpty(pokemon.RelacionesId__c)){
                     Map<String,Object> relacion=(Map<String,Object>)JSON.deserializeUntyped(pokemon.RelacionesId__c);
-                    System.debug('Imprimo ralcion desde el trigger : '+relacion);
                     for (Object ExtId : (List<Object>)relacion.get('habilidades')) {
                         if(String.isEmpty(pokemon.Habilidad__c)){
                             pokemon.Habilidad__c=mapaHabilidades.get((Integer)ExtId);

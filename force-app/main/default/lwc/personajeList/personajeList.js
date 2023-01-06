@@ -14,7 +14,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	searchTerm = '';
 	valueTipo = '';
 	valueGene='';
-	mostrar=true;
+	mostrar=false;
 	contador=0;
 	opcionesTipo=[{ label: 'Todos', value: '' }];
 	personajes;
