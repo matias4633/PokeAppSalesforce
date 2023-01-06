@@ -1,5 +1,6 @@
 public with sharing class PokemonController {
-   
+    /* insert(PokemonController.getPokemon(1)); */
+
     public static Pokemon__c getPokemon(Integer n){
         List<String> hablidadesUrls=new List<String>();
         List<String> movimientosUrls=new List<String>();
@@ -35,7 +36,11 @@ public with sharing class PokemonController {
             nuevoPokemon.Name=pokemon.name.capitalize();
             nuevoPokemon.Altura__c=pokemon.height/10.0;
             nuevoPokemon.Peso__c=pokemon.weight/10.0;
-            nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            if(pokemon.sprites.other.dream_world.front_default!=null){
+                nuevoPokemon.Imagen__c=pokemon.sprites.other.dream_world.front_default;
+            }else{
+                nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            }
             //Armo el formato valor;valor;valor para la multipicklist
             for(Integer i=0; i<pokemon.types.size();i++){
                 if(i==0){
@@ -143,7 +148,6 @@ public with sharing class PokemonController {
             FROM Pokemon__c
             WHERE ExtId__c!=null
             ORDER BY ExtId__c
-            LIMIT 50
         ];
     }
     /* Metodo de filtrados de busqueda */
@@ -167,7 +171,7 @@ public with sharing class PokemonController {
         if(identificador!=''){
             query=query+'AND Id=:identificador ';
         }
-        query=query+'AND ExtId__c!=null ORDER BY ExtId__c LIMIT 50';
+        query=query+'AND ExtId__c!=null ORDER BY ExtId__c';
         //System.debug(query);
         return Database.query(query);
 

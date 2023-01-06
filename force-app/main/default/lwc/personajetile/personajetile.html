@@ -15,8 +15,8 @@
                     </div>
                     
                     <div class="contenedor-mov">
-                        <p onclick={irAlMovimiento1}><span >Mov1: {pers.Slot1__r.Name}</span>  <span>Ext Id: {pers.Slot1__r.ExtId__c}</span> </p>
-                        <p onclick={irAlMovimiento2}><span >Mov2: {pers.Slot2__r.Name}</span>  <span>Ext Id: {pers.Slot2__r.ExtId__c}</span> </p>
+                        <p onclick={irAlMovimiento1} if:true={pers.Slot1__c}><span >Mov1: {pers.Slot1__r.Name}</span>  <span>Ext Id: {pers.Slot1__r.ExtId__c}</span> </p>
+                        <p onclick={irAlMovimiento2} if:true={pers.Slot2__c}><span >Mov2: {pers.Slot2__r.Name}</span>  <span>Ext Id: {pers.Slot2__r.ExtId__c}</span> </p>
                     </div>
                 </div>
             </div>

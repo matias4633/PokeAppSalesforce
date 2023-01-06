@@ -71,6 +71,9 @@
 .contenedor-mov p span{
 	cursor: pointer;
 }
+.contenedor-mov p span:hover{
+	text-decoration: underline;
+}
 
 .vibrador{
 	animation: vibrar 0.5s infinite linear;
