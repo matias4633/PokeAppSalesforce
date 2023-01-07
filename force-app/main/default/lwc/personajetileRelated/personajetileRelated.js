@@ -41,4 +41,8 @@ export default class PersonajetileRelated extends NavigationMixin(LightningEleme
 				},
 			});
 	}
+	get hayResultados(){
+		return(this.personaje.length > 0);
+	}
+
 }
