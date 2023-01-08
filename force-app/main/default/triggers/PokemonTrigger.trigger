@@ -9,12 +9,12 @@ trigger PokemonTrigger on Pokemon__c (before insert) {
     for(Habilidad__c habilidad: [SELECT ExtId__c,Id FROM Habilidad__c]){
         this.mapaHabilidades.put(habilidad.ExtId__c,habilidad.Id);
     }
-    System.debug(mapaHabilidades);
+    //System.debug(mapaHabilidades);
 
     for(Movimiento__c movimiento: [SELECT ExtId__c,Id FROM Movimiento__c]){
         this.mapaMovimientos.put(movimiento.ExtId__c,movimiento.Id);
     }
-    System.debug(mapaMovimientos);
+    //System.debug(mapaMovimientos);
     
     if(Trigger.isInsert){
         if(Trigger.isBefore){
@@ -34,7 +34,7 @@ trigger PokemonTrigger on Pokemon__c (before insert) {
                         pokemon.Slot3__c=mapaMovimientos.get((Integer)movimientos[2]);
                         pokemon.Slot4__c=mapaMovimientos.get((Integer)movimientos[3]);
                     } catch (Exception e) {
-                        System.debug('Hubo menos que 4 movimientos desde la api.');
+                        System.debug('Hubo menos que 4 movimientos');
                     }
                 }
                 
