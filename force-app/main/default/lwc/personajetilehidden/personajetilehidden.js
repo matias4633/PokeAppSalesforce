@@ -41,6 +41,7 @@ export default class PersonajeTilehidden extends LightningElement {
     }
     renderedCallback(){
         let frente=this.template.querySelector('div.back');
+        let atras=this.template.querySelector('div.front');
         function animacion(){
             frente.classList.remove('efectoHover');
             frente.classList.add('vibrador');
@@ -50,6 +51,19 @@ export default class PersonajeTilehidden extends LightningElement {
                 frente.classList.remove('vibrador');
             },2000);
         }
+        function darVueltaLaCarta(){
+            atras.style.transform='perspective(600px) rotateY(180deg)';
+            frente.style.transform='perspective(600px) rotateY(360deg)';
+        }
         this.template.querySelector('div.imagen').addEventListener('click',animacion);
+        this.template.querySelector('img.trivia').addEventListener('click',darVueltaLaCarta);
     }
 }
+
+/* .card:hover .front {
+	transform: perspective(600px) rotateY(180deg);
+}
+
+.card:hover .back {
+	transform: perspective(600px) rotateY(360deg);
+} */
