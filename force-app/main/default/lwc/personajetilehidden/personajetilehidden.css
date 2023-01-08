@@ -86,13 +86,20 @@
     margin-right: 27px
 }
 .trivia{
-	-webkit-filter: grayscale(100%) brightness(0);
+	/* -webkit-filter: grayscale(100%) brightness(0); */
  	filter: grayscale(100%) brightness(0);
   	opacity: 0.6;
 	width: 76%;
 	object-fit: cover;
 	cursor: pointer;
 	
+}
+.trivia-show{
+	transition: opacity 1s;
+	opacity: 1;
+	width: 76%;
+	object-fit: cover;
+	cursor: pointer;
 }
 .vibrador{
 	animation: vibrar 0.5s infinite linear;

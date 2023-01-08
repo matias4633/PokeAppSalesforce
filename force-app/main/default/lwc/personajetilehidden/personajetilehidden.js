@@ -42,6 +42,7 @@ export default class PersonajeTilehidden extends LightningElement {
     renderedCallback(){
         let frente=this.template.querySelector('div.back');
         let atras=this.template.querySelector('div.front');
+        let imgTrivia=this.template.querySelector('img.trivia');
         function animacion(){
             frente.classList.remove('efectoHover');
             frente.classList.add('vibrador');
@@ -52,11 +53,17 @@ export default class PersonajeTilehidden extends LightningElement {
             },2000);
         }
         function darVueltaLaCarta(){
-            atras.style.transform='perspective(600px) rotateY(180deg)';
-            frente.style.transform='perspective(600px) rotateY(360deg)';
+            imgTrivia.classList.remove('trivia');
+            imgTrivia.classList.add('trivia-show');
+            
+            setTimeout(()=>{
+                atras.style.transform='perspective(600px) rotateY(180deg)';
+                frente.style.transform='perspective(600px) rotateY(360deg)';
+            },1500);
+            
         }
         this.template.querySelector('div.imagen').addEventListener('click',animacion);
-        this.template.querySelector('img.trivia').addEventListener('click',darVueltaLaCarta);
+        imgTrivia.addEventListener('click',darVueltaLaCarta);
     }
 }
 
