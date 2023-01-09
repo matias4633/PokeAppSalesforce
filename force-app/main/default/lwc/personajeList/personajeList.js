@@ -1,5 +1,5 @@
 import { NavigationMixin } from 'lightning/navigation';
-import { LightningElement, track, wire} from 'lwc';
+import { LightningElement, wire} from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
 import pikachu from '@salesforce/resourceUrl/pikachu';
@@ -18,7 +18,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	contador=0;
 	opcionesTipo=[{ label: 'Todos', value: '' }];
 	personajes;
-
+	
 	//Metodo reactivo de consulta de BD
 	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
 	loadPersonajes(result) {
