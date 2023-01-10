@@ -72,7 +72,7 @@ public with sharing class HabilidadControllerTest {
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
     }
 
-    @isTest
+    @isTest //Pongo el id Como si fuera un String, cuando debe ser un numero
     public static void deberiaObtenerUnErrorPorTiposDeDatosIncorrectos(){
         Habilidad__c habilidad=new habilidad__c();
         String respuestaEsperada ='{"effect_entries":[{"effect":"","language":{"name":"de","url":"https://pokeapi.co/api/v2/language/6/"},"short_effect":""},{"effect":"","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Has a 30% chance of infatuating attacking Pokémon on contact."}],"id":"papas","name":"cute-charm"}';

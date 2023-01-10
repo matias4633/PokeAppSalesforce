@@ -5,7 +5,7 @@ import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.get
 import pikachu from '@salesforce/resourceUrl/pikachu';
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
-	LONGITUD_PEDAZOS = 14;
+	LONGITUD_PEDAZOS = 10;
 	personajesPage=[];
 	pagina=1;
 	paginaMaxima;
