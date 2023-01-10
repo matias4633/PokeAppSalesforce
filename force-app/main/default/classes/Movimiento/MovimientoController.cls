@@ -68,6 +68,7 @@ public with sharing class MovimientoController {
                 OR Slot2__c =:identificador 
                 OR Slot3__c =:identificador 
                 OR Slot4__c =:identificador
+                OR Habilidad__c=:identificador
             ];
    }
 }
