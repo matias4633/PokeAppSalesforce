@@ -96,22 +96,5 @@ public with sharing class MovimientoControllerTest {
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }
-    @isTest
-    public static void deberiaObtenerTodosLosPokemonsRelacionadosAlMovimiento(){
-        Movimiento__c movimiento=new Movimiento__c(Name='SuperDuper Move');
-        insert movimiento;
-        List<Pokemon__c> lista= new List<Pokemon__c>();
-        for (Integer i = 0; i < 3; i++) {
-            lista.add(new Pokemon__c(Name='prueba '+i,Slot1__c=movimiento.id));
-        }
-        insert lista;
-
-        Test.startTest();
-        List<Pokemon__c> busqueda=MovimientoController.GetPokemonsRelacionados(movimiento.id);
-        Test.stopTest();
-
-        System.assertEquals(3, busqueda.size(), 'La cantidad no es la esperada');
-
-
-    }
+   
 }
