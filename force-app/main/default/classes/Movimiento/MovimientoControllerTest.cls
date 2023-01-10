@@ -11,7 +11,7 @@ public with sharing class MovimientoControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/1/');
+            Movimiento__c movimiento=MovimientoController.getMovimiento(1);
         Test.stopTest();
         System.debug(movimiento);
         System.assertEquals(true,movimiento!=null,'El objeto es nulo');
@@ -32,6 +32,8 @@ public with sharing class MovimientoControllerTest {
     @isTest
     public static void deberiaObtenerUnErrorPorRespuestaIncorrecta(){
         String respuestaEsperada ='Not found';
+        String errorRecibido;
+        Movimiento__c movimiento;
                 SingleRequestMock mock = new SingleRequestMock(
                                                         404,
                                                         'Error',
@@ -40,33 +42,47 @@ public with sharing class MovimientoControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/1/');
+            try {
+                movimiento=MovimientoController.getMovimiento(1);
+            } catch (Exception e) {
+                errorRecibido=e.getMessage();
+            }
+            
         Test.stopTest();
-        System.debug(movimiento);
+        System.assertEquals('Codigo incorrecto, codigo: 404', errorRecibido,
+        'El error recibido no es el esperado');
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }
     @isTest
     public static void deberiaObtenerUnErrorPorFueraDeRango(){
         String respuestaEsperada ='Not found';
-                SingleRequestMock mock = new SingleRequestMock(
-                                                        404,
-                                                        'Error',
-                                                        respuestaEsperada,
-                                                        null
-                                                    );
+        Movimiento__c movimiento;
+        String errorRecibido;
+        SingleRequestMock mock = new SingleRequestMock(
+                                                404,
+                                                'Error',
+                                                respuestaEsperada,
+                                                null
+                                            );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Movimiento__c movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/900/');
+            try {
+                movimiento=MovimientoController.getMovimiento(900);
+            } catch (Exception e) {
+                errorRecibido=e.getMessage();
+            }    
+        
         Test.stopTest();
-        System.debug(movimiento);
+        System.assertEquals('Fuera de rango', errorRecibido,
+                             'El error no es el esperado');
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }
     @isTest
     public static void deberiaObtenerUnErrorPorDatosIncorrectos(){
         Movimiento__c movimiento=new movimiento__c();
-        String respuestaEsperada ='{"accuracy":"prueba","effect_chance":100,"effect_entries":[{"effect":"Inflicts regular damage.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Inflicts regular damage with no additional effect."}],"id":1,"name":"pound","power":40,"pp":35,"priority":0,"target":{"name":"selected-pokemon","url":"https://pokeapi.co/api/v2/move-target/10/"},"type":{"name":"normal","url":"https://pokeapi.co/api/v2/type/1/"}}';
+        String respuestaEsperada ='{"accuracy":"prueba","effect_chance":"prueba","effect_entries":[{"effect":"Inflicts regular damage.","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Inflicts regular damage with no additional effect."}],"id":1,"name":"pound","power":40,"pp":35,"priority":0,"target":{"name":"selected-pokemon","url":"https://pokeapi.co/api/v2/move-target/10/"},"type":{"name":"normal","url":"https://pokeapi.co/api/v2/type/1/"}}';
         SingleRequestMock mock = new SingleRequestMock(
                                                         200,
                                                         'OK',
@@ -75,27 +91,10 @@ public with sharing class MovimientoControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            movimiento=MovimientoController.getMovimiento('https://pokeapi.co/api/v2/move/900/');
+            movimiento=MovimientoController.getMovimiento(1);
         Test.stopTest();
         System.assertEquals(false,movimiento!=null,'El objeto NO es nulo');
         
     }
-    @isTest
-    public static void deberiaObtenerTodosLosPokemonsRelacionadosAlMovimiento(){
-        Movimiento__c movimiento=new Movimiento__c(Name='SuperDuper Move');
-        insert movimiento;
-        List<Pokemon__c> lista= new List<Pokemon__c>();
-        for (Integer i = 0; i < 3; i++) {
-            lista.add(new Pokemon__c(Name='prueba '+i,Slot1__c=movimiento.id));
-        }
-        insert lista;
-
-        Test.startTest();
-        List<Pokemon__c> busqueda=MovimientoController.GetPokemonsRelacionados(movimiento.id);
-        Test.stopTest();
-
-        System.assertEquals(3, busqueda.size(), 'La cantidad no es la esperada');
-
-
-    }
+   
 }

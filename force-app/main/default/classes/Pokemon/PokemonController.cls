@@ -1,43 +1,21 @@
 public with sharing class PokemonController {
-    public List<String> hablidadesUrls=new List<String>();
-    public List<String> movimientosUrls=new List<String>();
+    /* insert(PokemonController.getPokemon(1)); 
+        List<Pokemon__c> poke=[SELECT Id FROM Pokemon__c];
+        delete poke;   
+         Database.executeBatch(new Paso3(),10); */
     
-    public void insertPokemon(Integer n){
+    public static Pokemon__c getPokemon(Integer n){
+        List<String> hablidadesUrls=new List<String>();
+        List<String> movimientosUrls=new List<String>();
+
         //Verifico que el parametro este entre lo pedido.
         if(n<1 || n>898){
-            try {
-                throw new CalloutException('Fuera de rango');
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-            }
+            throw new CalloutException('Fuera de rango');
         }
-
-        Pokemon__c nuevoPokemon=getPokemon(n);
-        List<Habilidad__c> habilidades=getHabilidades(getRandomUrls(1, this.hablidadesUrls));
-        List<Movimiento__c> movimientos=getMovimientos(getRandomUrls(4, this.movimientosUrls));
-        //Evito el duplicado de habilidades y movimientos
-        upsert habilidades Name;
-        upsert movimientos Name;
-        
-        //Asigno la relacion entre pokemon y movimientos/habilidad
-        for (Habilidad__c habilidad : habilidades) {
-            nuevoPokemon.Habilidad__c=habilidad.Id;
-        }
-        try {
-            nuevoPokemon.Slot1__c=movimientos[0].Id;
-            nuevoPokemon.Slot2__c=movimientos[1].Id;
-            nuevoPokemon.Slot3__c=movimientos[2].Id;
-            nuevoPokemon.Slot4__c=movimientos[3].Id;
-        } catch (Exception e) {
-            System.debug('Hubo menos que 4 movimientos desde la api.');
-        }
-        if(nuevoPokemon!=null){
-            insert nuevoPokemon;
-        }
-    }
-    public Pokemon__c getPokemon(Integer n){
+       
         //LLamado a la Api
         Pokemon__c nuevoPokemon = new  Pokemon__c();
+        PokemonJson2Apex pokemon;
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://pokeapi.co/api/v2/pokemon/'+n);
@@ -46,21 +24,26 @@ public with sharing class PokemonController {
         HttpResponse response = http.send(request);
         if(response.getStatusCode() != 200){
             System.debug('Respuesta incorrecta '+ response.getStatusCode() );
-            try {
-                throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-                return null;
-            }
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
         }
         //Tratamiento de los Datos
         try {
-            PokemonJson2Apex pokemon=PokemonJson2Apex.parse(response.getBody());
+            pokemon=PokemonJson2Apex.parse(response.getBody());
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+            return null;
+        }
+        try {
+            
             nuevoPokemon.ExtId__c=pokemon.id;
             nuevoPokemon.Name=pokemon.name.capitalize();
             nuevoPokemon.Altura__c=pokemon.height/10.0;
             nuevoPokemon.Peso__c=pokemon.weight/10.0;
-            nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            if(pokemon.sprites.other.dream_world.front_default!=null){
+                nuevoPokemon.Imagen__c=pokemon.sprites.other.dream_world.front_default;
+            }else{
+                nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            }
             //Armo el formato valor;valor;valor para la multipicklist
             for(Integer i=0; i<pokemon.types.size();i++){
                 if(i==0){
@@ -88,15 +71,24 @@ public with sharing class PokemonController {
             }
 
             /* Extraigo todas las urls de habilidad y movimiento */
+            
             for (Integer i = 0; i < pokemon.abilities.size(); i++) {
-                this.hablidadesUrls.add(pokemon.abilities[i].ability.url);
+                hablidadesUrls.add(pokemon.abilities[i].ability.url);
             }
             for (Integer i = 0; i < pokemon.moves.size(); i++) {
-                this.movimientosUrls.add(pokemon.moves[i].move.url);
+                movimientosUrls.add(pokemon.moves[i].move.url);
             }
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
+        /* Guardo un Mapa con los ExtId de las habilidades y movimientos elegidos */
+        Map<String,List<Integer>> relacionesId=new Map<String,List<Integer>>();
+        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, hablidadesUrls));
+        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, movimientosUrls));
+        relacionesId.put('habilidades', habilidades);
+        relacionesId.put('movimientos', movimientos);
+        nuevoPokemon.RelacionesId__c=JSON.serialize(relacionesId);
+        
         return nuevoPokemon;
     }
     /* Metodo para elegir aleaoriamente urls */
@@ -114,20 +106,23 @@ public with sharing class PokemonController {
         return new List<String>(lista);
     }
 
-    public static List<Habilidad__c> getHabilidades(List<String> lista){
-        List<Habilidad__c> listaA_Insertar=new List<Habilidad__c>();
+    public static List<Integer> getHabilidadesExtId(List<String> lista){
+        
+        List<Integer> listaA_Insertar=new List<Integer>();
         for (String url : lista) {
-            Habilidad__c habilidad=HabilidadController.getHabilidad(url);
-            listaA_Insertar.add(habilidad);
+            List<String> cortado=url.split('/');
+            Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+            listaA_Insertar.add(n);
         }
         //System.debug('Ejecute el return de habilidad');
         return listaA_Insertar;
     }
-    public static List<Movimiento__c> getMovimientos(List<String> lista){
-        List<Movimiento__c> listaA_Insertar=new List<Movimiento__c>();
+    public static List<Integer> getMovimientosExtId(List<String> lista){
+        List<Integer> listaA_Insertar=new List<Integer>();
         for (String url : lista) {
-            Movimiento__c movimiento=MovimientoController.getMovimiento(url);
-            listaA_Insertar.add(movimiento);
+            List<String> cortado=url.split('/');
+            Integer n=Integer.valueOf(cortado[cortado.size()-1]);
+            listaA_Insertar.add(n);
         }
         //System.debug('Ejecute el return de Movimiento');
         return listaA_Insertar;
@@ -154,8 +149,8 @@ public with sharing class PokemonController {
                 Slot2__r.Name,
                 Slot2__r.ExtId__c
             FROM Pokemon__c
+            WHERE ExtId__c!=null
             ORDER BY ExtId__c
-            LIMIT 50
         ];
     }
     /* Metodo de filtrados de busqueda */
@@ -179,11 +174,37 @@ public with sharing class PokemonController {
         if(identificador!=''){
             query=query+'AND Id=:identificador ';
         }
-        query=query+'ORDER BY ExtId__c LIMIT 50';
+        query=query+'AND ExtId__c!=null ORDER BY ExtId__c';
         //System.debug(query);
         return Database.query(query);
 
         
     }
+    //Metodo usado en LWC de Record Page Movimiento.
+   @AuraEnabled(cacheable=true)
+   public static List<Pokemon__c> GetPokemonsRelacionados(String identificador){
+    return [SELECT
+                Id,
+                Name,
+                Altura__c,
+                Ataque__c,
+                Defensa__c,
+                ExtId__c,
+                Imagen__c,
+                Vida__c,
+                Velocidad__c,
+                Tipos__c,
+                Slot1__r.Name,
+                Slot1__r.ExtId__c,
+                Slot2__r.Name,
+                Slot2__r.ExtId__c
+                FROM Pokemon__c 
+                WHERE Slot1__c =:identificador
+                OR Slot2__c =:identificador 
+                OR Slot3__c =:identificador 
+                OR Slot4__c =:identificador
+                OR Habilidad__c=:identificador
+            ];
+   }
 
 }

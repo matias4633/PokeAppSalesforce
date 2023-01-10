@@ -11,7 +11,7 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Habilidad__c habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+            Habilidad__c habilidad=HabilidadController.getHabilidad(56);
         Test.stopTest();
         System.assertEquals('Cute-charm', habilidad.Name,
          'El valor no es el esperado es:' +habilidad.Name);
@@ -23,9 +23,9 @@ public with sharing class HabilidadControllerTest {
     }
 
     @isTest
-    public static void deberiaObtenerUnErrorYunObjetoNulo(){
-        Habilidad__c habilidad=new habilidad__c();
-        String excepcionRecibida;
+    public static void deberiaObtenerUnErrorPorCodigoIncorrectoYunObjetoNulo(){
+        Habilidad__c habilidad;
+        String errorRecibido;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -36,21 +36,22 @@ public with sharing class HabilidadControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
             try {
-                habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/900');
+                habilidad=HabilidadController.getHabilidad(56);
             } catch (Exception e) {
-                excepcionRecibida=e.getMessage();
+               errorRecibido=e.getMessage();
             }
             
         Test.stopTest();
-        //System.assertEquals('Codigo incorrecto, codigo: 404', excepcionRecibida, 'La excepcion no es la esperada es: '+excepcionRecibida);
+        System.assertEquals('Codigo incorrecto, codigo: 404', errorRecibido,
+         'La excepcion no es la esperada es: '+errorRecibido);
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
         
     }
 
     @isTest  
     public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
-        Habilidad__c habilidad=new habilidad__c();
-        String excepcionRecibida;
+        Habilidad__c habilidad;
+        String errorRecibido;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -60,8 +61,14 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-        habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+        try {
+            habilidad=HabilidadController.getHabilidad(900);
+        } catch (Exception e) {
+            errorRecibido=e.getMessage();
+        }
+        
         Test.stopTest();
+        System.assertEquals('Fuera de rango', errorRecibido, 'El error no es el esperado');
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
     }
 
@@ -69,7 +76,6 @@ public with sharing class HabilidadControllerTest {
     public static void deberiaObtenerUnErrorPorTiposDeDatosIncorrectos(){
         Habilidad__c habilidad=new habilidad__c();
         String respuestaEsperada ='{"effect_entries":[{"effect":"","language":{"name":"de","url":"https://pokeapi.co/api/v2/language/6/"},"short_effect":""},{"effect":"","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Has a 30% chance of infatuating attacking Pokémon on contact."}],"id":"papas","name":"cute-charm"}';
-        Exception excepcion;
         SingleRequestMock mock = new SingleRequestMock(
                                                         200,
                                                         'OK',
@@ -79,7 +85,7 @@ public with sharing class HabilidadControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         try {
-            habilidad=HabilidadController.getHabilidad('https://pokeapi.co/api/v2/ability/56');
+            habilidad=HabilidadController.getHabilidad(56);
         } catch (Exception e) {
             System.debug(e.getMessage());
         }

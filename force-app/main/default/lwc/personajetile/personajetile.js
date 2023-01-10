@@ -51,6 +51,7 @@ export default class PersonajeTile extends LightningElement {
             },2000);
         }
         this.template.querySelector('div.imagen').addEventListener('click',animacion);
+        
     }
     
 }

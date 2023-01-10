@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import roja from '@salesforce/resourceUrl/roja';
 import atras from '@salesforce/resourceUrl/trasera';
+import trivia from '@salesforce/resourceUrl/trivia';
 import verde from '@salesforce/resourceUrl/verde';
 import blanca from '@salesforce/resourceUrl/blanca';
 import amarilla from '@salesforce/resourceUrl/amarilla';
@@ -16,7 +17,7 @@ export default class PersonajeTilehidden extends LightningElement {
         background-repeat: no-repeat;`;
     }
     get fondoback(){
-        return `background-image:url(${atras});background-size: cover;background-size: 100% 100%;
+        return `background-image:url(${trivia});background-size: cover;background-size: 100% 100%;
         background-repeat: no-repeat;`;
     }
     
@@ -40,6 +41,8 @@ export default class PersonajeTilehidden extends LightningElement {
     }
     renderedCallback(){
         let frente=this.template.querySelector('div.back');
+        let atras=this.template.querySelector('div.front');
+        let imgTrivia=this.template.querySelector('img.trivia');
         function animacion(){
             frente.classList.remove('efectoHover');
             frente.classList.add('vibrador');
@@ -49,6 +52,25 @@ export default class PersonajeTilehidden extends LightningElement {
                 frente.classList.remove('vibrador');
             },2000);
         }
+        function darVueltaLaCarta(){
+            imgTrivia.classList.remove('trivia');
+            imgTrivia.classList.add('trivia-show');
+            
+            setTimeout(()=>{
+                atras.style.transform='perspective(600px) rotateY(180deg)';
+                frente.style.transform='perspective(600px) rotateY(360deg)';
+            },1500);
+            
+        }
         this.template.querySelector('div.imagen').addEventListener('click',animacion);
+        imgTrivia.addEventListener('click',darVueltaLaCarta);
     }
 }
+
+/* .card:hover .front {
+	transform: perspective(600px) rotateY(180deg);
+}
+
+.card:hover .back {
+	transform: perspective(600px) rotateY(360deg);
+} */

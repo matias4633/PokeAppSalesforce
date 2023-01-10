@@ -1,24 +1,29 @@
 import { NavigationMixin } from 'lightning/navigation';
-import { LightningElement, track, wire} from 'lwc';
+import { LightningElement, wire} from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
 import pikachu from '@salesforce/resourceUrl/pikachu';
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
+	LONGITUD_PEDAZOS = 14;
+	personajesPage=[];
+	pagina=1;
+	paginaMaxima;
+	personajesMostrar;
 	recordId='';
 	searchTerm = '';
 	valueTipo = '';
 	valueGene='';
-	mostrar=true;
+	mostrar=false;
 	contador=0;
 	opcionesTipo=[{ label: 'Todos', value: '' }];
 	personajes;
-
+	
 	//Metodo reactivo de consulta de BD
 	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
 	loadPersonajes(result) {
 		this.personajes = result;
-		
+		this.pagina=1;
 	}
 	/*$ para indicar que es dinámico y reactivo.
 	 Si su valor cambia, la plantilla se vuelve a representar. (proveniente de la documentacion)*/
@@ -70,6 +75,18 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	handleCheckBox(event){
 		this.mostrar=!this.mostrar;
 	}
+	prev(){
+		if(this.pagina>1){
+			this.pagina-=1;
+		}
+		//alert(this.pagina);
+	}
+	next(){
+		if(this.pagina<this.paginaMaxima){
+			this.pagina+=1;
+		}
+		//alert(this.pagina);
+	}
 
 	//Getters and Setters
 
@@ -99,9 +116,26 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	}
 	// Funciones gatillo.
 	renderedCallback(){
+		
 		if(this.personajes.data){
 			this.contador=Object.keys(this.personajes.data).length;
+			
+			let aux=[];
+			for(let i=0;i<this.personajes.data.length;i+=this.LONGITUD_PEDAZOS){
+				let pedazo=this.personajes.data.slice(i, i+this.LONGITUD_PEDAZOS);
+				aux.push(pedazo);
+			}
+			
+			if(JSON.stringify(aux)!==JSON.stringify(this.personajesPage)){
+				this.personajesPage=aux;
+			}
+			
+			this.paginaMaxima=this.personajesPage.length;
+			//console.log(JSON.stringify(this.personajesPage[this.pagina]));
+			this.personajesMostrar=this.personajesPage[this.pagina-1];
+			//alert(JSON.stringify(this.personajesMostrar));
 		}
+		
 		
 	}
 	connectedCallback() {
