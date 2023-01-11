@@ -63,3 +63,6 @@ global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Da
     For example, if you insert 100 contacts and update 50 contacts in the same transaction, 
     your total DML processed rows are 150. You still have 9,850 rows left (10,000 - 150). 
     https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_dml_examples.htm */
+
+    /* Description	                    Synchronous Limit	Asynchronous Limit
+    Total number of SOQL queries issued1	100	                    200 */

@@ -1,5 +1,5 @@
 import { NavigationMixin } from 'lightning/navigation';
-import { LightningElement, wire,track} from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
 import pikachu from '@salesforce/resourceUrl/pikachu';

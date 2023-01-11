@@ -52,8 +52,12 @@
 							<div class="slds-col">
 								<lightning-button-icon icon-name="utility:left" size="large" variant="bare" alternative-text="Pagina anterioir" class="slds-m-left_xx-small" onclick={prev}></lightning-button-icon>
 								<lightning-button-icon icon-name="utility:right" size="large" variant="bare" alternative-text="Pagina siguiente" class="slds-m-left_xx-small" onclick={next}></lightning-button-icon>
-								Pagina {pagina} de {paginaMaxima}
+								
 							</div>
+							<div class="slds-col">
+								<p if:true={contador} >Pagina {pagina} de {paginaMaxima}</p>
+							</div>
+							
 						</div>
 					</div>
 					
