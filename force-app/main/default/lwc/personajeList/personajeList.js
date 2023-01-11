@@ -21,6 +21,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	contador=0;
 	opcionesTipo=[{ label: 'Todos', value: '' }];
 	personajes;
+	playSound;
 	
 	//Metodo reactivo de consulta de BD
 	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
@@ -167,8 +168,12 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 					console.log(error);
 				});
 
-				
-		//alert('Proceso el dato');
+		this.playSound = new Audio(musica);
+		this.playSound.play(); 		
+		
+	}
+	disconnectedCallback() {
+		this.playSound.pause();
 	}
 
 }
