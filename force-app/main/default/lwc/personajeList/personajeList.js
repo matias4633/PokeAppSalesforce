@@ -3,8 +3,11 @@ import { LightningElement, wire } from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
 import pikachu from '@salesforce/resourceUrl/pikachu';
+import musica from '@salesforce/resourceUrl/musica';
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
+	
+	
 	LONGITUD_PEDAZOS = 10;
 	personajesPage=[];
 	pagina=1;
@@ -24,10 +27,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	loadPersonajes(result) {
 		this.personajes = result;
 		this.pagina=1;
-		if(this.personajes){
-			alert(JSON.stringify(this.personajes.data));
-		}
-		
+				
 	}
 	/*$ para indicar que es dinámico y reactivo.
 	 Si su valor cambia, la plantilla se vuelve a representar. (proveniente de la documentacion)*/
@@ -102,6 +102,8 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 		}
 	}
 
+
+
 	//Getters and Setters
 
 	get hasResults() {
@@ -164,6 +166,9 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 					.catch(error => {
 					console.log(error);
 				});
+
+				
 		//alert('Proceso el dato');
 	}
+
 }
