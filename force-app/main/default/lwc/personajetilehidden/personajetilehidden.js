@@ -10,6 +10,7 @@ const fondos=[roja,verde,blanca,amarilla];
 export default class PersonajeTilehidden extends LightningElement {
 	@api pers;
     @api mostrar;
+    
 
     get background(){
         let index=Math.floor(Math.random()*fondos.length);
@@ -43,10 +44,7 @@ export default class PersonajeTilehidden extends LightningElement {
         let frente=this.template.querySelector('div.cara1');
         let atras=this.template.querySelector('div.cara2');
         let imgTrivia=this.template.querySelector('img.trivia');
-        frente.classList.remove('front2');
-        atras.classList.remove('back2');
-        frente.classList.remove('front1');
-        atras.classList.remove('back1');
+        
         if(this.mostrar){
             frente.classList.remove('front2');
             atras.classList.remove('back2');

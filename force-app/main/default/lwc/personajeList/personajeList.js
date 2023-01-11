@@ -24,6 +24,10 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	loadPersonajes(result) {
 		this.personajes = result;
 		this.pagina=1;
+		if(this.personajes){
+			alert(JSON.stringify(this.personajes.data));
+		}
+		
 	}
 	/*$ para indicar que es dinámico y reactivo.
 	 Si su valor cambia, la plantilla se vuelve a representar. (proveniente de la documentacion)*/
