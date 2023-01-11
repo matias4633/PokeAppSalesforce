@@ -1,14 +1,14 @@
 <!-- sldsValidatorIgnore -->
 <!-- sldsValidatorIgnore -->
 <template>
-	<lightning-card title="Encuentra tu Pokemon">
+	<lightning-card title="Encuentra tu Pokemon" >
 		
-		<div class="slds-card__body slds-card__body_inner">
+		<div class="slds-card__body slds-card__body_inner" onkeydown={handleKeys}>
 			<!-- Start list -->
 			<template if:false={personajes.data}>
 				<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
 			</template>
-			<template if:true={personajes.data}>
+			<template if:true={personajes.data} >
                 <div class="slds-grid slds-gutters filtros">
 					
 					<div class="slds-col">

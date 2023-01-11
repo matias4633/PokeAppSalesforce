@@ -88,6 +88,16 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 		//alert(this.pagina);
 	}
 
+	handleKeys(event){
+		//alert(event.keyCode );
+		if(event.keyCode==37){
+			this.prev();
+		}
+		if(event.keyCode==39){
+			this.next();
+		}
+	}
+
 	//Getters and Setters
 
 	get hasResults() {
