@@ -10,7 +10,7 @@ public with sharing class BatchTest {
         // Set the mock callout mode
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            Database.executeBatch(new PokemonBatch(),10);
+            Database.executeBatch(new PokemonBatch(),1);
         Test.stopTest();
         
         Integer cantPokemon=[SELECT Id FROM Pokemon__c].size();
@@ -58,7 +58,7 @@ public with sharing class BatchTest {
         
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-             Database.executeBatch(new PokemonBatch(),10);
+             Database.executeBatch(new PokemonBatch(),1);
         Test.stopTest();
         Integer cantPokemon=[SELECT Id FROM Pokemon__c].size();
 

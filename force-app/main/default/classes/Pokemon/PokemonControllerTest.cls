@@ -46,8 +46,7 @@ public with sharing class PokemonControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-            PokemonController control=new PokemonController();
-            Pokemon__c pokemon=control.getPokemon(1);
+            Pokemon__c pokemon=PokemonController.getPokemon(1);
         Test.stopTest();
         System.assertEquals(1, pokemon.ExtId__c,'El valor no es el esperado');
         System.assertEquals('Bulbasaur', pokemon.Name,'El valor no es el esperado');
