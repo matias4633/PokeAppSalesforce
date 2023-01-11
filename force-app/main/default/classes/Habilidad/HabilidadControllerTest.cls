@@ -23,8 +23,9 @@ public with sharing class HabilidadControllerTest {
     }
 
     @isTest
-    public static void deberiaObtenerUnErrorYunObjetoNulo(){
-        Habilidad__c habilidad=new habilidad__c();
+    public static void deberiaObtenerUnErrorPorCodigoIncorrectoYunObjetoNulo(){
+        Habilidad__c habilidad;
+        String errorRecibido;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -37,19 +38,20 @@ public with sharing class HabilidadControllerTest {
             try {
                 habilidad=HabilidadController.getHabilidad(56);
             } catch (Exception e) {
-                System.debug(e.getMessage());
+               errorRecibido=e.getMessage();
             }
             
         Test.stopTest();
-        //System.assertEquals('Codigo incorrecto, codigo: 404', excepcionRecibida, 'La excepcion no es la esperada es: '+excepcionRecibida);
+        System.assertEquals('Codigo incorrecto, codigo: 404', errorRecibido,
+         'La excepcion no es la esperada es: '+errorRecibido);
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
         
     }
 
     @isTest  
     public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
-        Habilidad__c habilidad=new habilidad__c();
-        String excepcionRecibida;
+        Habilidad__c habilidad;
+        String errorRecibido;
         String respuestaEsperada ='Not Found';
         SingleRequestMock mock = new SingleRequestMock(
                                                         404,
@@ -59,16 +61,21 @@ public with sharing class HabilidadControllerTest {
                                                     );
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
-        habilidad=HabilidadController.getHabilidad(900);
+        try {
+            habilidad=HabilidadController.getHabilidad(900);
+        } catch (Exception e) {
+            errorRecibido=e.getMessage();
+        }
+        
         Test.stopTest();
+        System.assertEquals('Fuera de rango', errorRecibido, 'El error no es el esperado');
         System.assertEquals(null, habilidad,'El objeto deberia ser nulo');
     }
 
-    @isTest
+    @isTest //Pongo el id Como si fuera un String, cuando debe ser un numero
     public static void deberiaObtenerUnErrorPorTiposDeDatosIncorrectos(){
         Habilidad__c habilidad=new habilidad__c();
         String respuestaEsperada ='{"effect_entries":[{"effect":"","language":{"name":"de","url":"https://pokeapi.co/api/v2/language/6/"},"short_effect":""},{"effect":"","language":{"name":"en","url":"https://pokeapi.co/api/v2/language/9/"},"short_effect":"Has a 30% chance of infatuating attacking Pokémon on contact."}],"id":"papas","name":"cute-charm"}';
-        Exception excepcion;
         SingleRequestMock mock = new SingleRequestMock(
                                                         200,
                                                         'OK',

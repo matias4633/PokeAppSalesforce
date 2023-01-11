@@ -1,12 +1,14 @@
+<!-- sldsValidatorIgnore -->
+<!-- sldsValidatorIgnore -->
 <template>
-	<lightning-card title="Encuentra tu Pokemon">
+	<lightning-card title="Encuentra tu Pokemon" >
 		
-		<div class="slds-card__body slds-card__body_inner">
+		<div class="slds-card__body slds-card__body_inner" onkeydown={handleKeys}>
 			<!-- Start list -->
 			<template if:false={personajes.data}>
 				<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
 			</template>
-			<template if:true={personajes.data}>
+			<template if:true={personajes.data} >
                 <div class="slds-grid slds-gutters filtros">
 					
 					<div class="slds-col">
@@ -42,19 +44,25 @@
 					<div class="slds-col cont-check">
 						<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
 						<div class="pikachu"><img src={pikachu} alt="Pikachu"></div>
-						<lightning-input type="checkbox" label="Voltear todas las cartas" value={mostrar} onchange={handleCheckBox} checked> </lightning-input>
-						
+						<div class="cont-clickeables slds-grid slds-gutters">
+							<div class="slds-col">
+								<lightning-input type="checkbox" label="Voltear todas las cartas" value={mostrar} onchange={handleCheckBox}> </lightning-input>
+							</div>
+							
+							<div class="slds-col">
+								<lightning-button-icon icon-name="utility:left" size="large" variant="bare" alternative-text="Pagina anterioir" class="slds-m-left_xx-small" onclick={prev}></lightning-button-icon>
+								<lightning-button-icon icon-name="utility:right" size="large" variant="bare" alternative-text="Pagina siguiente" class="slds-m-left_xx-small" onclick={next}></lightning-button-icon>
+								Pagina {pagina} de {paginaMaxima}
+							</div>
+						</div>
 					</div>
 					
 				</div>
-				
-				
 				<lightning-layout multiple-rows="true" pull-to-boundary="small" class="contenedor">
-					<template for:each={personajes.data} for:item="personaje">
+					<template for:each={personajesMostrar} for:item="personaje">
 						<lightning-layout-item key={personaje.Id}>
 							<!-- Start tile -->
-							<c-personajetile if:true={mostrar} pers={personaje} onview={handleView} onviewmov={handleViewMov}></c-personajetile>
-							<c-personajetilehidden if:false={mostrar} pers={personaje} onview={handleView} onviewmov={handleViewMov}></c-personajetilehidden>
+							<c-personajetilehidden  mostrar={mostrar} pers={personaje} onview={handleView} onviewmov={handleViewMov}></c-personajetilehidden>
 							<!-- End  tile -->
 						</lightning-layout-item>
 					</template>

@@ -3,9 +3,14 @@
             <template if:true={personaje}   for:each={personaje} for:item="pers" >
                 <lightning-layout-item key={pers.Id} >
                     <!-- Start tile -->
-                    <c-personajetile if:true={mostrar} pers={pers} onview={handleView} onviewmov={handleViewMov}></c-personajetile>
+                    <c-personajetilehidden mostrar={mostrar} pers={pers} onview={handleView} onviewmov={handleViewMov}></c-personajetilehidden>
                     <!-- End  tile -->
                 </lightning-layout-item>
+            </template>
+            <template if:true={personaje}>
+                <div if:false={hayResultados} class="slds-align_absolute-center slds-var-m-vertical_small">
+                    No se encontraron resultados...
+                </div>
             </template>
     </lightning-layout>
 </template>

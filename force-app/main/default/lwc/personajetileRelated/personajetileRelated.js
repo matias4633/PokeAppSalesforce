@@ -1,6 +1,6 @@
 import { LightningElement,api, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import searchPersonajes from '@salesforce/apex/MovimientoController.GetPokemonsRelacionados';
+import searchPersonajes from '@salesforce/apex/PokemonController.GetPokemonsRelacionados';
 export default class PersonajetileRelated extends NavigationMixin(LightningElement) {
     @api recordId; //Lo pone como un String automaticamente.
 
@@ -41,4 +41,8 @@ export default class PersonajetileRelated extends NavigationMixin(LightningEleme
 				},
 			});
 	}
+	get hayResultados(){
+		return(this.personaje.length > 0);
+	}
+
 }

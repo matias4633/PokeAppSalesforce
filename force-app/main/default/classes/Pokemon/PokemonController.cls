@@ -1,21 +1,21 @@
 public with sharing class PokemonController {
-   
+    /* insert(PokemonController.getPokemon(1)); 
+        List<Pokemon__c> poke=[SELECT Id FROM Pokemon__c];
+        delete poke;   
+         Database.executeBatch(new Paso3(),10); */
+    
     public static Pokemon__c getPokemon(Integer n){
         List<String> hablidadesUrls=new List<String>();
         List<String> movimientosUrls=new List<String>();
 
         //Verifico que el parametro este entre lo pedido.
         if(n<1 || n>898){
-            try {
-                throw new CalloutException('Fuera de rango');
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-                return null;
-            }
+            throw new CalloutException('Fuera de rango');
         }
-        
+       
         //LLamado a la Api
         Pokemon__c nuevoPokemon = new  Pokemon__c();
+        PokemonJson2Apex pokemon;
         Http http = new Http(); 
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://pokeapi.co/api/v2/pokemon/'+n);
@@ -24,21 +24,26 @@ public with sharing class PokemonController {
         HttpResponse response = http.send(request);
         if(response.getStatusCode() != 200){
             System.debug('Respuesta incorrecta '+ response.getStatusCode() );
-            try {
-                throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
-            } catch (CalloutException e) {
-                System.debug(e.getMessage());
-                return null;
-            }
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
         }
         //Tratamiento de los Datos
         try {
-            PokemonJson2Apex pokemon=PokemonJson2Apex.parse(response.getBody());
+            pokemon=PokemonJson2Apex.parse(response.getBody());
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+            return null;
+        }
+        try {
+            
             nuevoPokemon.ExtId__c=pokemon.id;
             nuevoPokemon.Name=pokemon.name.capitalize();
             nuevoPokemon.Altura__c=pokemon.height/10.0;
             nuevoPokemon.Peso__c=pokemon.weight/10.0;
-            nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            if(pokemon.sprites.other.dream_world.front_default!=null){
+                nuevoPokemon.Imagen__c=pokemon.sprites.other.dream_world.front_default;
+            }else{
+                nuevoPokemon.Imagen__c=pokemon.sprites.front_default;
+            }
             //Armo el formato valor;valor;valor para la multipicklist
             for(Integer i=0; i<pokemon.types.size();i++){
                 if(i==0){
@@ -76,7 +81,7 @@ public with sharing class PokemonController {
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
-        
+        /* Guardo un Mapa con los ExtId de las habilidades y movimientos elegidos */
         Map<String,List<Integer>> relacionesId=new Map<String,List<Integer>>();
         List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, hablidadesUrls));
         List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, movimientosUrls));
@@ -144,8 +149,8 @@ public with sharing class PokemonController {
                 Slot2__r.Name,
                 Slot2__r.ExtId__c
             FROM Pokemon__c
+            WHERE ExtId__c!=null
             ORDER BY ExtId__c
-            LIMIT 50
         ];
     }
     /* Metodo de filtrados de busqueda */
@@ -169,11 +174,37 @@ public with sharing class PokemonController {
         if(identificador!=''){
             query=query+'AND Id=:identificador ';
         }
-        query=query+'ORDER BY ExtId__c LIMIT 50';
+        query=query+'AND ExtId__c!=null ORDER BY ExtId__c';
         //System.debug(query);
         return Database.query(query);
 
         
     }
+    //Metodo usado en LWC de Record Page Movimiento.
+   @AuraEnabled(cacheable=true)
+   public static List<Pokemon__c> GetPokemonsRelacionados(String identificador){
+    return [SELECT
+                Id,
+                Name,
+                Altura__c,
+                Ataque__c,
+                Defensa__c,
+                ExtId__c,
+                Imagen__c,
+                Vida__c,
+                Velocidad__c,
+                Tipos__c,
+                Slot1__r.Name,
+                Slot1__r.ExtId__c,
+                Slot2__r.Name,
+                Slot2__r.ExtId__c
+                FROM Pokemon__c 
+                WHERE Slot1__c =:identificador
+                OR Slot2__c =:identificador 
+                OR Slot3__c =:identificador 
+                OR Slot4__c =:identificador
+                OR Habilidad__c=:identificador
+            ];
+   }
 
 }
