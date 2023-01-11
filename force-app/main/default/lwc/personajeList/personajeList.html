@@ -62,8 +62,7 @@
 					<template for:each={personajesMostrar} for:item="personaje">
 						<lightning-layout-item key={personaje.Id}>
 							<!-- Start tile -->
-							<c-personajetile if:true={mostrar} pers={personaje} onview={handleView} onviewmov={handleViewMov}></c-personajetile>
-							<c-personajetilehidden if:false={mostrar} pers={personaje} onview={handleView} onviewmov={handleViewMov}></c-personajetilehidden>
+							<c-personajetilehidden  mostrar={mostrar} pers={personaje} onview={handleView} onviewmov={handleViewMov}></c-personajetilehidden>
 							<!-- End  tile -->
 						</lightning-layout-item>
 					</template>

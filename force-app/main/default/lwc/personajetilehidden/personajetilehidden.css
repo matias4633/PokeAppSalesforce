@@ -29,13 +29,21 @@
 	backface-visibility: hidden;
     transition: .5s;
 }
-.front{
+.front1{
 	transform: perspective(600px) rotateY(0deg);
+	position: absolute;
+}
+.back1{
+	transform: perspective(600px) rotateY(180deg);
 	
 }
-.back{
+.front2{
 	transform: perspective(600px) rotateY(180deg);
 	position: absolute;
+}
+.back2{
+	transform: perspective(600px) rotateY(360);
+	
 }
 /* .card:hover .front {
 	transform: perspective(600px) rotateY(180deg);
@@ -100,6 +108,9 @@
 	width: 76%;
 	object-fit: cover;
 	cursor: pointer;
+}
+.oculto{
+	visibility: hidden;
 }
 .vibrador{
 	animation: vibrar 0.5s infinite linear;

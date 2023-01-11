@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
 import roja from '@salesforce/resourceUrl/roja';
-import atras from '@salesforce/resourceUrl/trasera';
 import trivia from '@salesforce/resourceUrl/trivia';
 import verde from '@salesforce/resourceUrl/verde';
 import blanca from '@salesforce/resourceUrl/blanca';
@@ -10,6 +9,7 @@ const fondos=[roja,verde,blanca,amarilla];
 
 export default class PersonajeTilehidden extends LightningElement {
 	@api pers;
+    @api mostrar;
 
     get background(){
         let index=Math.floor(Math.random()*fondos.length);
@@ -40,9 +40,24 @@ export default class PersonajeTilehidden extends LightningElement {
         this.dispatchEvent(selectEvent);
     }
     renderedCallback(){
-        let frente=this.template.querySelector('div.back');
-        let atras=this.template.querySelector('div.front');
+        let frente=this.template.querySelector('div.cara1');
+        let atras=this.template.querySelector('div.cara2');
         let imgTrivia=this.template.querySelector('img.trivia');
+        frente.classList.remove('front2');
+        atras.classList.remove('back2');
+        frente.classList.remove('front1');
+        atras.classList.remove('back1');
+        if(this.mostrar){
+            frente.classList.remove('front2');
+            atras.classList.remove('back2');
+            frente.classList.add('front1');
+            atras.classList.add('back1');
+        }else{
+            frente.classList.remove('front1');
+            atras.classList.remove('back1');
+            frente.classList.add('front2');
+            atras.classList.add('back2');
+        }
         function animacion(){
             frente.classList.remove('efectoHover');
             frente.classList.add('vibrador');
@@ -52,25 +67,24 @@ export default class PersonajeTilehidden extends LightningElement {
                 frente.classList.remove('vibrador');
             },2000);
         }
-        function darVueltaLaCarta(){
-            imgTrivia.classList.remove('trivia');
-            imgTrivia.classList.add('trivia-show');
-            
+        function revelarTrivia(){
+            if(!this.mostrar){
+                imgTrivia.classList.remove('trivia');
+                imgTrivia.classList.add('trivia-show');
+            }
             setTimeout(()=>{
-                atras.style.transform='perspective(600px) rotateY(180deg)';
-                frente.style.transform='perspective(600px) rotateY(360deg)';
+                frente.classList.remove('front2');
+                atras.classList.remove('back2');
+                frente.classList.add('front1');
+                atras.classList.add('back1');
             },1500);
+            setTimeout(()=>{
+                imgTrivia.classList.add('trivia');
+                imgTrivia.classList.remove('trivia-show');
+            },2000);
             
         }
         this.template.querySelector('div.imagen').addEventListener('click',animacion);
-        imgTrivia.addEventListener('click',darVueltaLaCarta);
+        imgTrivia.addEventListener('click',revelarTrivia);
     }
 }
-
-/* .card:hover .front {
-	transform: perspective(600px) rotateY(180deg);
-}
-
-.card:hover .back {
-	transform: perspective(600px) rotateY(360deg);
-} */
