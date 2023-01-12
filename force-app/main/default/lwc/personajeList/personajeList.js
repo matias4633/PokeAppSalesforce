@@ -8,7 +8,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
 	
 	
-	LONGITUD_PEDAZOS = 10;
+	LONGITUD_PEDAZOS = 14;
 	personajesPage=[];
 	pagina=1;
 	paginaMaxima;
@@ -131,6 +131,9 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	get pikachu(){
 		return `${pikachu}`;
 	}
+	get musica(){
+		return `${musica}`;
+	}
 	// Funciones gatillo.
 	renderedCallback(){
 		
@@ -168,12 +171,5 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 					console.log(error);
 				});
 
-		this.playSound = new Audio(musica);
-		this.playSound.play(); 		
-		
 	}
-	disconnectedCallback() {
-		this.playSound.pause();
-	}
-
 }

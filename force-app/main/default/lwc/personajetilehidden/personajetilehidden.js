@@ -1,11 +1,21 @@
 import { LightningElement, api } from 'lwc';
-import roja from '@salesforce/resourceUrl/roja';
 import trivia from '@salesforce/resourceUrl/trivia';
+
+import roja from '@salesforce/resourceUrl/roja';
 import verde from '@salesforce/resourceUrl/verde';
 import blanca from '@salesforce/resourceUrl/blanca';
 import amarilla from '@salesforce/resourceUrl/amarilla';
+import azul from '@salesforce/resourceUrl/azul';
+import verdefluor from '@salesforce/resourceUrl/verdefluor';
+import negro from '@salesforce/resourceUrl/negro';
+import cobre from '@salesforce/resourceUrl/cobre';
+import rosa from '@salesforce/resourceUrl/rosa';
+import naranja from '@salesforce/resourceUrl/naranja';
+import violeta from '@salesforce/resourceUrl/violeta';
+import grisoscuro from '@salesforce/resourceUrl/grisoscuro';
 
-const fondos=[roja,verde,blanca,amarilla];
+const fondos=[roja,verde,blanca,blanca,amarilla,azul,azul,verdefluor,negro,cobre,cobre,cobre,rosa,naranja,violeta,violeta,violeta,grisoscuro];
+const fondosString=["Fire",'Grass','Normal','Flying','Electric','Water','Ice','Bug','Dark','Rock','Dragon','Ground','Fairy','Fighting','Poison','Psychic','Ghost','Steel'];
 
 export default class PersonajeTilehidden extends LightningElement {
 	@api pers;
@@ -13,13 +23,16 @@ export default class PersonajeTilehidden extends LightningElement {
     
 
     get background(){
-        let index=Math.floor(Math.random()*fondos.length);
+        let index=this.getIndexbyType(this.pers.Tipos__c.split(';').pop());
         return  `background-image:url(${fondos[index]});background-color:#FFFFFF;background-size: cover;background-size: 100% 100%;
         background-repeat: no-repeat;`;
     }
     get fondoback(){
         return `background-image:url(${trivia});background-size: cover;background-size: 100% 100%;
         background-repeat: no-repeat;`;
+    }
+    getIndexbyType(tipo){
+        return fondosString.indexOf(tipo);
     }
     
     handleOpenRecordClick() {

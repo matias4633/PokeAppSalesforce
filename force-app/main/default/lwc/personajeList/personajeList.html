@@ -9,6 +9,7 @@
 				<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
 			</template>
 			<template if:true={personajes.data} >
+				
                 <div class="slds-grid slds-gutters filtros">
 					
 					<div class="slds-col">
@@ -42,6 +43,9 @@
 					</div>
 					
 					<div class="slds-col cont-check">
+						<audio  controls autoplay>
+							<source src={musica} type="audio/mp3">
+						</audio>
 						<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
 						<div class="pikachu"><img src={pikachu} alt="Pikachu"></div>
 						<div class="cont-clickeables slds-grid slds-gutters">
