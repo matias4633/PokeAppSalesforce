@@ -12,6 +12,10 @@
 	display: flex;
 	justify-content: space-between;
 }
+.titulo div:nth-child(1){
+	height: 28px;
+    overflow: hidden;
+}
 .ident-ext{
 	margin-right: 2rem;
 }

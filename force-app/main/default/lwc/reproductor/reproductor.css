@@ -38,3 +38,11 @@
     border-radius: 50%;
     border: 2px solid #6b9ee2;
 }
+.pikachustop{
+    position: absolute;
+    top: 0;
+    opacity: 1;
+}
+.pikachustop img{
+    border: 0;
+}

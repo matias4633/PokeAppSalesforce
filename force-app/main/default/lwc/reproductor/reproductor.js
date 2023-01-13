@@ -1,42 +1,45 @@
 import { LightningElement } from 'lwc';
 import musica from '@salesforce/resourceUrl/musica';
 import pikachu from '@salesforce/resourceUrl/pikachu';
+import pikachustop from '@salesforce/resourceUrl/pikachustop';
 
 
 export default class Reproductor extends LightningElement {
-    play=false;
-    
     get musica(){
 		return `${musica}`;
 	}
     get pikachu(){
 		return `${pikachu}`;
 	}
-    renderedCallback(){
-        var track = this.template.querySelector('.track');
+    get pikachustop(){
+		return `${pikachustop}`;
+	}
 
-        var controlBtn = this.template.querySelector('.boton');
+    renderedCallback(){
+        let track = this.template.querySelector('.track');
+
+        let controlBtn = this.template.querySelector('.boton');
+
+    
+        let opacidad=this.template.querySelector('.pikachustop');
 
         function playPause() {
             if (track.paused) {
                 track.play();
-                //controlBtn.textContent = "Pause";
-                this.play=true;
+                opacidad.style.opacity='0';
                 controlBtn.classList.remove('play');
                 controlBtn.classList.add('pause');
-                //controlBtn.className = "pause";
             } else { 
                 track.pause();
-                this.play=false;
-                //controlBtn.textContent = "Play";
+                opacidad.style.opacity='1';
                 controlBtn.classList.remove('pause');
                 controlBtn.classList.add('play');
-                //controlBtn.className = "play";
             }
         }
 
         controlBtn.addEventListener("click", playPause);
         track.addEventListener("ended", function() { 
+            opacidad.style.opacity='1';
             controlBtn.classList.remove('pause');
             controlBtn.classList.add('play');
         });
