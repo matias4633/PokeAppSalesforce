@@ -43,11 +43,9 @@
 					</div>
 					
 					<div class="slds-col cont-check">
-						<audio  controls autoplay>
-							<source src={musica} type="audio/mp3">
-						</audio>
+						
 						<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
-						<div class="pikachu"><img src={pikachu} alt="Pikachu"></div>
+						<c-reproductor></c-reproductor>
 						<div class="cont-clickeables slds-grid slds-gutters">
 							<div class="slds-col">
 								<lightning-input type="checkbox" label="Voltear todas las cartas" value={mostrar} onchange={handleCheckBox}> </lightning-input>

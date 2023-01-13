@@ -2,8 +2,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { LightningElement, wire } from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
-import pikachu from '@salesforce/resourceUrl/pikachu';
-import musica from '@salesforce/resourceUrl/musica';
+
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
 	
@@ -128,12 +127,8 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
             { label: 'Octava', value: '8' },
         ];
     }
-	get pikachu(){
-		return `${pikachu}`;
-	}
-	get musica(){
-		return `${musica}`;
-	}
+	
+	
 	// Funciones gatillo.
 	renderedCallback(){
 		

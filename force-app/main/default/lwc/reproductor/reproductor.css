@@ -1,0 +1,40 @@
+.player-container{
+    position: relative;
+}
+ .boton {
+    position: absolute;
+    cursor: pointer;
+    text-indent: -999999px;
+    height: 40px;
+    width: 40px;
+    padding: 12px 18px;
+    z-index: 2;
+    background-repeat: no-repeat !important;
+    background-position: center;
+    background-size: 20px;
+    border-radius: 50%;
+    bottom: 2px;
+    left: 37%;
+}
+
+.play {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMiAyNHYtMjRsMjAgMTItMjAgMTJ6Ii8+PC9zdmc+);
+}
+
+.pause {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTAgMjRoLTZ2LTI0aDZ2MjR6bTEwLTI0aC02djI0aDZ2LTI0eiIvPjwvc3ZnPg==);
+}
+
+.pikachu {
+    width: 150px;
+    height: 150px;
+    position: relative;
+}
+
+.pikachu img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #6b9ee2;
+}
