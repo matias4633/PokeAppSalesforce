@@ -23,7 +23,7 @@ public with sharing class HabilidadControllerTest {
     }
 
     @isTest
-    public static void deberiaObtenerUnErrorPorCodigoIncorrectoYunObjetoNulo(){
+    public static void deberiaObtenerUnErrorPorCodigoIncorrecto(){
         Habilidad__c habilidad;
         String errorRecibido;
         String respuestaEsperada ='Not Found';
@@ -49,7 +49,7 @@ public with sharing class HabilidadControllerTest {
     }
 
     @isTest  
-    public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
+    public static void deberiaObtenerUnErrorFueraDeRango(){
         Habilidad__c habilidad;
         String errorRecibido;
         String respuestaEsperada ='Not Found';

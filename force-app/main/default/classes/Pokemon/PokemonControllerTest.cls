@@ -28,7 +28,7 @@ public with sharing class PokemonControllerTest {
     }
 
     @isTest  
-    public static void deberiaObtenerUnErrorFueraDeRangoYunObjetoNulo(){
+    public static void deberiaObtenerUnErrorFueraDeRango(){
         Pokemon__c pokemon;
         String errorRecibido;
         String respuestaEsperada ='Not Found';
