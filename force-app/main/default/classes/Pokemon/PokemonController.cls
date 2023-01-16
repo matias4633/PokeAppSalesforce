@@ -83,8 +83,8 @@ public with sharing class PokemonController {
         }
         /* Guardo un Mapa con los ExtId de las habilidades y movimientos elegidos */
         Map<String,List<Integer>> relacionesId=new Map<String,List<Integer>>();
-        List<Integer> habilidades=getHabilidadesExtId(getRandomUrls(1, hablidadesUrls));
-        List<Integer> movimientos=getMovimientosExtId(getRandomUrls(4, movimientosUrls));
+        List<Integer> habilidades=getExtIds(getRandomUrls(1, hablidadesUrls));
+        List<Integer> movimientos=getExtIds(getRandomUrls(4, movimientosUrls));
         relacionesId.put('habilidades', habilidades);
         relacionesId.put('movimientos', movimientos);
         nuevoPokemon.RelacionesId__c=JSON.serialize(relacionesId);
@@ -106,28 +106,17 @@ public with sharing class PokemonController {
         return new List<String>(lista);
     }
 
-    public static List<Integer> getHabilidadesExtId(List<String> lista){
+    public static List<Integer> getExtIds(List<String> lista){
         
-        List<Integer> listaA_Insertar=new List<Integer>();
+        List<Integer> listaExtIds=new List<Integer>();
         for (String url : lista) {
             List<String> cortado=url.split('/');
             Integer n=Integer.valueOf(cortado[cortado.size()-1]);
-            listaA_Insertar.add(n);
+            listaExtIds.add(n);
         }
-        //System.debug('Ejecute el return de habilidad');
-        return listaA_Insertar;
+        return listaExtIds;
     }
-    public static List<Integer> getMovimientosExtId(List<String> lista){
-        List<Integer> listaA_Insertar=new List<Integer>();
-        for (String url : lista) {
-            List<String> cortado=url.split('/');
-            Integer n=Integer.valueOf(cortado[cortado.size()-1]);
-            listaA_Insertar.add(n);
-        }
-        //System.debug('Ejecute el return de Movimiento');
-        return listaA_Insertar;
-    }
-
+   
     //CLASES QUE SE USAN DESDE LWC
     /* Este metodo retorna los datos cuando los parametros son vacios */
     @AuraEnabled(cacheable=true scope='global')

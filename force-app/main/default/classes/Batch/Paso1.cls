@@ -51,6 +51,7 @@ global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Da
 }
 
 /*  List<Pokemon__c> poke=[SELECT Id FROM Pokemon__c];
+    delete poke;
     List<Habilidad__c> habi=[SELECT Id FROM Habilidad__c];
     List<Movimiento__c> mov=[SELECT Id FROM Movimiento__c];
     delete poke;
@@ -66,3 +67,5 @@ global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Da
 
     /* Description	                    Synchronous Limit	Asynchronous Limit
     Total number of SOQL queries issued1	100	                    200 */
+/* 
+    Database.executeBatch(new Paso3(),10); */

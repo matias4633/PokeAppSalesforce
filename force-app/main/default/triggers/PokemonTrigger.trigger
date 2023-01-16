@@ -9,15 +9,12 @@ trigger PokemonTrigger on Pokemon__c (before insert) {
     for(Habilidad__c habilidad: [SELECT ExtId__c,Id FROM Habilidad__c]){
         this.mapaHabilidades.put(habilidad.ExtId__c,habilidad.Id);
     }
-    //System.debug(mapaHabilidades);
-
     for(Movimiento__c movimiento: [SELECT ExtId__c,Id FROM Movimiento__c]){
         this.mapaMovimientos.put(movimiento.ExtId__c,movimiento.Id);
     }
-    //System.debug(mapaMovimientos);
     
-    if(Trigger.isInsert){
-        if(Trigger.isBefore){
+    if(Trigger.isBefore){
+        if(Trigger.isInsert){
             for (Pokemon__c pokemon : Trigger.new) {
                 if(!String.isEmpty(pokemon.RelacionesId__c)){
                     Map<String,Object> relacion=(Map<String,Object>)JSON.deserializeUntyped(pokemon.RelacionesId__c);
@@ -39,6 +36,18 @@ trigger PokemonTrigger on Pokemon__c (before insert) {
                 }
                 
             }
+        }
+        if(Trigger.isUpdate){
+
+        }
+    }
+
+    if(Trigger.isAfter){
+        if(Trigger.isInsert){
+
+        }
+        if(Trigger.isUpdate){
+            
         }
     }
 }
