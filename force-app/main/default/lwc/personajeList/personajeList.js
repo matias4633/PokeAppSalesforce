@@ -78,6 +78,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
     }
 	handleCheckBox(event){
 		this.mostrar=!this.mostrar;
+		sessionStorage.setItem('mostrar',this.mostrar);
 	}
 	prev(){
 		if(this.pagina>1){
@@ -165,6 +166,10 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 					.catch(error => {
 					console.log(error);
 				});
+		if(sessionStorage.getItem('mostrar')){
+			this.mostrar=JSON.parse(sessionStorage.getItem('mostrar'));
+		}
 
+				
 	}
 }
