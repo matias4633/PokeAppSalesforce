@@ -1,7 +1,7 @@
 public with sharing class PokemonTriggerHelper {
     /* Creo mapas de habilidades y movimientos para poder usarlo para todos
     los pokemons que ingresen en un dml de manera masiva, esto me evita tener que crear los mismos mapas
-    o consultas SOQL por cada pokemon si hiciera el proceso en mi clase PokemonController. */
+    o consultas SOQL por cada pokemon si hiciera el proceso en mi metodo GetPokemon. */
 
     public static void asignarRelacion(List<Pokemon__c> lista){
         Map<Decimal,String> mapaHabilidades=new Map<Decimal,String>();

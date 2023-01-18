@@ -134,6 +134,9 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	renderedCallback(){
 		
 		if(this.personajes.data){
+			if(this.mostrar){
+				this.template.querySelector('.checkbox').checked=true;
+			}
 			this.contador=Object.keys(this.personajes.data).length;
 			
 			let aux=[];
@@ -153,6 +156,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 		}
 		
 		
+		
 	}
 	connectedCallback() {
 		//Consulto los valores disponibles en la multipicklist
@@ -169,6 +173,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 		if(sessionStorage.getItem('mostrar')){
 			this.mostrar=JSON.parse(sessionStorage.getItem('mostrar'));
 		}
+		
 
 				
 	}
