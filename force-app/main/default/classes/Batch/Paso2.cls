@@ -18,7 +18,7 @@ global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Da
     global void execute(Database.BatchableContext BC , List<Integer> lista){
         for (Integer i : lista) {
             try {
-                Movimiento__c nuevoMovimiento=MovimientoController.getMovimiento(i);
+                Movimiento__c nuevoMovimiento=getMovimiento(i);
                 if(nuevoMovimiento!=null){
                     movimientos.add(nuevoMovimiento);
                 }
@@ -40,5 +40,59 @@ global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Da
             Database.executeBatch(new Paso3(),10);
         }
         
+    }
+
+    public Movimiento__c getMovimiento(Integer n){
+        if(n<1 || n>826){
+            throw new CalloutException('Fuera de rango');
+        }
+        //Llamado a la api
+        Movimiento__c nuevoMovimiento = new  Movimiento__c();
+        Http http = new Http(); 
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://pokeapi.co/api/v2/move/'+n);
+        request.setMethod('GET');
+        request.setHeader('Accept', 'application/json');
+        HttpResponse response = http.send(request);
+        if(response.getStatusCode() != 200){
+            System.debug('Respuesta incorrecta '+ response.getStatusCode() );
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
+        }
+        //Tratamiento de los datos
+        Map<String,Object> movimiento;
+        try {
+            movimiento=(Map<String,Object>)JSON.deserializeUntyped(response.getBody());
+        } catch (Exception e) {
+            System.debug('Error en el JSON');
+            return null;
+        }
+        try {
+            
+            nuevoMovimiento.ExtId__c=(Integer)movimiento.get('id');
+            nuevoMovimiento.Name=((String)movimiento.get('name')).capitalize();
+            nuevoMovimiento.Punteria__c=(Integer)movimiento.get('accuracy');
+            nuevoMovimiento.Chance_de_Efecto__c=(Integer)movimiento.get('effect_chance');
+            nuevoMovimiento.Objetivo__c=(String)((Map<String,Object>)movimiento.get('target')).get('name');
+            nuevoMovimiento.Prioridad__c=(Integer)movimiento.get('priority');
+            //Primero verifico que el idioma sea el pedidio, luego tomo el short effect
+            List<Object> effect_entries=(List<Object>)movimiento.get('effect_entries');
+
+            for(Integer i=0; i<effect_entries.size();i++){
+                Map<String,Object> elemento=(Map<String,Object>)effect_entries[i];
+                Map<String,Object> language=(Map<String,Object>)elemento.get('language');
+
+                if((String)language.get('name')=='en'){
+                    nuevoMovimiento.Efecto__c=(String)elemento.get('short_effect');
+                }
+            }
+            nuevoMovimiento.Poder__c=(Integer)movimiento.get('power');
+            nuevoMovimiento.Pp__c=(Integer)movimiento.get('pp');
+            nuevoMovimiento.Tipo__c=(String)((Map<String,Object>)movimiento.get('type')).get('name');
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+            throw new CalloutException('Datos Incorrectos');
+        }
+    System.debug(nuevoMovimiento);
+    return NuevoMovimiento;
     }
 }

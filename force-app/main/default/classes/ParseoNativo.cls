@@ -1,47 +1,5 @@
-global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Database.AllowsCallouts {
-    Integer cantidad;
-    List<Pokemon__c> pokemons=new List<Pokemon__c>();
-    public Paso3(){
-        if(!Test.isRunningTest()){
-            this.cantidad=898;
-        }else{
-            this.cantidad=1;
-        }
-    }
-    
-    global Iterable<Integer> start(Database.BatchableContext bc) {
-        List<Integer> iteraciones=new List<Integer>();
-        for (Integer i = 1; i <=this.cantidad; i++) { //hasta 898
-            iteraciones.add(i);
-        }
-        return iteraciones;
-    }
-    global void execute(Database.BatchableContext BC , List<Integer> lista){
-        for (Integer i : lista) {
-            try {
-                Pokemon__c nuevoPokemon=getPokemon(i);
-                
-                if(nuevoPokemon!=null){
-                    pokemons.add(nuevoPokemon);
-                }
-                
-            } catch (CalloutException e) {
-                System.debug('Hugo un error el Pokemon de idExt: '+ i);
-                throw e;
-            }
-        }
-        
-    }
-    global void finish(Database.BatchableContext BC){
-        try {
-            insert pokemons;
-        } catch (Exception e) {
-            System.debug('Ocurrio un error en Dml: '+e.getMessage());
-        }
-       
-    }
-
-    public Pokemon__c getPokemon(Integer n){
+public with sharing class ParseoNativo {
+    public static Pokemon__c getPokemon(Integer n){
         List<String> hablidadesUrls=new List<String>();
         List<String> movimientosUrls=new List<String>();
 
@@ -137,7 +95,6 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
             }
         } catch (Exception e) {
             System.debug(e.getMessage());
-            return null;
         }
         Map<String,List<Integer>> relacionesId=new Map<String,List<Integer>>();
         List<Integer> habilidades=getRandomExtIds(1, hablidadesUrls);
@@ -150,7 +107,7 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
        return nuevoPokemon;
     }
     /* Metodo que recibe las urls y devuelve de forma aleatoria los external id */
-    public List<Integer> getRandomExtIds(Integer cantidad, List<String> originales){
+    public static List<Integer> getRandomExtIds(Integer cantidad, List<String> originales){
         Integer index;
         Integer cantidadOriginal=originales.size()-1;
         List<Integer> listaExtIds=new List<Integer>();
@@ -174,11 +131,108 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
         
         return listaExtIds;
     }
+
+    public static Movimiento__c getMovimiento(Integer n){
+        if(n<1 || n>826){
+            throw new CalloutException('Fuera de rango');
+        }
+        //Llamado a la api
+        Movimiento__c nuevoMovimiento = new  Movimiento__c();
+        Http http = new Http(); 
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://pokeapi.co/api/v2/move/'+n);
+        request.setMethod('GET');
+        request.setHeader('Accept', 'application/json');
+        HttpResponse response = http.send(request);
+        if(response.getStatusCode() != 200){
+            System.debug('Respuesta incorrecta '+ response.getStatusCode() );
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
+        }
+        //Tratamiento de los datos
+        Map<String,Object> movimiento;
+        try {
+            movimiento=(Map<String,Object>)JSON.deserializeUntyped(response.getBody());
+        } catch (Exception e) {
+            System.debug('Error en el JSON');
+            return null;
+        }
+        try {
+            
+            nuevoMovimiento.ExtId__c=(Integer)movimiento.get('id');
+            nuevoMovimiento.Name=((String)movimiento.get('name')).capitalize();
+            nuevoMovimiento.Punteria__c=(Integer)movimiento.get('accuracy');
+            nuevoMovimiento.Chance_de_Efecto__c=(Integer)movimiento.get('effect_chance');
+            nuevoMovimiento.Objetivo__c=(String)((Map<String,Object>)movimiento.get('target')).get('name');
+            nuevoMovimiento.Prioridad__c=(Integer)movimiento.get('priority');
+            //Primero verifico que el idioma sea el pedidio, luego tomo el short effect
+            List<Object> effect_entries=(List<Object>)movimiento.get('effect_entries');
+
+            for(Integer i=0; i<effect_entries.size();i++){
+                Map<String,Object> elemento=(Map<String,Object>)effect_entries[i];
+                Map<String,Object> language=(Map<String,Object>)elemento.get('language');
+
+                if((String)language.get('name')=='en'){
+                    nuevoMovimiento.Efecto__c=(String)elemento.get('short_effect');
+                }
+            }
+            nuevoMovimiento.Poder__c=(Integer)movimiento.get('power');
+            nuevoMovimiento.Pp__c=(Integer)movimiento.get('pp');
+            nuevoMovimiento.Tipo__c=(String)((Map<String,Object>)movimiento.get('type')).get('name');
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+        }
+    System.debug(nuevoMovimiento);
+    return NuevoMovimiento;
+    }
+
+    public static Habilidad__c getHabilidad(Integer n){
+        if(n<1 || n>267){
+            throw new CalloutException('Fuera de rango');
+        }
+        //Llamado a la api
+        Habilidad__c NuevaHabilidad=new Habilidad__c();
+        Http http = new Http(); 
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://pokeapi.co/api/v2/ability/'+n);
+        request.setMethod('GET');
+        request.setHeader('Accept', 'application/json');
+        HttpResponse response = http.send(request);
+        if(response.getStatusCode() != 200){
+            System.debug('Respuesta incorrecta '+ response.getStatusCode() );
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
+        }
+
+        //Tratamiento de los datos
+        Map<String,Object> habilidad;
+        try {
+            habilidad=(Map<String,Object>)JSON.deserializeUntyped(response.getBody());
+        } catch (Exception e) {
+            System.debug('Hugo un error en el JSON');
+            return null;
+        }
+        try {
+            
+            NuevaHabilidad.Name=((String)habilidad.get('name')).capitalize();
+            NuevaHabilidad.ExtId__c=(Integer)habilidad.get('id');
+            
+            List<Object> effect_entries=(List<Object>)habilidad.get('effect_entries');
+
+            for(Integer i=0; i<effect_entries.size();i++){
+                Map<String,Object> elemento=(Map<String,Object>)effect_entries[i];
+                Map<String,Object> language=(Map<String,Object>)elemento.get('language');
+                if((String)language.get('name')=='en'){
+                    NuevaHabilidad.Efecto__c=(String)elemento.get('short_effect');
+                }
+            }
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+        }
+    System.debug(NuevaHabilidad);
+    return NuevaHabilidad;
+    }
 }
 
-/* Pokemon__c poke= PokemonController.getPokemon(521);
-System.debug(poke!=null);
-System.debug(poke); 
-if(poke!=null){
-    insert poke;
-} */
+/* ParseoNativo.getPokemon(521);
+ParseoNativo.getMovimiento(1); 
+ParseoNativo.getHabilidad(1); 
+*/

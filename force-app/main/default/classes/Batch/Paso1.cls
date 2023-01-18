@@ -25,7 +25,7 @@ global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Da
     global void execute(Database.BatchableContext BC , List<Integer> lista){
         for (Integer i : lista) {
             try {
-                Habilidad__c nuevaHabilidad=HabilidadController.getHabilidad(i);
+                Habilidad__c nuevaHabilidad=getHabilidad(i);
                 if(nuevaHabilidad!=null){
                     habilidades.add(nuevaHabilidad);
                 }
@@ -48,10 +48,55 @@ global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Da
         }
         
     }
+    public Habilidad__c getHabilidad(Integer n){
+        if(n<1 || n>267){
+            throw new CalloutException('Fuera de rango');
+        }
+        //Llamado a la api
+        Habilidad__c NuevaHabilidad=new Habilidad__c();
+        Http http = new Http(); 
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://pokeapi.co/api/v2/ability/'+n);
+        request.setMethod('GET');
+        request.setHeader('Accept', 'application/json');
+        HttpResponse response = http.send(request);
+        if(response.getStatusCode() != 200){
+            System.debug('Respuesta incorrecta '+ response.getStatusCode() );
+            throw new CalloutException('Codigo incorrecto, codigo: '+ response.getStatusCode());
+        }
+
+        //Tratamiento de los datos
+        Map<String,Object> habilidad;
+        try {
+            habilidad=(Map<String,Object>)JSON.deserializeUntyped(response.getBody());
+        } catch (Exception e) {
+            System.debug('Hugo un error en el JSON');
+            return null;
+        }
+        try {
+            
+            NuevaHabilidad.Name=((String)habilidad.get('name')).capitalize();
+            NuevaHabilidad.ExtId__c=(Integer)habilidad.get('id');
+            
+            List<Object> effect_entries=(List<Object>)habilidad.get('effect_entries');
+
+            for(Integer i=0; i<effect_entries.size();i++){
+                Map<String,Object> elemento=(Map<String,Object>)effect_entries[i];
+                Map<String,Object> language=(Map<String,Object>)elemento.get('language');
+                if((String)language.get('name')=='en'){
+                    NuevaHabilidad.Efecto__c=(String)elemento.get('short_effect');
+                }
+            }
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+            throw new CalloutException('Datos Incorrectos');
+        }
+    System.debug(NuevaHabilidad);
+    return NuevaHabilidad;
+    }
 }
 
 /*  List<Pokemon__c> poke=[SELECT Id FROM Pokemon__c];
-    delete poke;
     List<Habilidad__c> habi=[SELECT Id FROM Habilidad__c];
     List<Movimiento__c> mov=[SELECT Id FROM Movimiento__c];
     delete poke;
