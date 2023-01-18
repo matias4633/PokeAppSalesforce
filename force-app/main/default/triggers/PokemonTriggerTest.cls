@@ -15,7 +15,7 @@ public with sharing class PokemonTriggerTest {
                                                     ); 
         Test.setMock(HttpCalloutMock.class, mock);
         //Salesforce pide realizar primero el callout y luego operaciones dml.
-        Pokemon__c pokemon=PokemonController.getPokemon(1);
+        Pokemon__c pokemon=(new Paso3()).getPokemon(1);
         
         habilidades.add(new Habilidad__c(Name='overgrow', ExtId__c=65));
         habilidades.add(new Habilidad__c(Name='chlorophyll', ExtId__c=34));
@@ -51,7 +51,7 @@ public with sharing class PokemonTriggerTest {
                                                     ); 
         Test.setMock(HttpCalloutMock.class, mock);
         //Salesforce pide realizar primero el callout y luego operaciones dml.
-        Pokemon__c pokemon=PokemonController.getPokemon(1);
+        Pokemon__c pokemon=(new Paso3()).getPokemon(1);
         
         habilidades.add(new Habilidad__c(Name='overgrow', ExtId__c=65));
         habilidades.add(new Habilidad__c(Name='chlorophyll', ExtId__c=34));
