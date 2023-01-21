@@ -22,45 +22,58 @@
 							placeholder="Ingresa el nombre"
 							value={searchTerm}>
                 		</lightning-input>
+						<div class="slds-grid slds-gutters">
+							<div class="slds-col">
+								<lightning-combobox
+									name="Tipo"
+									label="Tipo"
+									value={valueTipo}
+									placeholder="Seleccione un tipo"
+									options={optionsTipo}
+									onchange={handleChangeTipo}>
+								</lightning-combobox>
+							</div>
+							<div class="slds-col">
+								<lightning-combobox
+									name="Generacion"
+									label="Generacion"
+									value={valueGene}
+									placeholder="Seleccione una Generación"
+									options={optionsGene}
+									onchange={handleChangeGene}>
+								</lightning-combobox>
+							</div>
+						</div>
+						
 
-						<lightning-combobox
-							name="Tipo"
-							label="Tipo"
-							value={valueTipo}
-							placeholder="Seleccione un tipo"
-							options={optionsTipo}
-							onchange={handleChangeTipo}>
-						</lightning-combobox>
-
-						<lightning-combobox
-							name="Generacion"
-							label="Generacion"
-							value={valueGene}
-							placeholder="Seleccione una Generación"
-							options={optionsGene}
-							onchange={handleChangeGene}>
-						</lightning-combobox>
+						
 					</div>
 					
 					<div class="slds-col cont-check">
+						<div class="slds-grid slds-gutters">
+							<div class="slds-col">
+								<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
 						
-						<div class="contador"><h3>Cantidad de Pokemons en tu busqueda: {contador}</h3></div>
-						<c-reproductor></c-reproductor>
-						<div class="cont-clickeables slds-grid slds-gutters">
-							<div class="slds-col">
-								<lightning-input class="checkbox" type="checkbox" label="Voltear todas las cartas" value={mostrar} onchange={handleCheckBox}> </lightning-input>
-							</div>
+								<div class="cont-clickeables slds-grid slds-gutters">
+								<div class="slds-col .slds-size_3-of-6">
+									<lightning-input class="checkbox" type="checkbox" label="Voltear todas las cartas" value={mostrar} onchange={handleCheckBox}> </lightning-input>
+								</div>
 							
-							<div class="slds-col">
-								<lightning-button-icon icon-name="utility:left" size="large" variant="bare" alternative-text="Pagina anterioir" class="slds-m-left_xx-small" onclick={prev}></lightning-button-icon>
-								<lightning-button-icon icon-name="utility:right" size="large" variant="bare" alternative-text="Pagina siguiente" class="slds-m-left_xx-small" onclick={next}></lightning-button-icon>
-								
-							</div>
-							<div class="slds-col">
-								<p if:true={contador} >Pagina {pagina} de {paginaMaxima}</p>
-							</div>
+								<div class="slds-col .slds-size_2-of-6">
+									<lightning-button-icon icon-name="utility:left" size="large" variant="bare" alternative-text="Pagina anterioir" class="slds-m-left_xx-small" onclick={prev}></lightning-button-icon>
+									<lightning-button-icon icon-name="utility:right" size="large" variant="bare" alternative-text="Pagina siguiente" class="slds-m-left_xx-small" onclick={next}></lightning-button-icon>
+								</div>
+								<div class="slds-col .slds-size_1-of-6">
+									<p if:true={contador} >Pagina {pagina} de {paginaMaxima}</p>
+								</div>
 							
+							</div>
+							</div>
+							<div class="slds-col">
+								<c-reproductor></c-reproductor>
+							</div>
 						</div>
+						
 					</div>
 					
 				</div>

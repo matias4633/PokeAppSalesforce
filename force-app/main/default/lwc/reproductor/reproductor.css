@@ -1,5 +1,7 @@
 .player-container{
-    position: relative;
+    position: absolute;
+    top: 10px;
+    right: 7.5%;
 }
  .boton {
     position: absolute;
@@ -46,3 +48,4 @@
 .pikachustop img{
     border: 0;
 }
+

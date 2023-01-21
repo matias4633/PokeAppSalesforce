@@ -17,10 +17,8 @@ export default class Reproductor extends LightningElement {
 
     renderedCallback(){
         let track = this.template.querySelector('.track');
-
         let controlBtn = this.template.querySelector('.boton');
-
-    
+        let contenedor=this.template.querySelector('.player-container');
         let opacidad=this.template.querySelector('.pikachustop');
 
         function playPause() {

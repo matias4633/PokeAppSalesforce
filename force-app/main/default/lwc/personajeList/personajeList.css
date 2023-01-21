@@ -8,12 +8,13 @@
 .cont-check{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+    /* justify-content: space-evenly;
+    align-items: center; */
 }
 .contador{
     font-size: medium;
+    margin-bottom: 46px;
 }
 .filtros{
-    padding: 20px 0;
+    padding: 0 0 28px 0;
 }
