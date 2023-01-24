@@ -1,9 +1,10 @@
 <!-- sldsValidatorIgnore -->
 <!-- sldsValidatorIgnore -->
 <template>
+	<div class="contenedorgeneral" onkeydown={handleKeys}>
 	<lightning-card title="Encuentra tu Pokemon" >
 		
-		<div class="slds-card__body slds-card__body_inner" onkeydown={handleKeys}>
+		<div class="slds-card__body slds-card__body_inner" >
 			<!-- Start list -->
 			<template if:false={personajes.data}>
 				<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
@@ -70,7 +71,7 @@
 							</div>
 							</div>
 							<div class="slds-col">
-								<c-reproductor></c-reproductor>
+								<c-reproductor reproducir={reproducir}></c-reproductor>
 							</div>
 						</div>
 						
@@ -102,4 +103,5 @@
 			</template>
 		</div>
 	</lightning-card>
+	</div>
 </template>

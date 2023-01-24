@@ -11,7 +11,10 @@ export default class PersonajetileRecordPage extends NavigationMixin(LightningEl
     @track personaje;
     mostrar=true;
 
-    @wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
+    @wire(searchPersonajes, { searchTerm: '$searchTerm' ,
+							valueTipo:'$valueTipo',
+							valueGene:'$valueGene', 
+							identificador:'$recordId'})
 	loadPersonajes(result) {
 		this.personaje = result.data;
 	}

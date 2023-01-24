@@ -5,9 +5,9 @@ import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.get
 
 export default class PersonajeList extends NavigationMixin(LightningElement) {
 	//VARIABLES
-	
-	
-	LONGITUD_PEDAZOS = 14;
+	reconocimiento;
+	reproducir=false;
+	LONGITUD_PEDAZOS = 16;
 	personajesPage=[];
 	pagina=1;
 	paginaMaxima;
@@ -101,6 +101,10 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 		if(event.keyCode==39){
 			this.next();
 		}
+		//Control + S
+		if(event.keyCode==83 && event.ctrlKey){
+			this.reconocimiento.start();
+		}
 	}
 
 
@@ -134,25 +138,25 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	renderedCallback(){
 		
 		if(this.personajes.data){
+			//Recuerda el marcado del checkbox
 			if(this.mostrar){
 				this.template.querySelector('.checkbox').checked=true;
 			}
+			//Actualiza la cantidad en la busqueda
 			this.contador=Object.keys(this.personajes.data).length;
 			
+			//Particionado de los resultados en paginas.
 			let aux=[];
 			for(let i=0;i<this.personajes.data.length;i+=this.LONGITUD_PEDAZOS){
 				let pedazo=this.personajes.data.slice(i, i+this.LONGITUD_PEDAZOS);
 				aux.push(pedazo);
 			}
-			
 			if(JSON.stringify(aux)!==JSON.stringify(this.personajesPage)){
 				this.personajesPage=aux;
 			}
 			
 			this.paginaMaxima=this.personajesPage.length;
-			//console.log(JSON.stringify(this.personajesPage[this.pagina]));
 			this.personajesMostrar=this.personajesPage[this.pagina-1];
-			//alert(JSON.stringify(this.personajesMostrar));
 		}
 		
 		
@@ -170,11 +174,30 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 					.catch(error => {
 					console.log(error);
 				});
+		//Consulto si se guardo un estado del checkbox, para recordarlo.
 		if(sessionStorage.getItem('mostrar')){
 			this.mostrar=JSON.parse(sessionStorage.getItem('mostrar'));
 		}
-		
 
-				
+		
+		//Reconocimiento de voz
+		this.reconocimiento=new webkitSpeechRecognition();
+		this.reconocimiento.lang='es-ES';
+		this.reconocimiento.continuous=false;
+		this.reconocimiento.onresult = event => {
+			let ok;
+			for (const result of event.results) {
+			  console.log(result[0].transcript);
+			  ok=result[0].transcript.includes("reproducir")
+			}
+			if(ok){
+				this.reproducir=true;
+			}
+			
+			setTimeout(()=>{
+				this.reproducir=false;
+			},1000);
+		  }
+		
 	}
 }

@@ -48,4 +48,6 @@
 .pikachustop img{
     border: 0;
 }
-
+.oculto{
+    display: none;
+}

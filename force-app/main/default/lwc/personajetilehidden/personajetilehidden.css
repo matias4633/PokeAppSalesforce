@@ -18,6 +18,7 @@
 }
 .ident-ext{
 	margin-right: 2rem;
+	cursor: pointer;
 }
 .cont-image{
 	display: flex;

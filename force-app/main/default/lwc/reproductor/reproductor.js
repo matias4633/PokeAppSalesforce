@@ -1,10 +1,11 @@
-import { LightningElement } from 'lwc';
+import { LightningElement,api } from 'lwc';
 import musica from '@salesforce/resourceUrl/musica';
 import pikachu from '@salesforce/resourceUrl/pikachu';
 import pikachustop from '@salesforce/resourceUrl/pikachustop';
 
 
 export default class Reproductor extends LightningElement {
+    @api reproducir;
     get musica(){
 		return `${musica}`;
 	}
@@ -18,8 +19,14 @@ export default class Reproductor extends LightningElement {
     renderedCallback(){
         let track = this.template.querySelector('.track');
         let controlBtn = this.template.querySelector('.boton');
-        let contenedor=this.template.querySelector('.player-container');
         let opacidad=this.template.querySelector('.pikachustop');
+        
+        if(this.reproducir){
+            track.play();
+            opacidad.style.opacity='0';
+            controlBtn.classList.remove('play');
+            controlBtn.classList.add('pause');
+        }
 
         function playPause() {
             if (track.paused) {
