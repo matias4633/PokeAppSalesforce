@@ -1,4 +1,5 @@
 import { NavigationMixin } from 'lightning/navigation';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { LightningElement, wire } from 'lwc';
 import searchPersonajes from '@salesforce/apex/PokemonController.search';
 import getValoresDisponibles from '@salesforce/apex/ValuesPickListController.getValoresDisponibles';
@@ -192,6 +193,19 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 			}
 			if(ok){
 				this.reproducir=true;
+				const event = new ShowToastEvent({
+					title: 'Success!',
+					message: 'reproducción Activada!',
+					variant:'success'
+				});
+				this.dispatchEvent(event);
+			}else{
+				const event = new ShowToastEvent({
+					title: 'Error!',
+					message: 'Comando de voz no encontrado.',
+					variant:'error'
+				});
+				this.dispatchEvent(event);
 			}
 			
 			setTimeout(()=>{
