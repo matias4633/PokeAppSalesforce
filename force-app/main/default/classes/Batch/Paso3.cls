@@ -67,8 +67,9 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
         try {
            pokemon=(Map<String,Object>)JSON.deserializeUntyped(response.getBody());
         } catch (Exception e) {
-            System.debug('Error en el JSON');
-            return null;
+            //System.debug('Error en el JSON');
+            throw new CalloutException('Error en el JSON');
+            //return null;
         }
 
         try {

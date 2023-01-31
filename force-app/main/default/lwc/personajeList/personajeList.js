@@ -24,7 +24,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 	playSound;
 	
 	//Metodo reactivo de consulta de BD
-	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene', identificador:'$recordId'})
+	@wire(searchPersonajes, { searchTerm: '$searchTerm' ,valueTipo:'$valueTipo',valueGene:'$valueGene' , identificador:'$recordId'})
 	loadPersonajes(result) {
 		this.personajes = result;
 		this.pagina=1;

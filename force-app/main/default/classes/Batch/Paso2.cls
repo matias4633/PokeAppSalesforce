@@ -24,6 +24,7 @@ global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Da
                 }
             } catch (Exception e) {
                 System.debug('Hugo un error en el movimiento de idExt: '+ i);
+                throw e;
             }
             
         }
@@ -64,7 +65,8 @@ global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Da
             movimiento=(Map<String,Object>)JSON.deserializeUntyped(response.getBody());
         } catch (Exception e) {
             System.debug('Error en el JSON');
-            return null;
+            throw new CalloutException('Error en el JSON');
+            //return null;
         }
         try {
             

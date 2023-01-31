@@ -22,7 +22,7 @@ public with sharing class PokemonTriggerHelper {
                     pokemon.Habilidad__c=mapaHabilidades.get((Integer)ExtId);
                 }
             
-                }
+            }
             try {
                 List<Object> movimientos=(List<Object>)relacion.get('movimientos');
                 pokemon.Slot1__c=mapaMovimientos.get((Integer)movimientos[0]);

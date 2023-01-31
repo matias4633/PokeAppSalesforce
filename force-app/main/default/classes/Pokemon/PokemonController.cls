@@ -1,10 +1,4 @@
 public with sharing class PokemonController {
-    /* insert(PokemonController.getPokemon(1)); 
-        List<Pokemon__c> poke=[SELECT Id FROM Pokemon__c];
-        delete poke;   
-         Database.executeBatch(new Paso3(),10); */
-    
-    
     //CLASES QUE SE USAN DESDE LWC
     /* Este metodo retorna los datos cuando los parametros son vacios */
     @AuraEnabled(cacheable=true scope='global')
