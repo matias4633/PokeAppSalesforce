@@ -49,7 +49,7 @@ global class Paso1 implements Database.Batchable<Integer>, Database.Stateful, Da
         }
         
     }
-    public Habilidad__c getHabilidad(Integer n){
+    public static Habilidad__c getHabilidad(Integer n){
         if(n<1 || n>267){
             throw new CalloutException('Fuera de rango');
         }

@@ -41,7 +41,7 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
        
     }
 
-    public Pokemon__c getPokemon(Integer n){
+    public static Pokemon__c getPokemon(Integer n){
         List<String> hablidadesUrls=new List<String>();
         List<String> movimientosUrls=new List<String>();
 
@@ -69,7 +69,6 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
         } catch (Exception e) {
             //System.debug('Error en el JSON');
             throw new CalloutException('Error en el JSON');
-            //return null;
         }
 
         try {
@@ -151,7 +150,7 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
        return nuevoPokemon;
     }
     /* Metodo que recibe las urls y devuelve de forma aleatoria los external id */
-    public List<Integer> getRandomExtIds(Integer cantidad, List<String> originales){
+    public static List<Integer> getRandomExtIds(Integer cantidad, List<String> originales){
         Integer index;
         Integer cantidadOriginal=originales.size()-1;
         List<Integer> listaExtIds=new List<Integer>();
@@ -176,10 +175,3 @@ global class Paso3 implements Database.Batchable<Integer>, Database.Stateful, Da
         return listaExtIds;
     }
 }
-
-/* Pokemon__c poke= PokemonController.getPokemon(521);
-System.debug(poke!=null);
-System.debug(poke); 
-if(poke!=null){
-    insert poke;
-} */

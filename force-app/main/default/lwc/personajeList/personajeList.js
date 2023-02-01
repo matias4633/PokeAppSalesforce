@@ -195,7 +195,7 @@ export default class PersonajeList extends NavigationMixin(LightningElement) {
 				this.reproducir=true;
 				const event = new ShowToastEvent({
 					title: 'Success!',
-					message: 'reproducción Activada!',
+					message: 'Reproducción activada!',
 					variant:'success'
 				});
 				this.dispatchEvent(event);

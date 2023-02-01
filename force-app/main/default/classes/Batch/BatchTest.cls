@@ -53,7 +53,7 @@ public with sharing class BatchTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         try {
-            pokemon=(new Paso3()).getPokemon(900);
+            pokemon=Paso3.getPokemon(900);
         } catch (CalloutException e) {
             errorRecibido=e.getMessage();
         }
@@ -174,7 +174,7 @@ public with sharing class BatchTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
         try {
-            habilidad=(new Paso1()).getHabilidad(900);
+            habilidad=Paso1.getHabilidad(900);
         } catch (Exception e) {
             errorRecibido=e.getMessage();
         }
@@ -310,7 +310,7 @@ public with sharing class BatchTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.startTest();
             try {
-                movimiento=(new Paso2()).getMovimiento(900);
+                movimiento=Paso2.getMovimiento(900);
             } catch (Exception e) {
                 errorRecibido=e.getMessage();
             }    

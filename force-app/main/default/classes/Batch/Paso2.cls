@@ -43,7 +43,7 @@ global class Paso2 implements Database.Batchable<Integer>, Database.Stateful, Da
         
     }
 
-    public Movimiento__c getMovimiento(Integer n){
+    public static Movimiento__c getMovimiento(Integer n){
         if(n<1 || n>826){
             throw new CalloutException('Fuera de rango');
         }
